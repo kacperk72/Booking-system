@@ -14,9 +14,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
+import { MenuComponent } from './menu/menu.component';
 
 @NgModule({
-  declarations: [AppComponent, CalendarComponent, RoomListComponent],
+  declarations: [AppComponent, CalendarComponent, RoomListComponent, MenuComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

@@ -1,0 +1,30 @@
+.content {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(12, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+}
+
+/* grid-row-start / grid-column-start / grid-row-end / grid-column-end */
+    
+.menu { 
+    grid-area: 1 / 1 / 2 / 12;
+    padding: 20px;
+}
+
+.list { 
+    grid-area:  2 / 1 / 11 / 4;
+    padding: 20px;
+}
+
+.calendar { 
+    grid-area: 2 / 4 / 7 / 11;
+}
+
+.div4 { 
+    grid-area: 7 / 4 / 11 / 11; 
+}
+
+
+  

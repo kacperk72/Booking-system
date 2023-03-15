@@ -7,10 +7,10 @@ import { Component } from '@angular/core';
 })
 export class RoomListComponent {
   typesOfShoes: string[] = [
-    'Boots',
-    'Clogs',
-    'Loafers',
-    'Moccasins',
-    'Sneakers',
+    'Sala A-1-01',
+    'Sala A-1-02',
+    'Sala A-1-03',
+    'Sala A-1-04',
+    'Sala A-1-05',
   ];
 }

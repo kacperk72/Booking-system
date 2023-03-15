@@ -1,0 +1,25 @@
+nav {
+    background-color: #eee;
+  }
+  
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 33%;
+    float: right;
+  }
+  
+  li {
+    flex-grow: 1;
+    text-align: center;
+  }
+  
+  a {
+    display: block;
+    float: left;
+    padding: 1rem;
+    color: #333;
+    text-decoration: none;
+  }
+  

@@ -1,10 +1,42 @@
+<form class="mat-form-field">
+  <mat-form-field appearance="fill" class="form-filed">
+    <mat-label>Nazwa sali</mat-label>
+    <input matInput>
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="form-filed">
+    <mat-label>Ilość miejsc</mat-label>
+    <mat-select>
+      <mat-option value="one">10</mat-option>
+      <mat-option value="two">20</mat-option>
+      <mat-option value="">30</mat-option>
+      <mat-option value="">40</mat-option>
+      <mat-option value="">100</mat-option>
+      <mat-option value="">120</mat-option>
+      <mat-option value="">140</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="form-filed">
+    <mat-label>Typ sali</mat-label>
+    <mat-select>
+      <mat-option value="one">Sala wykładowa</mat-option>
+      <mat-option value="two">Sala lekcyjna z tablicą</mat-option>
+      <mat-option value="">Sala komputerowa</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-stroked-button color="primary">Szukaj</button>
+</form>
 <h2>Dostępne sale</h2>
-<mat-selection-list #shoes [multiple]="false" class="room-list">
-    <mat-list-option *ngFor="let shoe of typesOfShoes" [value]="shoe">
-        {{shoe}}
-    </mat-list-option>
+<div class="room-list">
+    <mat-selection-list #shoes [multiple]="false">
+      <mat-list-option *ngFor="let shoe of typesOfShoes" [value]="shoe">
+          {{shoe}}
+      </mat-list-option>
 
-</mat-selection-list>
-<p> 
-    Wybrana sala: {{shoes.selectedOptions.hasValue() ? shoes.selectedOptions.selected[0].value : 'None'}}
-</p>
+  </mat-selection-list>
+  <p> 
+      Wybrana sala: {{shoes.selectedOptions.hasValue() ? shoes.selectedOptions.selected[0].value : 'None'}}
+  </p>
+  <div class="book-room-button">
+      <button mat-raised-button color="primary">Rezerwuj</button>
+  </div>
+</div>

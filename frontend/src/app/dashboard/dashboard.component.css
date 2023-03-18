@@ -1,0 +1,29 @@
+.content {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(12, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    height: 100vh;
+}
+
+/* grid-row-start / grid-column-start / grid-row-end / grid-column-end */
+
+.calendar { 
+    grid-area:  1 / 1 / 11 / 5;
+    padding: 20px;
+    border: 1px solid #000;
+}
+
+.list { 
+    grid-area: 1 / 5 / 11 / 13;
+    padding: 20px;
+    border: 1px solid #000;
+}
+
+.div4 { 
+    grid-area: 11 / 1 / 13 / 13;
+    padding: 20px;
+    border: 1px solid #000;
+}
+

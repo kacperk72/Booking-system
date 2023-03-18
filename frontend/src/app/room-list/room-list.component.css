@@ -1,4 +1,22 @@
 .room-list {
-    width: 300px;
+    width: 500px;
 }
+
+.book-room-button {
+    width: 100%;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.form {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+.form-filed {
+    margin: 20px;
+}
+
 

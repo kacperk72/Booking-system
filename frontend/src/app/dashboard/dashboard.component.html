@@ -3,7 +3,8 @@
         <app-calendar></app-calendar>
     </div>
     <div class="list">
-        <app-room-list></app-room-list>
+        <app-room-list (reservationButton)="setReservation($event)" (chosenClass)="setChosenClass($event)"></app-room-list>
+        <app-reservation *ngIf="isReservationVisible" (cancelReser)="cancelReservation()"></app-reservation>
     </div>
     <div class="div4">
 

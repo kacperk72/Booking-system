@@ -1,0 +1,20 @@
+<div id="confirmWindow">
+    <h2>Potwierdź rezerwacje!</h2>
+    <form class="mat-form-field">
+        <mat-form-field appearance="fill" class="form-filed">
+            <mat-label>Imie</mat-label>
+            <input matInput>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="form-filed">
+            <mat-label>Nazwisko</mat-label>
+            <input matInput>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="form-filed">
+            <mat-label>E-mail</mat-label>
+            <input matInput>
+        </mat-form-field>
+        <input type="button" value="wróć" style="margin: 10px;" (click)="closeBooking()">
+        <input type="button" value="potwierdź" style="margin: 10px;" (click)="bookTerm()">
+    </form>
+
+</div>

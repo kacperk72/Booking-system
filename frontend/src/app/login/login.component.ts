@@ -22,11 +22,7 @@ export class LoginComponent {
 
   private subproceedLogin$!: Subscription;
 
-  constructor(
-    private fb: FormBuilder,
-    private service: AuthService,
-    private router: Router
-  ) {
+  constructor(private fb: FormBuilder, private router: Router) {
     localStorage.clear();
   }
 
@@ -47,22 +43,12 @@ export class LoginComponent {
     this.userLogin = this.loginForm.get('login')?.value;
     this.userPassword = this.loginForm.get('password')?.value;
     this.loginData = { login: this.userLogin, password: this.userPassword };
-    // console.log("this.loginData", this.loginData);
 
-    this.subproceedLogin$ = this.service
-      .proceedLogin(this.loginData)
-      .subscribe((response: any) => {
-        if (response != null) {
-          this.responsedata = response;
-          // console.log(this.responsedata);
-          this.actualRole = this.responsedata.result.role;
-          // console.log(this.actualRole);
-          localStorage.setItem('token', this.responsedata.token);
-          localStorage.setItem('rola', this.actualRole);
-          this.router.navigate(['/']);
-        } else {
-          window.alert('nieudana próba logowania');
-        }
-      });
+    if (this.userLogin === 'admin' && this.userPassword === 'admin') {
+      localStorage.setItem('rola', 'admin');
+      this.router.navigate(['/']);
+    } else {
+      window.alert('nieudana próba logowania');
+    }
   }
 }

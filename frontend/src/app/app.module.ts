@@ -25,6 +25,7 @@ import { LoginComponent } from './login/login.component';
 import { HttpClientModule } from '@angular/common/http';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ReservationComponent } from './reservation/reservation.component';
+import { AdminComponent } from './admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { ReservationComponent } from './reservation/reservation.component';
     LoginComponent,
     DashboardComponent,
     ReservationComponent,
+    AdminComponent,
   ],
   imports: [
     BrowserModule,

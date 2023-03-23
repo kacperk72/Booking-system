@@ -26,6 +26,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ReservationComponent } from './reservation/reservation.component';
 import { AdminComponent } from './admin/admin.component';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { AdminComponent } from './admin/admin.component';
     MatSelectModule,
     MatChipsModule,
     HttpClientModule,
+    MatTableModule,
   ],
   providers: [
     {

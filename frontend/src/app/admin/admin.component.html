@@ -1,9 +1,8 @@
 <ng-container>
     <div id="content">
       <div id="container" *ngIf="isLoaded">
-        <!-- <table mat-table [dataSource]="elementData" class="mat-elevation-z8"> -->
-        <table mat-table  class="mat-elevation-z8">
-    
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <!-- <table mat-table  class="mat-elevation-z8"> -->
           <!-- ID Column -->
           <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef> ID </th>
@@ -12,8 +11,8 @@
         
           <!-- Mail Column -->
           <ng-container matColumnDef="mail">
-            <th mat-header-cell *matHeaderCellDef> Imie </th>
-            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            <th mat-header-cell *matHeaderCellDef> Mail </th>
+            <td mat-cell *matCellDef="let element"> {{element.mail}} </td>
           </ng-container>
         
           <!-- Room Column -->
@@ -24,13 +23,13 @@
 
            <!-- Date Column -->
            <ng-container matColumnDef="date">
-            <th mat-header-cell *matHeaderCellDef> Sala </th>
+            <th mat-header-cell *matHeaderCellDef> Data </th>
             <td mat-cell *matCellDef="let element"> {{element.date}} </td>
           </ng-container>
 
            <!-- Hour Column -->
            <ng-container matColumnDef="hour">
-            <th mat-header-cell *matHeaderCellDef> Sala </th>
+            <th mat-header-cell *matHeaderCellDef> Godzina </th>
             <td mat-cell *matCellDef="let element"> {{element.hour}} </td>
           </ng-container>
     
@@ -51,9 +50,9 @@
         <input type="button" value="Dodaj rezerwację" (click)="addReservation()">
       </div>
       <div id="editDoctor" [hidden]="isVisibleAdd" >
-          <h2>Dodaj lekarza</h2>
+          <h2>Dodaj rezerwację</h2>
           <!-- <form [formGroup]="addReservation" (ngSubmit)="addReservationDB()"> -->
-          <form (ngSubmit)="addReservationDB()">
+          <!-- <form (ngSubmit)="addReservationDB()">
             <mat-form-field>
                 <input matInput type="text" id="name" placeholder="Imie" autocomplete="off" formControlName="name" required>
             </mat-form-field>
@@ -83,7 +82,7 @@
             <input type="button" value="Wróć" id="goBack" (click)="addReservation()">
     
             <input type="submit" value="Dodaj doktora" id="registerInput" [disabled]="!addReservationForm.valid">
-          </form>
+          </form> -->
       </div>
       
     </div>

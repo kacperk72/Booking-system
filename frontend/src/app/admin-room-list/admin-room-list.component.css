@@ -1,0 +1,11 @@
+.room-list {
+    width: 100%;
+}
+
+mat-selection-list {
+    display: inline-block;
+    text-align: left;
+    width: 50%;
+}
+
+

@@ -1,8 +1,11 @@
 <ng-container>
-    <div id="content">
-      <div id="container" *ngIf="isLoaded">
+    <div class="content">
+      <div class="container1">
+        <app-admin-room-list (reservationButton)="setReservation($event)" (chosenClass)="setChosenClass($event)"></app-admin-room-list>
+      </div>
+      <div class="container2" *ngIf="isLoaded">
+        <h2 class="table-header">Lista rezerwacji do akceptacji</h2>
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-        <!-- <table mat-table  class="mat-elevation-z8"> -->
           <!-- ID Column -->
           <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef> ID </th>
@@ -38,53 +41,54 @@
           <ng-container matColumnDef="icons">
             <th mat-header-cell *matHeaderCellDef>  </th>
             <td mat-cell *matCellDef="let element"> 
-              <a (click)="openEditPanel(element)"><mat-icon>edit</mat-icon></a>
-              <a (click)="deleteDoctor(element)"><mat-icon>delete</mat-icon></a>
+              <a (click)="approveRes(element)"><mat-icon>done</mat-icon></a>
+              <a (click)="deleteRes(element)"><mat-icon>delete</mat-icon></a>
             </td>
           </ng-container>
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
+        <div id="addDoctor">
+          <input type="button" value="Dodaj rezerwację" (click)="addReservation()">
+        </div>
+        <div id="editDoctor" [hidden]="isVisibleAdd" >
+            <h2>Dodaj rezerwację</h2>
+            <!-- <form [formGroup]="addReservation" (ngSubmit)="addReservationDB()"> -->
+            <!-- <form (ngSubmit)="addReservationDB()">
+              <mat-form-field>
+                  <input matInput type="text" id="name" placeholder="Imie" autocomplete="off" formControlName="name" required>
+              </mat-form-field>
+      
+              <mat-form-field>
+                  <input matInput type="text" id="surname" placeholder="Nazwisko" autocomplete="off" formControlName="surname" required>
+              </mat-form-field>
+      
+              <mat-form-field>
+                <input matInput type="text" id="login" placeholder="Login" autocomplete="off" formControlName="login" required>
+                <mat-error>Minimalna długość 3 znaki</mat-error>
+              </mat-form-field>
+      
+              <mat-form-field>
+                <input matInput type="password" id="password" placeholder="Hasło" autocomplete="off" formControlName="password" required>
+                <mat-error>Minimalna długość 4 znaki</mat-error>
+              </mat-form-field>
+                
+              <mat-form-field>
+                <input matInput type="text" id="city" placeholder="Miasto" autocomplete="off" formControlName="city" required>
+              </mat-form-field>        
+      
+              <mat-form-field>
+                <input matInput type="text" id="speciality" placeholder="Specjalność" autocomplete="off" formControlName="speciality" required>
+              </mat-form-field>
+      
+              <input type="button" value="Wróć" id="goBack" (click)="addReservation()">
+      
+              <input type="submit" value="Dodaj doktora" id="registerInput" [disabled]="!addReservationForm.valid">
+            </form> -->
+        </div>
+        
       </div>
-      <div id="addDoctor">
-        <input type="button" value="Dodaj rezerwację" (click)="addReservation()">
-      </div>
-      <div id="editDoctor" [hidden]="isVisibleAdd" >
-          <h2>Dodaj rezerwację</h2>
-          <!-- <form [formGroup]="addReservation" (ngSubmit)="addReservationDB()"> -->
-          <!-- <form (ngSubmit)="addReservationDB()">
-            <mat-form-field>
-                <input matInput type="text" id="name" placeholder="Imie" autocomplete="off" formControlName="name" required>
-            </mat-form-field>
-    
-            <mat-form-field>
-                <input matInput type="text" id="surname" placeholder="Nazwisko" autocomplete="off" formControlName="surname" required>
-            </mat-form-field>
-    
-            <mat-form-field>
-              <input matInput type="text" id="login" placeholder="Login" autocomplete="off" formControlName="login" required>
-              <mat-error>Minimalna długość 3 znaki</mat-error>
-            </mat-form-field>
-    
-            <mat-form-field>
-              <input matInput type="password" id="password" placeholder="Hasło" autocomplete="off" formControlName="password" required>
-              <mat-error>Minimalna długość 4 znaki</mat-error>
-            </mat-form-field>
-              
-            <mat-form-field>
-              <input matInput type="text" id="city" placeholder="Miasto" autocomplete="off" formControlName="city" required>
-            </mat-form-field>        
-    
-            <mat-form-field>
-              <input matInput type="text" id="speciality" placeholder="Specjalność" autocomplete="off" formControlName="speciality" required>
-            </mat-form-field>
-    
-            <input type="button" value="Wróć" id="goBack" (click)="addReservation()">
-    
-            <input type="submit" value="Dodaj doktora" id="registerInput" [disabled]="!addReservationForm.valid">
-          </form> -->
       </div>
       
-    </div>
     
     </ng-container>

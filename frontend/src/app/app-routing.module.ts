@@ -3,11 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './admin/admin.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
+import { RoomTimetableViewComponent } from './room-timetable-view/room-timetable-view.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'logowanie', component: LoginComponent },
   { path: 'admin', component: AdminComponent },
+  { path: 'room', component: RoomTimetableViewComponent },
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
 ];
 

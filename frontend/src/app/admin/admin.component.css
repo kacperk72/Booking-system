@@ -4,20 +4,35 @@
     padding: 0;
   }
   
-  #content {
-    display: inline-block;
-    text-align: center;
-    min-height: 85vh;
+  .content {
+    display: block;
     font-family: 'Nunito', sans-serif;
+    height: 100vh;
+    padding-top: 2vh;
+    width: 100vw;
   }
 
-  #container {
-    width: 100vw;
-    margin-left: 30%;
+  .container1 {
+    width: 49vw;
+    height: 70vh;
+    text-align: center;
+    justify-content: center;
+    float: left;
+    overflow: auto;
+
+  }
+  .container2 {
+    width: 49vw;
+    height: 70vh;
+    text-align: center;
+    justify-content: center;
+    float: left;
+    overflow: auto;
   }
 
   table {
     min-width: 40vw;
+    margin: 0 auto;
   }
 
   table th {

@@ -27,6 +27,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ReservationComponent } from './reservation/reservation.component';
 import { AdminComponent } from './admin/admin.component';
 import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { AdminRoomListComponent } from './admin-room-list/admin-room-list.component';
+import { RoomTimetableViewComponent } from './room-timetable-view/room-timetable-view.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +41,8 @@ import { MatTableModule } from '@angular/material/table';
     DashboardComponent,
     ReservationComponent,
     AdminComponent,
+    AdminRoomListComponent,
+    RoomTimetableViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -56,6 +61,7 @@ import { MatTableModule } from '@angular/material/table';
     MatChipsModule,
     HttpClientModule,
     MatTableModule,
+    MatIconModule,
   ],
   providers: [
     {

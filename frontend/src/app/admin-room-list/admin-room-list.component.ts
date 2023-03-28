@@ -41,4 +41,8 @@ export class AdminRoomListComponent {
   public setChosenClass(value: string) {
     this.chosenClass.emit(value);
   }
+
+  addReservation(): void {}
+
+  checkTimetable(): void {}
 }

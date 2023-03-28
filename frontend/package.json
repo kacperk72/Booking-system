@@ -20,6 +20,7 @@
     "@angular/platform-browser": "^15.2.0",
     "@angular/platform-browser-dynamic": "^15.2.0",
     "@angular/router": "^15.2.0",
+    "@syncfusion/ej2-angular-schedule": "^21.1.35-ngcc",
     "rxjs": "~7.8.0",
     "zone.js": "~0.12.0"
   },
@@ -36,5 +37,8 @@
     "karma-jasmine-html-reporter": "~2.0.0",
     "tslib": "^2.5.0",
     "typescript": "~4.9.4"
+  },
+  "scripts": {
+   "postinstall": "ngcc"
   }
 }

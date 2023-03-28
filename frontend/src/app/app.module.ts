@@ -30,6 +30,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { AdminRoomListComponent } from './admin-room-list/admin-room-list.component';
 import { RoomTimetableViewComponent } from './room-timetable-view/room-timetable-view.component';
+import { ScheduleModule } from '@syncfusion/ej2-angular-schedule';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { RoomTimetableViewComponent } from './room-timetable-view/room-timetable
     HttpClientModule,
     MatTableModule,
     MatIconModule,
+    ScheduleModule
   ],
   providers: [
     {

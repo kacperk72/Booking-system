@@ -1,3 +1,7 @@
+CREATE USER 'booking_system'@'localhost' IDENTIFIED BY '12345';
+
+GRANT ALL ON booking_system.* To 'booking_system'@'localhost' WITH GRANT OPTION;
+
 USE booking_system;
 
 CREATE TABLE IF NOT EXISTS sale(

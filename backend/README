@@ -1,0 +1,13 @@
+Backend systemu rezerwacji sal.
+
+Uruchomienie:
+1) npm install
+2) npm start
+
+Uruchomienie bazy danych (Ubuntu):
+1) sudo apt install mariadb-client mariadb-server
+2) sudo mariadb-admin -u root password '<haslo>'
+3) sudo mariadb-admin create booking_system
+4) sudo mariadb -u root booking_system < budowa_bazy_skrypt.sql
+
+Zalogowanie do bazy: mariadb -u booking_system -p booking_system

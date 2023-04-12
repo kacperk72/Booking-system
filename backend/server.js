@@ -39,3 +39,10 @@ app.route('/filter-rooms').post((req, res) => {
         }
     });
 });
+
+app.route('/admin/reservation').put( (req,res) => {
+    const userId = req.body.userId;
+    const acceptationState = req.body.acceptationState;
+    DataBase.accept_or_reject_reservation(acceptationState, userId);
+    res.status(200).send(`state of reservation ${userId} has changed to ${acceptationState} succesfully`);
+})

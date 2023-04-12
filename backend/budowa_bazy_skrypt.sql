@@ -1,4 +1,4 @@
-
+CREATE USER 'booking_system'@'localhost' IDENTIFIED BY '12345';
 GRANT ALL ON booking_system.* To 'booking_system'@'localhost' WITH GRANT OPTION;
 CREATE SCHEMA IF NOT EXISTS booking_system DEFAULT CHARACTER SET utf8 ;
 USE booking_system ;

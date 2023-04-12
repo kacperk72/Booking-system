@@ -13,8 +13,17 @@ var DataBase = {
             }
         });
     },
+    getRoomInfo: function (id, callback) {
+        connection.query(`SELECT * FROM sale WHERE SalaID = ${id}`, function (err, result) {
+            if (err) {
+                console.log(`Error while getting info about room of id ${id}`);
+            } else {
+                callback(err, result);
+            }
+        });
+    },
     insertRoom: function (id, seats, name) {
-        var sql = "INSERT INTO sale VALUES (" + id + ", " + seats + ", '" + name + "')";
+        var sql = `INSERT INTO sale VALUES (${id}, ${seats}, '${name}')`;
         connection.query(sql, function (err, result) {
             if (err) {
                 console.log("Can't insert");
@@ -38,7 +47,25 @@ var DataBase = {
             }
         });
     },
-
+    getReservations: function (callback) {
+        connection.query('SELECT * FROM rezerwacje', function (err, result) {
+            if (err) {
+                console.log("Error while listing reservations");
+            } else {
+                callback(err, result);
+            }
+        });
+    },
+    insertReservation: function (id, sala_id, mail, course, start, end, acceptation) {
+        var sql = `INSERT INTO rezerwacje VALUES (${id}, ${sala_id}, ${mail}, ${course}, ${start}, ${end}, ${acceptation})`;
+        connection.query(sql, function (err, result) {
+            if (err) {
+                console.log("Can't insert");
+            } else {
+                console.log("Inserted one row");
+            }
+        });
+    },
     accept_or_reject_reservation: function (acceptationState = 'rejected', userId) {
         const sql_query = 'UPDATE rezerwacje SET Potwierdzenie = ? WHERE UserID = ?'
         connection.query(sql_query, [acceptationState, userId], (err, result) => {

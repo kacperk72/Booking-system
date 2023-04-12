@@ -20,6 +20,6 @@ CREATE TABLE IF NOT EXISTS booking_system.rezerwacje (
   Potwierdzenie TEXT NOT NULL,
   PRIMARY KEY (UserID),
   INDEX (SALA_ID ASC) VISIBLE,
-  CONSTRAINT ``
+  CONSTRAINT fk_rezerwacje_sala
     FOREIGN KEY (SALA_ID)
     REFERENCES booking_system.sale (SalaID));

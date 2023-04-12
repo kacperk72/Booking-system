@@ -22,8 +22,30 @@ app.route('/room-list').get(function(req, res) {
     });
 });
 
+app.route('/room-info/:id').get(function(req, res) {
+    DataBase.getRoomInfo(req.params.id, function(err, result) {
+        res.send(result);
+    });
+});
+
 app.route('/add-room').post(function(req, res) {
-    DataBase.insertRoom(req.body.id, req.body.seats, req.body.name);
+    DataBase.insertRoom(req.body.salaId, req.body.seats, req.body.name);
+});
+
+app.route('/admin/reservation-list').get(function(req, res) {
+    DataBase.getReservations(function(err, result) {
+        res.send(result);
+    });
+});
+
+app.route('/add-reservation').post(function(req, res) {
+    DataBase.insertReservation(req.body.userId,
+                               req.body.salaId,
+                               req.body.mail,
+                               req.body.course,
+                               req.body.start,
+                               req.body.end,
+                               req.body.acceptationState);
 });
 
 app.route('/filter-rooms').post((req, res) => {

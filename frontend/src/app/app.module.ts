@@ -30,7 +30,6 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { AdminRoomListComponent } from './admin-room-list/admin-room-list.component';
 import { RoomTimetableViewComponent } from './room-timetable-view/room-timetable-view.component';
-import { ScheduleModule } from '@syncfusion/ej2-angular-schedule';
 import { HighlightDirective } from './directives/highlight.directive';
 import { ChosenRoomComponent } from './chosen-room/chosen-room.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -68,7 +67,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     HttpClientModule,
     MatTableModule,
     MatIconModule,
-    ScheduleModule,
     MatCheckboxModule,
   ],
   providers: [

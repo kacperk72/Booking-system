@@ -1,1 +1,34 @@
-<ejs-schedule> </ejs-schedule>
+<table>
+    <thead>
+      <tr>
+        <th>Godzina</th>
+        <th>Poniedziałek</th>
+        <th>Wtorek</th>
+        <th>Środa</th>
+        <th>Czwartek</th>
+        <th>Piątek</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let slot of slots">
+        <td>{{ slot.hour }}</td>
+        <td *ngFor="let day of days">
+          <div *ngIf="getLesson(slot, day) as lesson">
+            <strong>{{ lesson.name }}</strong>
+            <br />
+            Prowadzący: {{ lesson.instructor }}
+            <br />
+            Sala: {{ lesson.room }}
+          </div>
+          <div *ngIf="!getLesson(slot, day)">-</div>
+        </td>
+      </tr>
+    </tbody>
+</table>
+<button (click)="previousWeek()">Poprzedni tydzień</button>
+<button (click)="nextWeek()">Następny tydzień</button>
+<p class="currentWeek">Tydzień {{ currentWeek }}</p>
+
+<button (click)="printSchedule()">Drukuj plan zajęć</button>
+  
+  

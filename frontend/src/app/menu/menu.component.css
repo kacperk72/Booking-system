@@ -29,4 +29,10 @@ a {
   padding: 10px;
   border-radius: 5px;
 }
+
+@media print {
+  .menu {
+    display: none;
+  }
+}
   

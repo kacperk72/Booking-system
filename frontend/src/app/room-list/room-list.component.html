@@ -49,7 +49,7 @@
 
     <ng-container matColumnDef="roomName">
       <th mat-header-cell *matHeaderCellDef>Nazwa sali</th>
-      <td mat-cell *matCellDef="let class">{{class.roomName}}</td>
+      <td mat-cell *matCellDef="let class"><a routerLink="/room" routerLinkActive="active" ariaCurrentWhenActive="page" appHighlight>{{class.roomName}}</a></td>
     </ng-container>
 
     <ng-container matColumnDef="numberOfSeats">

@@ -1,7 +1,7 @@
 <nav class="menu">
     <ul>
-      <li><a routerLink="/dashboard" routerLinkActive="active" ariaCurrentWhenActive="page">Strona główna</a></li>
-      <li><a routerLink="/logowanie" routerLinkActive="active" ariaCurrentWhenActive="page">Logowanie</a></li>
-      <li *ngIf='role === "admin"'><a routerLink="/admin">Admin</a></li>
+      <li ><a routerLink="/dashboard" routerLinkActive="active" ariaCurrentWhenActive="page" appHighlight>Strona główna</a></li>
+      <li ><a routerLink="/logowanie" routerLinkActive="active" ariaCurrentWhenActive="page" appHighlight>Logowanie</a></li>
+      <li *ngIf='role === "admin"' ><a routerLink="/admin" appHighlight>Admin</a></li>
     </ul>
 </nav>

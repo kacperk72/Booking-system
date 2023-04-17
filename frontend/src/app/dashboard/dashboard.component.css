@@ -12,18 +12,18 @@
 .calendar { 
     grid-area:  1 / 1 / 11 / 5;
     padding: 20px;
-    border: 1px solid #000;
+    /* border: 1px solid #000; */
 }
 
 .list { 
     grid-area: 1 / 5 / 11 / 13;
     padding: 20px;
-    border: 1px solid #000;
+    /* border: 1px solid #000; */
 }
 
 .div4 { 
     grid-area: 11 / 1 / 13 / 13;
     padding: 20px;
-    border: 1px solid #000;
+    /* border: 1px solid #000; */
 }
 

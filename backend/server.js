@@ -26,7 +26,7 @@ app.route('/add-room').post(function(req, res) {
     DataBase.insertRoom(req.body.id, req.body.seats, req.body.name);
 });
 
-app.route('/filter-rooms').post((req, res) => {
+app.route('/filter-rooms').get((req, res) => {
     const name = req.body.name;
     const seats = req.body.seats;
     const date = req.body.date;

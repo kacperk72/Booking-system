@@ -1,11 +1,12 @@
-<form class="mat-form-field">
+<form class="mat-form-field" [formGroup]="sortingForm" (ngSubmit)="onSubmit()">
   <mat-form-field appearance="fill" class="form-filed">
-    <mat-label>Nazwa sali</mat-label>
-    <input matInput>
+    <mat-label for="roomName">Nazwa sali</mat-label>
+    <input matInput id="roomName" formControlName="roomName">
   </mat-form-field>
+
   <mat-form-field appearance="fill" class="form-filed">
-    <mat-label>Ilość miejsc</mat-label>
-    <mat-select>
+    <mat-label for="numberOfSeats">Ilość miejsc</mat-label>
+    <mat-select id="numberOfSeats" formControlName="numberOfSeats">
       <mat-option value="one">10</mat-option>
       <mat-option value="two">20</mat-option>
       <mat-option value="">30</mat-option>
@@ -15,27 +16,61 @@
       <mat-option value="">140</mat-option>
     </mat-select>
   </mat-form-field>
+
   <mat-form-field appearance="fill" class="form-filed">
-    <mat-label>Typ sali</mat-label>
-    <mat-select>
+    <mat-label for="roomType">Typ sali</mat-label>
+    <mat-select id="roomType" formControlName="roomType">
       <mat-option value="one">Sala wykładowa</mat-option>
       <mat-option value="two">Sala lekcyjna z tablicą</mat-option>
       <mat-option value="">Sala komputerowa</mat-option>
     </mat-select>
   </mat-form-field>
-  <button mat-stroked-button color="primary">Szukaj</button>
+  <button mat-stroked-button color="primary" type="submit">Szukaj</button>
 </form>
+
 <h2>Dostępne sale</h2>
 <div class="room-list">
-    <mat-selection-list #classes [multiple]="false" (click)="setChosenClass(classes.selectedOptions.selected[0].value)">
-      <mat-list-option *ngFor="let class of typesOfClasses" [value]="class">
-          {{class}}
-      </mat-list-option>
-  </mat-selection-list>
-  <p> 
-      Wybrana sala: {{classes.selectedOptions.hasValue() ? classes.selectedOptions.selected[0].value : 'None'}}
-  </p>
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="$event ? masterToggle() : null"
+                      [checked]="selection.hasValue() && isAllSelected()"
+                      [indeterminate]="selection.hasValue() && !isAllSelected()">
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()"
+                      (change)="$event ? selection.toggle(row) : null"
+                      [checked]="selection.isSelected(row)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="roomName">
+      <th mat-header-cell *matHeaderCellDef>Nazwa sali</th>
+      <td mat-cell *matCellDef="let class">{{class.roomName}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="numberOfSeats">
+      <th mat-header-cell *matHeaderCellDef>Ilość miejsc</th>
+      <td mat-cell *matCellDef="let class">{{class.numberOfSeats}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="roomType">
+      <th mat-header-cell *matHeaderCellDef>Typ sali</th>
+      <td mat-cell *matCellDef="let class">{{class.roomType}}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+        [class.selected]="selection.isSelected(row)"
+        (click)="selection.toggle(row)">
+    </tr>
+  </table>
+</div>
+  <!-- <app-chosen-room *ngIf="classes.selectedOptions.hasValue()" [data]="classes.selectedOptions.selected[0].value"></app-chosen-room> -->
   <div class="book-room-button">
-      <button mat-raised-button color="primary" (click)="setReservation($event)">Rezerwuj</button>
+      <button mat-raised-button color="primary" (click)="getSelectedRooms($event)">Rezerwuj</button>
   </div>
 </div>

@@ -2,7 +2,6 @@ import { Component, Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { AuthService } from '../service/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -28,8 +27,12 @@ export class LoginComponent {
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      login: [this.userLogin, Validators.required],
-      password: [this.userPassword, Validators.required],
+      login: [this.userLogin, Validators.required, Validators.minLength(3)],
+      password: [
+        this.userPassword,
+        Validators.required,
+        Validators.minLength(3),
+      ],
     });
   }
 

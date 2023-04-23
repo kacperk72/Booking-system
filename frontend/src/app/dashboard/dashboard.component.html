@@ -1,10 +1,10 @@
 <div class="content">
     <div class="calendar">
-        <app-calendar></app-calendar>
+        <app-calendar (dateSelected)="onDateSelected($event)"></app-calendar>
     </div>
     <div class="list">
-        <app-room-list (reservationButton)="setReservation($event)" (chosenClass)="setChosenClass($event)"></app-room-list>
-        <app-reservation *ngIf="isReservationVisible" (cancelReser)="cancelReservation()"></app-reservation>
+        <app-room-list (reservationData)="setReservation($event)" (chosenClass)="setChosenClass($event)" [selectedDate]="selectedDate"></app-room-list>
+        <app-reservation *ngIf="isReservationVisible" (cancelReser)="cancelReservation()" [reservationData]="reservationData"></app-reservation>
     </div>
     <div class="div4">
 

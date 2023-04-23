@@ -1,8 +1,6 @@
 <h2>Kalendarz</h2>
 <mat-card class="demo-inline-calendar-card">
-    <mat-calendar [(selected)]="selected" class="mat-calendar"></mat-calendar>
+  <mat-calendar (selectedChange)="onDateChange($event)" class="mat-calendar"></mat-calendar>
 </mat-card>
-<p>Wybrana data: {{selected}}</p> 
-<mat-datepicker #releasedAtPicker color="accent">
-
-</mat-datepicker>
+<p>Wybrana data: {{selected | date}}</p>
+<mat-datepicker #releasedAtPicker color="accent"></mat-datepicker>

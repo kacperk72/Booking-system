@@ -33,7 +33,7 @@ export class RoomTimetableViewComponent {
               day: 'Poniedziałek',
               name: 'E-bizes',
               instructor: 'Jan Kowalski',
-              room: 'Sala 101',
+              room: 'Sala A-2-2',
             },
             // Dodaj pozostałe zajęcia dla tego przedziału godzinowego
           ],
@@ -47,6 +47,12 @@ export class RoomTimetableViewComponent {
         {
           hour: '12:00 - 14:00',
           lessons: [
+            {
+              day: 'Środa',
+              name: 'Analiza',
+              instructor: 'Jan Kowalski',
+              room: 'Sala A-2-1',
+            },
             // Dodaj zajęcia dla tego przedziału godzinowego
           ],
         },

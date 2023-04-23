@@ -8,9 +8,12 @@ import { Component } from '@angular/core';
 export class DashboardComponent {
   isReservationVisible = false;
   chosenClass = '';
+  reservationData: any;
+  selectedDate!: Date;
 
-  setReservation($event: MouseEvent) {
+  setReservation(data: any) {
     this.isReservationVisible = !this.isReservationVisible;
+    this.reservationData = data;
   }
 
   cancelReservation() {
@@ -19,5 +22,9 @@ export class DashboardComponent {
 
   setChosenClass(value: string) {
     this.chosenClass = value;
+  }
+
+  onDateSelected(date: Date) {
+    this.selectedDate = date;
   }
 }

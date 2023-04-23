@@ -15,15 +15,6 @@ table {
     font-weight: bold;
   }
 
-  @media print {
-    /* Twoje style dla drukowania, np. ukryj przycisk drukowania */
-    button {
-      display: none;
-    }
-  
-    /* Inne style dla drukowania */
-  }
-  
   button {
     background-color: #56baed;
     border: none;
@@ -68,3 +59,11 @@ table {
     transition: all 0.3s ease-in-out;
   }
   
+  @media print {
+    button {
+      display: none;
+    }
+    .currentWeek {
+      display: none;
+    }
+  }

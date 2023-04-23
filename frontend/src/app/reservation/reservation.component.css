@@ -1,6 +1,6 @@
 #confirmWindow {
     width: 40vw;
-    height: 35vh;
+    min-height: 35vh;
     top: 30%;
     position: absolute;
     justify-content: center;
@@ -10,8 +10,6 @@
     text-align: center;
     z-index: 1;
   }
-
-
   .form-filed {
     margin: 20px;
 }
@@ -46,4 +44,8 @@
     -o-transform: scale(0.95);
     -ms-transform: scale(0.95);
     transform: scale(0.95);
+  }
+
+  input[type=submit]:disabled {
+    background-color: #92d3ff;
   }

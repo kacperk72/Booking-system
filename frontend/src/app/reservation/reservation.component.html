@@ -1,20 +1,26 @@
 <div id="confirmWindow">
     <h2>Potwierdź rezerwacje!</h2>
-    <form class="mat-form-field">
+    <hr>
+    <div *ngIf="reservationDataLoaded" >
+        <div *ngFor="let reservation of reservationData">
+            <p>Sala: {{reservation.roomName}}</p>
+            <p>Dnia: {{reservation.date}}</p>
+            <p>Godzina: {{reservation.startTime}} - {{reservation.endTime}}</p>
+            <hr>
+        </div>
+    </div>
+    <form [formGroup]="formGroup" class="mat-form-field">
         <mat-form-field appearance="fill" class="form-filed">
-            <mat-label>Imie</mat-label>
-            <input matInput>
+          <mat-label>E-mail</mat-label>
+          <input matInput formControlName="email" required>
         </mat-form-field>
         <mat-form-field appearance="fill" class="form-filed">
-            <mat-label>Nazwisko</mat-label>
-            <input matInput>
-        </mat-form-field>
-        <mat-form-field appearance="fill" class="form-filed">
-            <mat-label>E-mail</mat-label>
-            <input matInput>
+          <mat-label>Nazwa przedmiotu</mat-label>
+          <input matInput formControlName="subjectName" required>
         </mat-form-field>
         <input type="button" value="wróć" style="margin: 10px;" (click)="closeBooking()">
-        <input type="button" value="potwierdź" style="margin: 10px;" (click)="bookTerm()">
+        <input type="submit" value="potwierdź" style="margin: 10px;" [disabled]="formGroup.invalid" (click)="bookTerm()">
     </form>
+      
 
 </div>

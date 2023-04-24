@@ -27,3 +27,21 @@ a {
     color: black;
 }
 
+.searchButton {
+    width: 250px;
+    height: 50px;
+    margin-top: -20px;
+}
+
+.buttons, .inputs {
+    text-align: center;
+    width: 100%;
+}
+
+mat-form-field  {
+    width: 300px;
+}
+
+.noRooms {
+    padding: 20px;
+}

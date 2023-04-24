@@ -8,7 +8,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 export class CalendarComponent {
   @Output() dateSelected = new EventEmitter<Date>();
 
-  selected: Date | null | undefined;
+  selected: Date = new Date();
 
   onDateChange(date: Date) {
     this.selected = date;

@@ -1,0 +1,40 @@
+<div class="container">
+    <div class="header">
+        <h1>Admin</h1>
+        <h2>Dodaj rezerwacje!</h2>
+        <hr>
+    </div>
+    <form [formGroup]="formGroup" class="mat-form-field">
+        <div class="inputs">
+            <mat-form-field appearance="fill" class="form-filed">
+                <mat-label>E-mail</mat-label>
+                <input matInput formControlName="email" required>
+              </mat-form-field>
+      
+              <mat-form-field appearance="fill" class="form-filed">
+                <mat-label>Nazwa przedmiotu</mat-label>
+                <input matInput formControlName="subjectName" required>
+              </mat-form-field>
+            
+              <mat-form-field appearance="fill" class="form-filed">
+                <mat-label>Godzina rozpoczęcia</mat-label>
+                <input matInput type="time" formControlName="startTime" required>
+              </mat-form-field>
+            
+              <mat-form-field appearance="fill" class="form-filed">
+                <mat-label>Godzina zakończenia</mat-label>
+                <input matInput type="time" formControlName="endTime" required>
+              </mat-form-field>
+            
+              <mat-form-field appearance="fill" class="form-filed">
+                <mat-label>Data</mat-label>
+                <input matInput type="date" formControlName="date" required>
+              </mat-form-field>
+        </div>
+        <div class="buttons">
+            <input type="button" value="Anuluj" style="margin: 10px;" (click)="closeBooking()">
+            <input type="submit" value="Sprawdź dostępność" style="margin: 10px;" [disabled]="formGroup.invalid" (click)="checkAvailability()">
+            <input type="submit" value="Zarezerwuj" style="margin: 10px;" [disabled]="formGroup.invalid" (click)="bookTerm()" *ngIf="available">
+        </div>
+      </form>
+</div>

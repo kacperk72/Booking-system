@@ -1,0 +1,21 @@
+.table-container {
+    width: 100%;
+    max-height: 75vh;
+    text-align: center;
+    justify-content: center;
+    overflow: auto;
+  }
+
+  table {
+    min-width: 40vw;
+    margin: 0 auto;
+  }
+
+  table th {
+    text-align: center;
+  }
+
+  table td {
+    text-align: center;
+    padding: 15px;
+  }

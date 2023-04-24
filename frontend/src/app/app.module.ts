@@ -33,6 +33,8 @@ import { RoomTimetableViewComponent } from './room-timetable-view/room-timetable
 import { HighlightDirective } from './directives/highlight.directive';
 import { ChosenRoomComponent } from './chosen-room/chosen-room.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { AdminReservationListComponent } from './admin-reservation-list/admin-reservation-list.component';
+import { AdminAddReservationComponent } from './admin-add-reservation/admin-add-reservation.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +50,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     RoomTimetableViewComponent,
     HighlightDirective,
     ChosenRoomComponent,
+    AdminReservationListComponent,
+    AdminAddReservationComponent,
   ],
   imports: [
     BrowserModule,

@@ -82,4 +82,8 @@ input[type=button], input[type=submit], input[type=reset] {
     color: #cccccc;
   }
 
+  input:disabled {
+    visibility: hidden;
+  }
+
 

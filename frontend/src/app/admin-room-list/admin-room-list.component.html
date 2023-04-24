@@ -7,8 +7,11 @@
         </mat-list-option>
         </mat-selection-list>
     </div>
-  <div id="addDoctor">
-    <input type="button" value="Dodaj rezerwację dla {{classes.selectedOptions.hasValue() ? classes.selectedOptions.selected[0].value : ''}}" (click)="addReservation()">
-    <input type="button" value="Zobacz plan dla {{classes.selectedOptions.hasValue() ? classes.selectedOptions.selected[0].value : ''}}" (click)="checkTimetable()">
-  </div>
+    <div id="addDoctor">
+      <!-- <input type="button" [disabled]="!classes.selectedOptions.hasValue()" value="Dodaj rezerwację dla {{classes.selectedOptions.hasValue() ? classes.selectedOptions.selected[0].value : ''}}" (click)="addReservation()"> -->
+      <input type="button" [disabled]="!classes.selectedOptions.hasValue()" value="Zobacz plan dla {{classes.selectedOptions.hasValue() ? classes.selectedOptions.selected[0].value : ''}}" (click)="checkTimetable(classes.selectedOptions.selected[0].value)">
+    </div>
 </div>
+<!-- <div *ngIf="reservationVisible">
+  <app-reservation (cancelReser)="cancelReservation()" [reservationData]="reservationData" ></app-reservation>
+</div> -->

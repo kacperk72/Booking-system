@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-room-list',
@@ -6,33 +7,37 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./admin-room-list.component.css'],
 })
 export class AdminRoomListComponent {
-  typesOfClasses: string[] = [
-    'Sala D-1-01',
-    'Sala E-1-02',
-    'Sala F-1-03',
-    'Sala H-1-04',
-    'Sala A-1-05',
-    'Sala D-1-01',
-    'Sala E-1-02',
-    'Sala F-1-03',
-    'Sala H-1-04',
-    'Sala A-1-05',
-    'Sala D-1-01',
-    'Sala E-1-02',
-    'Sala F-1-03',
-    'Sala H-1-04',
-    'Sala A-1-05',
-    'Sala D-1-01',
-    'Sala E-1-02',
-    'Sala F-1-03',
-    'Sala H-1-04',
-    'Sala A-1-05',
-  ];
-
   @Output()
   public reservationButton = new EventEmitter<MouseEvent>();
   @Output()
   public chosenClass = new EventEmitter<string>();
+
+  constructor(private router: Router) {}
+
+  typesOfClasses: string[] = [
+    'D-1-01',
+    'E-1-02',
+    'F-1-03',
+    'H-1-04',
+    'A-1-05',
+    'D-1-01',
+    'E-1-02',
+    'F-1-03',
+    'H-1-04',
+    'A-1-05',
+    'D-1-01',
+    'E-1-02',
+    'F-1-03',
+    'H-1-04',
+    'A-1-05',
+    'D-1-01',
+    'E-1-02',
+    'F-1-03',
+    'H-1-04',
+    'A-1-05',
+  ];
+  reservationVisible: boolean = false;
+  reservationData: any;
 
   public setReservation(event: MouseEvent) {
     this.reservationButton.emit(event);
@@ -42,7 +47,15 @@ export class AdminRoomListComponent {
     this.chosenClass.emit(value);
   }
 
-  addReservation(): void {}
+  addReservation(): void {
+    this.reservationVisible = true;
+  }
 
-  checkTimetable(): void {}
+  cancelReservation() {
+    this.reservationVisible = !this.reservationVisible;
+  }
+
+  checkTimetable(room: string): void {
+    this.router.navigate(['/room']);
+  }
 }

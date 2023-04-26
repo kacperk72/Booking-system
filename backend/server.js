@@ -2,8 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-var DataBase = require('./database/db.js');
-
+const fetch = require('node-fetch');
+const fs = require('fs');
+// var DataBase = require('./database/db.js');
+var script = require('./import.js');
 var app = express();
 
 app.listen(3000);
@@ -40,12 +42,12 @@ app.route('/admin/reservation-list').get(function(req, res) {
 
 app.route('/add-reservation').post(function(req, res) {
     DataBase.insertReservation(req.body.userId,
-                               req.body.salaId,
-                               req.body.mail,
-                               req.body.course,
-                               req.body.start,
-                               req.body.end,
-                               req.body.acceptationState);
+        req.body.salaId,
+        req.body.mail,
+        req.body.course,
+        req.body.start,
+        req.body.end,
+        req.body.acceptationState);
 });
 
 app.route('/filter-rooms').get((req, res) => {
@@ -68,3 +70,22 @@ app.route('/admin/reservation').put( (req,res) => {
     DataBase.accept_or_reject_reservation(acceptationState, userId);
     res.status(200).send(`state of reservation ${userId} has changed to ${acceptationState} succesfully`);
 })
+// to dodałem
+app.route('/addToDb').get((req, res) =>{
+
+    fetch('http://localhost:8001/data')
+        .then(response => response.json())
+        .then(data => {
+            // to wyswietla, ponizej pomiedzy komentarzami jak rozumie dodadnie do bazy
+            console.log(JSON.stringify(data))
+            //
+
+
+            //
+        })
+        .catch(err => {
+            console.error(err);
+            res.status(500).send('Błąd pobrania danych');
+        });
+});
+

@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const moment = require('moment');
+const node_fetch = require('node-fetch');
 
 var DataBase = require('./database/db.js');
 
@@ -29,7 +31,7 @@ app.route('/room-info/:id').get(function(req, res) {
 });
 
 app.route('/add-room').post(function(req, res) {
-    DataBase.insertRoom(req.body.salaId, req.body.seats, req.body.name);
+    DataBase.insertRoom(req.body.salaId, req.body.seats, req.body.name, req.body.type);
 });
 
 app.route('/admin/reservation-list').get(function(req, res) {
@@ -39,8 +41,7 @@ app.route('/admin/reservation-list').get(function(req, res) {
 });
 
 app.route('/add-reservation').post(function(req, res) {
-    DataBase.insertReservation(req.body.userId,
-                               req.body.salaId,
+    DataBase.insertReservation(req.body.salaId,
                                req.body.mail,
                                req.body.course,
                                req.body.start,
@@ -67,4 +68,32 @@ app.route('/admin/reservation').put( (req,res) => {
     const acceptationState = req.body.acceptationState;
     DataBase.accept_or_reject_reservation(acceptationState, userId);
     res.status(200).send(`state of reservation ${userId} has changed to ${acceptationState} succesfully`);
-})
+});
+
+app.route('/addToDb').get((req, res) =>{
+    var count = 0;
+    fetch('http://localhost:8001/data')
+    .then(response => response.json())
+    .then(data => {
+        // to wyswietla, ponizej pomiedzy komentarzami jak rozumie dodadnie do bazy
+        // console.log(JSON.stringify(data))
+        const parsedData = JSON.parse(data);
+        // console.log(parsedData);
+        // parsedData.forEach(firstTable => {
+        //     console.log(firstTable[0]);
+        //     DataBase.insertRoom(firstTable[0].id, 30, "Empty", "Empty");
+        // });
+
+        parsedData.forEach(firstTable => {
+            firstTable.forEach(item => {
+                console.log(item.name_pl);
+                DataBase.insertRoom(item.id, 30, "Empty", "Empty");
+                DataBase.insertReservation(item.id, "Empty", item.name_pl, item.start_time, item.end_time, 'pending');
+            });
+        });
+    })
+    .catch(err => {
+        console.error(err);
+        res.status(500).send('Błąd pobrania danych');
+    });
+});

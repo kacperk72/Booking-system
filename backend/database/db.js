@@ -22,11 +22,11 @@ var DataBase = {
             }
         });
     },
-    insertRoom: function (id, seats, name) {
-        var sql = `INSERT INTO sale VALUES (${id}, ${seats}, '${name}')`;
+    insertRoom: function (id, seats, name, type) {
+        var sql = `INSERT INTO sale (SalaID, IloscMiejsc, NazwaSali, TypSali) VALUES (${id}, ${seats}, '${name}', '${type}') ON DUPLICATE KEY UPDATE IloscMiejsc = ${seats}, NazwaSali = '${name}', TypSali = '${type}'`;
         connection.query(sql, function (err, result) {
             if (err) {
-                console.log("Can't insert");
+                console.log("Can't insert room");
             } else {
                 console.log("Inserted one row");
             }
@@ -56,21 +56,21 @@ var DataBase = {
             }
         });
     },
-    insertReservation: function (id, sala_id, mail, course, start, end, acceptation) {
-        var sql = `INSERT INTO rezerwacje VALUES (${id}, ${sala_id}, ${mail}, ${course}, ${start}, ${end}, ${acceptation})`;
+    insertReservation: function (sala_id, mail, course, start, end, acceptation) {
+        var sql = `INSERT INTO rezerwacje (SALA_ID, Mail, NazwaPrzedmiotu, DataStartu, DataKonca, Potwierdzenie) VALUES (${sala_id}, '${mail}', '${course}', '${start}', '${end}', '${acceptation}')`;
         connection.query(sql, function (err, result) {
             if (err) {
-                console.log("Can't insert");
+                console.log("Can't insert reservation");
             } else {
                 console.log("Inserted one row");
             }
         });
     },
-    accept_or_reject_reservation: function (acceptationState = 'rejected', userId) {
-        const sql_query = 'UPDATE rezerwacje SET Potwierdzenie = ? WHERE UserID = ?'
-        connection.query(sql_query, [acceptationState, userId], (err, result) => {
+    accept_or_reject_reservation: function (acceptationState = 'rejected', rezerwacjaId) {
+        const sql_query = 'UPDATE rezerwacje SET Potwierdzenie = ? WHERE RezerwacjaID = ?'
+        connection.query(sql_query, [acceptationState, rezerwacjaId], (err, result) => {
                 if (err) throw err;
-                // console.log(`state of reservation ${userId} has changed to ${acceptationState}`)
+                // console.log(`state of reservation ${rezerwacjaId} has changed to ${acceptationState}`)
             }
         )
     }

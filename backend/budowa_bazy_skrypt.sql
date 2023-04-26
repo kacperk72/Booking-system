@@ -11,14 +11,14 @@ CREATE TABLE IF NOT EXISTS booking_system.sale (
   PRIMARY KEY (SalaID));
 
 CREATE TABLE IF NOT EXISTS booking_system.rezerwacje (
-  UserID INT NOT NULL,
+  RezerwacjaID INT NOT NULL AUTO_INCREMENT,
   SALA_ID INT NOT NULL,
   Mail TEXT NULL,
   NazwaPrzedmiotu TEXT NULL,
   DataStartu DATETIME NOT NULL,
   DataKonca DATETIME NOT NULL,
   Potwierdzenie TEXT NOT NULL,
-  PRIMARY KEY (UserID),
+  PRIMARY KEY (RezerwacjaID),
   CONSTRAINT fk_rezerwacje_sala
     FOREIGN KEY (SALA_ID)
     REFERENCES booking_system.sale (SalaID));

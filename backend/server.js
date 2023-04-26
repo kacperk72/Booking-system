@@ -4,7 +4,7 @@ const cors = require('cors');
 
 const fetch = require('node-fetch');
 const fs = require('fs');
-// var DataBase = require('./database/db.js');
+var DataBase = require('./database/db.js');
 var script = require('./import.js');
 var app = express();
 

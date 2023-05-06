@@ -7,9 +7,10 @@ import { Component } from '@angular/core';
 })
 export class DashboardComponent {
   isReservationVisible = false;
-  chosenClass = '';
+  chosenClass = {};
   reservationData: any;
   selectedDate!: Date;
+  list: boolean = true;
 
   setReservation(data: any) {
     this.isReservationVisible = !this.isReservationVisible;
@@ -20,11 +21,17 @@ export class DashboardComponent {
     this.isReservationVisible = !this.isReservationVisible;
   }
 
-  setChosenClass(value: string) {
-    this.chosenClass = value;
+  setChosenClass(data: any) {
+    console.log(data);
+    this.chosenClass = data;
+    this.list = false;
   }
 
   onDateSelected(date: Date) {
     this.selectedDate = date;
+  }
+
+  getBack() {
+    this.list = true;
   }
 }

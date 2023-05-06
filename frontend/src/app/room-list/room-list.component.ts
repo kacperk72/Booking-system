@@ -12,12 +12,9 @@ import { SelectionModel } from '@angular/cdk/collections';
 
 export interface Room {
   id: string;
-  roomName: string;
-  numberOfSeats: number;
-  roomType: string;
-  date: string;
-  startTime: string;
-  endTime: string;
+  roomName?: string;
+  numberOfSeats?: number;
+  roomType?: string;
 }
 
 @Component({
@@ -26,12 +23,8 @@ export interface Room {
   styleUrls: ['./room-list.component.css'],
 })
 export class RoomListComponent {
-  @Input() selectedDate!: Date;
-
   @Output()
-  public reservationData = new EventEmitter<any>();
-  @Output()
-  public chosenClass = new EventEmitter<string>();
+  public chosenRoom = new EventEmitter<any>();
 
   typesOfClasses: Array<Room> = [
     {
@@ -39,50 +32,35 @@ export class RoomListComponent {
       roomName: 'A-1-01',
       numberOfSeats: 30,
       roomType: 'Sala lekcyjna z tablicą',
-      date: '21-04-2023',
-      startTime: '10.00',
-      endTime: '12.00',
     },
     {
       id: '2',
       roomName: 'A-1-02',
       numberOfSeats: 120,
       roomType: 'Sala wykładowa',
-      date: '22-04-2023',
-      startTime: '10.00',
-      endTime: '12.00',
     },
     {
       id: '3',
       roomName: 'A-2-03',
       numberOfSeats: 45,
       roomType: 'Sala lekcyjna z tablicą',
-      date: '23-04-2023',
-      startTime: '8.00',
-      endTime: '10.00',
     },
     {
       id: '4',
       roomName: 'A-2-04',
       numberOfSeats: 15,
       roomType: 'Sala komputerowa',
-      date: '23-04-2023',
-      startTime: '12.00',
-      endTime: '14.00',
     },
   ];
   sortingForm: FormGroup;
   displayedColumns: string[] = [
-    'select',
     'roomName',
     'numberOfSeats',
     'roomType',
-    'date',
-    'hour',
+    'details',
   ];
-  selection = new SelectionModel<Room>(true, []);
   filteredRooms: Array<Room> = [];
-  dataSource = new MatTableDataSource<Room>(this.filteredRooms);
+  dataSource = new MatTableDataSource<Room>(this.typesOfClasses);
 
   constructor(
     private service: RoomListService,
@@ -98,24 +76,14 @@ export class RoomListComponent {
 
   ngOnInit() {
     this.getRooms();
-    this.filterRoomsByDate(new Date());
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['selectedDate'] && changes['selectedDate'].currentValue) {
-      this.filterRoomsByDate(this.selectedDate);
-    }
-  }
-
-  public setChosenClass(value: string) {
-    this.chosenClass.emit(value);
+    this.filterRoomsByDate();
   }
 
   private getRooms() {
     this.service.getRoomsFromApi().subscribe((rooms) => {
-      console.log(rooms);
       rooms.forEach((room: any) => {
         this.typesOfClasses.push(room.NazwaSali);
+        this.tableLoaded = true;
       });
     });
   }
@@ -135,40 +103,14 @@ export class RoomListComponent {
     }
   }
 
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
-  }
-
-  masterToggle() {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-    } else {
-      this.dataSource.data.forEach((row) => this.selection.select(row));
-    }
-  }
-
-  getSelectedRooms() {
-    this.reservationData.emit(this.selection.selected);
-    console.log('Wybrane sale:', this.selection.selected);
-  }
-
-  formatDate(date: Date): string {
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-
-    return `${day}-${month}-${year}`;
-  }
-
-  filterRoomsByDate(date: Date) {
+  filterRoomsByDate() {
     this.tableLoaded = false;
-    const selectedDateString = this.formatDate(date);
-    this.filteredRooms = this.typesOfClasses.filter(
-      (room) => room.date === selectedDateString
-    );
+    this.filteredRooms = this.typesOfClasses;
     this.dataSource = new MatTableDataSource<Room>(this.filteredRooms);
     this.tableLoaded = true;
+  }
+
+  checkRoomDetails(rowData: any) {
+    this.chosenRoom.emit(rowData);
   }
 }

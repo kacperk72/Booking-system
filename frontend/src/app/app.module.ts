@@ -35,6 +35,9 @@ import { ChosenRoomComponent } from './chosen-room/chosen-room.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AdminReservationListComponent } from './admin-reservation-list/admin-reservation-list.component';
 import { AdminAddReservationComponent } from './admin-add-reservation/admin-add-reservation.component';
+import { RoomListDetailsComponent } from './room-list-details/room-list-details.component';
+import { TimePickerModalComponent } from './time-picker-modal/time-picker-modal.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -52,6 +55,8 @@ import { AdminAddReservationComponent } from './admin-add-reservation/admin-add-
     ChosenRoomComponent,
     AdminReservationListComponent,
     AdminAddReservationComponent,
+    RoomListDetailsComponent,
+    TimePickerModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -72,6 +77,7 @@ import { AdminAddReservationComponent } from './admin-add-reservation/admin-add-
     MatTableModule,
     MatIconModule,
     MatCheckboxModule,
+    MatDialogModule,
   ],
   providers: [
     {

@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Godziny niestandardowe</h2>
+<mat-dialog-content>
+    <mat-form-field  class="form-filed">
+        <mat-label>Godzina rozpoczęcia</mat-label>
+        <input matInput type="time" formControlName="startTime" required>
+      </mat-form-field>
+    <mat-form-field  class="form-filed">
+        <mat-label>Godzina zakończenia</mat-label>
+        <input matInput type="time" formControlName="endTime" required>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions class="buttons">
+  <button mat-button (click)="onSubmit()">Sprawdź dostępność</button>
+  <button mat-button (click)="onSubmit()">Rezerwuj</button>
+</mat-dialog-actions>

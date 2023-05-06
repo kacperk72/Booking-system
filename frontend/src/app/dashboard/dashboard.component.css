@@ -10,20 +10,26 @@
 /* grid-row-start / grid-column-start / grid-row-end / grid-column-end */
 
 .calendar { 
-    grid-area:  1 / 1 / 11 / 5;
+    width: 25%;
     padding: 20px;
-    /* border: 1px solid #000; */
+    float: left;
 }
 
 .list { 
-    grid-area: 1 / 5 / 11 / 13;
+    grid-area: 1 / 2 / 11 / 12;
     padding: 20px;
-    /* border: 1px solid #000; */
 }
 
-.div4 { 
-    grid-area: 11 / 1 / 13 / 13;
+.list-details { 
+    width: 70%;
     padding: 20px;
-    /* border: 1px solid #000; */
+    float: left;
+
+}
+
+.single-room { 
+    grid-area: 1 / 1 / 11 / 13;
+    padding: 20px;
+    display: block;
 }
 

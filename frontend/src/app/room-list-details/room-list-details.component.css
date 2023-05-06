@@ -23,7 +23,7 @@
 }
 
 a {
-    /* text-decoration: none; */
+    text-decoration: none;
     color: black;
 }
 
@@ -44,9 +44,4 @@ mat-form-field  {
 
 .noRooms {
     padding: 20px;
-}
-
-.room-data {
-    text-align: center;
-    width: 30%;
 }

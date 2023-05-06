@@ -1,21 +1,23 @@
 table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  th,
-  td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: center;
-  }
-  
-  th {
-    background-color: #f2f2f2;
-    font-weight: bold;
-  }
+  width: 96%;
+  border-collapse: collapse;
+  margin: 2%;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
 
   button {
+    cursor: pointer;
     background-color: #56baed;
     border: none;
     color: white;

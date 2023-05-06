@@ -99,22 +99,4 @@ app.route('/addToDb').get((req, res) =>{
         res.status(500).send('Błąd pobrania danych');
     });
 });
-// to dodałem
-app.route('/addToDb').get((req, res) =>{
-
-    fetch('http://localhost:8001/data')
-        .then(response => response.json())
-        .then(data => {
-            // to wyswietla, ponizej pomiedzy komentarzami jak rozumie dodadnie do bazy
-            console.log(JSON.stringify(data))
-            //
-
-
-            //
-        })
-        .catch(err => {
-            console.error(err);
-            res.status(500).send('Błąd pobrania danych');
-        });
-});
 

@@ -59,41 +59,6 @@ const mockData: PeriodicElement[] = [
     date: '22-05-2023',
     hour: '10:00',
   },
-  // {
-  //   id: '8',
-  //   mail: 'adam.kowalski@gmail.com',
-  //   room: 'A-8-12',
-  //   date: '24-05-2023',
-  //   hour: '7:00',
-  // },
-  // {
-  //   id: '9',
-  //   mail: 'jan.kowalski@gmail.com',
-  //   room: 'A-9-12',
-  //   date: '22-03-2023',
-  //   hour: '10:00',
-  // },
-  // {
-  //   id: '10',
-  //   mail: 'adam.kowalski@gmail.com',
-  //   room: 'A-10-12',
-  //   date: '14-05-2023',
-  //   hour: '7:00',
-  // },
-  // {
-  //   id: '11',
-  //   mail: 'jan.kowalski@gmail.com',
-  //   room: 'A-9-13',
-  //   date: '05-05-2023',
-  //   hour: '12:00',
-  // },
-  // {
-  //   id: '12',
-  //   mail: 'adam.kowalski@gmail.com',
-  //   room: 'A-10-14',
-  //   date: '06-05-2023',
-  //   hour: '8:00',
-  // },
 ];
 
 @Component({
@@ -104,6 +69,8 @@ const mockData: PeriodicElement[] = [
 export class AdminReservationListComponent implements OnInit {
   dataSource = mockData;
   displayedColumns: string[] = ['id', 'mail', 'room', 'date', 'hour', 'icons'];
+  showDelete: boolean = false;
+  actualElement: any;
 
   constructor(private service: AdminService) {}
 
@@ -134,7 +101,7 @@ export class AdminReservationListComponent implements OnInit {
   }
 
   deleteRes(element: any): void {
-    window.alert('Rezerwacja odrzucona');
-    // wyślij usunięcie rezerwacji do bazy
+    // this.actualElement = element;
+    // this.showDelete = true;
   }
 }

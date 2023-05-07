@@ -77,6 +77,7 @@ export class RoomListComponent {
   ngOnInit() {
     this.getRooms();
     // this.filterRoomsByDate();
+    this.tableLoaded = true;
   }
 
   private getRooms() {

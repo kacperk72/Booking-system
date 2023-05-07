@@ -38,6 +38,7 @@ import { AdminAddReservationComponent } from './admin-add-reservation/admin-add-
 import { RoomListDetailsComponent } from './room-list-details/room-list-details.component';
 import { TimePickerModalComponent } from './time-picker-modal/time-picker-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ConfirmWindowComponent } from './confirm-window/confirm-window.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     AdminAddReservationComponent,
     RoomListDetailsComponent,
     TimePickerModalComponent,
+    ConfirmWindowComponent,
   ],
   imports: [
     BrowserModule,

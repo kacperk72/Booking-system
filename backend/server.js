@@ -52,10 +52,25 @@ app.route('/add-reservation').post(function(req, res) {
 });
 
 app.route('/filter-rooms').get((req, res) => {
-    const name = req.body.name;
-    const seats = req.body.seats;
-    const date = req.body.date;
-    DataBase.getFilteredRooms(name, seats, date, (err, result) => {
+    const name = req.query.name;
+    const seats = req.query.seats;
+    const type = req.query.type;
+    console.log(name + " -> " + seats + " -> " + type)  //TODO delete later
+    DataBase.getFilteredRooms(name, seats, type, (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send('Internal Server Error');
+        } else {
+            res.send(result);
+        }
+    });
+});
+
+app.route('/get-schedule').get((req, res) => {
+    const id = req.query.id;
+    const date = req.query.date;
+    console.log(id + " -> " + date) //TODO delete later
+    DataBase.getRoomScheduleByDay(id, date, (err, result) => {
         if (err) {
             console.log(err);
             res.status(500).send('Internal Server Error');

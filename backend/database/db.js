@@ -32,17 +32,31 @@ var DataBase = {
             }
         });
     },
-    getFilteredRooms: function (name = "", number_of_seats = 0, date = "", callback) {
-        let number_of_seats_step = number_of_seats === 0 ? 140 : 10
-        const sql = `SELECT DISTINCT NazwaSali FROM sale NATURAL JOIN rezerwacje WHERE
-            sale.IloscMiejsc BETWEEN ${number_of_seats} AND ${number_of_seats + number_of_seats_step}
-            AND sale.NazwaSali LIKE '%${name}%'
-            AND rezerwacje.Data LIKE '%${date}%'`;
-        connection.query(sql, function (err, result) {
+    getFilteredRooms: function (name='', seats = 0, type = '', callback) {
+        let sql = `SELECT * FROM sale WHERE 
+            LOWER(sale.NazwaSali) LIKE LOWER('%${name}%') AND
+            LOWER(sale.TypSali) LIKE LOWER('%${type}%') AND 
+            sale.IloscMiejsc >= '${seats}'`;
+        connection.query(sql, function(err, result) {
             if (err) {
                 console.log("Can't filter data");
-            } else {
+            }
+            else {
                 console.log("Data filtered");
+                callback(err, result);
+            }
+        });
+    },
+    getRoomScheduleByDay: function (id = "", date = "", callback) {
+        let sql = `SELECT sale.SalaID, sale.NazwaSali, rezerwacje.DataStartu, rezerwacje.DataKonca, rezerwacje.NazwaPrzedmiotu FROM sale NATURAL JOIN rezerwacje WHERE
+            sale.SalaID = '${id}' AND
+            rezerwacje.DataStartu LIKE '%${date}%'`
+        connection.query(sql, function(err, result) {
+            if (err) {
+                console.log("Can't send schedule");
+            }
+            else {
+                console.log("Schedule sent");
                 callback(err, result);
             }
         });

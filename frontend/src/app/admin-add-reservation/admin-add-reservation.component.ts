@@ -6,6 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AdminService } from '../service/admin.service';
 
 @Component({
   selector: 'app-admin-add-reservation',
@@ -16,7 +17,11 @@ export class AdminAddReservationComponent {
   formGroup!: FormGroup;
   available: boolean = true;
 
-  constructor(private router: Router, private fb: FormBuilder) {}
+  constructor(
+    private router: Router,
+    private fb: FormBuilder,
+    private service: AdminService
+  ) {}
 
   ngOnInit(): void {
     this.formGroup = this.fb.group({
@@ -35,6 +40,8 @@ export class AdminAddReservationComponent {
   checkAvailability(): void {}
 
   bookTerm(): void {
-    window.alert('Rezerwacja zakończona sukcesem!');
+    this.service.setReservation(this.formGroup.value).subscribe(() => {
+      window.alert('Dodano rezerwację!');
+    });
   }
 }

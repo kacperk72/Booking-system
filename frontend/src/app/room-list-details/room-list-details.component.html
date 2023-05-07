@@ -1,5 +1,5 @@
 <button mat-raised-button color="primary" (click)="getBack()"> <mat-icon>arrow_back</mat-icon> Wróć </button>
-  <h2>Dostępne terminy dla: {{chosenClass.roomName}} - miejsc: {{this.chosenClass.numberOfSeats}} - {{this.chosenClass.roomType}}</h2>
+  <h2>Dostępne terminy dla: {{chosenClass.NazwaSali}} - miejsc: {{this.chosenClass.IloscMiejsc}} - {{this.chosenClass.TypSali}}</h2>
   <div class="room-list">
   <div class="mat-elevation-z8" *ngIf="tableLoaded && filteredRooms.length !== 0">
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">

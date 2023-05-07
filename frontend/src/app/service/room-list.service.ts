@@ -12,14 +12,14 @@ export class RoomListService {
   }
 
   getFilteredRoomsFromApi(
-    roomName: string,
-    numberOfSeats: number,
-    roomType: string
+    NazwaSali: string,
+    IloscMiejsc: number,
+    TypSali: string
   ) {
     let params = new HttpParams()
-      .set('roomName', roomName)
-      .set('numberOfSeats', numberOfSeats.toString())
-      .set('roomType', roomType);
+      .set('NazwaSali', NazwaSali)
+      .set('IloscMiejsc', IloscMiejsc.toString())
+      .set('TypSali', TypSali);
 
     return this.http.get<any>('http://localhost:3000/filter-rooms', { params });
   }

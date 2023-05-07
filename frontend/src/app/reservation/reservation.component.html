@@ -3,7 +3,7 @@
     <hr>
     <div *ngIf="reservationDataLoaded" >
         <div *ngFor="let reservation of reservationData">
-            <p>Sala: {{reservation.roomName}}</p>
+            <p>Sala: {{reservation.NazwaSali}}</p>
             <p>Dnia: {{reservation.date}}</p>
             <p>Godzina: {{reservation.startTime}} - {{reservation.endTime}}</p>
             <hr>

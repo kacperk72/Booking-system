@@ -9,9 +9,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 export interface ReservationData {
   id: string;
-  roomName: string;
-  numberOfSeats: number;
-  roomType: string;
+  NazwaSali: string;
+  IloscMiejsc: number;
+  TypSali: string;
   date: string;
   startTime: string;
   endTime: string;

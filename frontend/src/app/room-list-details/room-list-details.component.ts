@@ -72,9 +72,9 @@ export class RoomListDetailsComponent {
     public dialog: MatDialog
   ) {
     this.sortingForm = this.formBuilder.group({
-      roomName: [''],
-      numberOfSeats: [''],
-      roomType: [''],
+      NazwaSali: [''],
+      IloscMiejsc: [''],
+      TypSali: [''],
     });
   }
   tableLoaded: boolean = false;
@@ -106,9 +106,9 @@ export class RoomListDetailsComponent {
       console.log(this.sortingForm.value);
       this.service
         .getFilteredRoomsFromApi(
-          this.sortingForm.value.roomName,
-          this.sortingForm.value.numberOfSeats,
-          this.sortingForm.value.roomType
+          this.sortingForm.value.NazwaSali,
+          this.sortingForm.value.IloscMiejsc,
+          this.sortingForm.value.TypSali
         )
         .subscribe((data) => {
           this.typesOfClasses = data;

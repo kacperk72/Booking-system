@@ -12,9 +12,9 @@ import { SelectionModel } from '@angular/cdk/collections';
 
 export interface Room {
   id: string;
-  roomName?: string;
-  numberOfSeats?: number;
-  roomType?: string;
+  NazwaSali?: string;
+  IloscMiejsc?: number;
+  TypSali?: string;
 }
 
 @Component({
@@ -29,34 +29,34 @@ export class RoomListComponent {
   typesOfClasses: Array<Room> = [
     {
       id: '1',
-      roomName: 'A-1-01',
-      numberOfSeats: 30,
-      roomType: 'Sala lekcyjna z tablicą',
+      NazwaSali: 'A-1-01',
+      IloscMiejsc: 30,
+      TypSali: 'Sala lekcyjna z tablicą',
     },
     {
       id: '2',
-      roomName: 'A-1-02',
-      numberOfSeats: 120,
-      roomType: 'Sala wykładowa',
+      NazwaSali: 'A-1-02',
+      IloscMiejsc: 120,
+      TypSali: 'Sala wykładowa',
     },
     {
       id: '3',
-      roomName: 'A-2-03',
-      numberOfSeats: 45,
-      roomType: 'Sala lekcyjna z tablicą',
+      NazwaSali: 'A-2-03',
+      IloscMiejsc: 45,
+      TypSali: 'Sala lekcyjna z tablicą',
     },
     {
       id: '4',
-      roomName: 'A-2-04',
-      numberOfSeats: 15,
-      roomType: 'Sala komputerowa',
+      NazwaSali: 'A-2-04',
+      IloscMiejsc: 15,
+      TypSali: 'Sala komputerowa',
     },
   ];
   sortingForm: FormGroup;
   displayedColumns: string[] = [
-    'roomName',
-    'numberOfSeats',
-    'roomType',
+    'NazwaSali',
+    'IloscMiejsc',
+    'TypSali',
     'details',
   ];
   filteredRooms: Array<Room> = [];
@@ -67,24 +67,26 @@ export class RoomListComponent {
     private formBuilder: FormBuilder
   ) {
     this.sortingForm = this.formBuilder.group({
-      roomName: [''],
-      numberOfSeats: [''],
-      roomType: [''],
+      NazwaSali: [''],
+      IloscMiejsc: [''],
+      TypSali: [''],
     });
   }
   tableLoaded: boolean = false;
 
   ngOnInit() {
     this.getRooms();
-    this.filterRoomsByDate();
+    // this.filterRoomsByDate();
   }
 
   private getRooms() {
+    this.tableLoaded = false;
     this.service.getRoomsFromApi().subscribe((rooms) => {
       rooms.forEach((room: any) => {
-        this.typesOfClasses.push(room.NazwaSali);
-        this.tableLoaded = true;
+        this.typesOfClasses.push(room);
       });
+      this.dataSource = new MatTableDataSource<Room>(this.typesOfClasses);
+      this.tableLoaded = true;
     });
   }
 
@@ -93,9 +95,9 @@ export class RoomListComponent {
       console.log(this.sortingForm.value);
       this.service
         .getFilteredRoomsFromApi(
-          this.sortingForm.value.roomName,
-          this.sortingForm.value.numberOfSeats,
-          this.sortingForm.value.roomType
+          this.sortingForm.value.NazwaSali,
+          this.sortingForm.value.IloscMiejsc,
+          this.sortingForm.value.TypSali
         )
         .subscribe((data) => {
           this.typesOfClasses = data;
@@ -105,8 +107,7 @@ export class RoomListComponent {
 
   filterRoomsByDate() {
     this.tableLoaded = false;
-    this.filteredRooms = this.typesOfClasses;
-    this.dataSource = new MatTableDataSource<Room>(this.filteredRooms);
+    // filtrowanie
     this.tableLoaded = true;
   }
 

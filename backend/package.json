@@ -17,6 +17,8 @@
     "mysql": "^2.18.1",
     "node-fetch": "^2.6.9",
     "nodemon": "^2.0.22",
-    "oauth": "^0.10.0"
+    "oauth": "^0.10.0",
+    "dotenv": "^16.0.3",
+    "nodemailer": "^6.9.1"
   }
 }

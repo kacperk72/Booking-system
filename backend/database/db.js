@@ -80,13 +80,23 @@ var DataBase = {
             }
         });
     },
-    accept_or_reject_reservation: function (acceptationState = 'rejected', rezerwacjaId) {
-        const sql_query = 'UPDATE rezerwacje SET Potwierdzenie = ? WHERE RezerwacjaID = ?'
-        connection.query(sql_query, [acceptationState, rezerwacjaId], (err, result) => {
+
+    acceptOrRejectReservation: function (acceptationState = 'rejected', rezerwacjaID) {
+        const sqlQuery = 'UPDATE rezerwacje SET Potwierdzenie = ? WHERE RezerwacjaID = ?'
+        connection.query(sqlQuery, [acceptationState, rezerwacjaID], (err, result) => {
                 if (err) throw err;
                 // console.log(`state of reservation ${rezerwacjaId} has changed to ${acceptationState}`)
             }
         )
+    },
+    
+    getReservationByReservationId: function (rezerwacjaID, callback) {
+        // TODO check with fixed /admin/reservation route
+        const sqlQuery = `SELECT * FROM rezerwacje WHERE RezerwacjaID = ${rezerwacjaID}`
+        connection.query(sqlQuery, (err, result) => {
+            if (err) throw err
+            else callback(err, result)
+        })
     }
 
 };

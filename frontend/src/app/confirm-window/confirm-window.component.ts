@@ -6,5 +6,5 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./confirm-window.component.css'],
 })
 export class ConfirmWindowComponent {
-  // @Input() actualElement: any;
+  @Input() actualElement: any;
 }

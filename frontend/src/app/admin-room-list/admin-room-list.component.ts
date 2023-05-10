@@ -24,15 +24,15 @@ export class AdminRoomListComponent implements OnInit {
   }
 
   typesOfClasses: string[] = [
-    'D-1-01',
-    'E-1-02',
-    'F-1-03',
-    'H-1-04',
-    'A-1-05',
-    'D-1-01',
-    'E-1-02',
-    'F-1-03',
-    'H-1-04',
+    // 'D-1-01',
+    // 'E-1-02',
+    // 'F-1-03',
+    // 'H-1-04',
+    // 'A-1-05',
+    // 'D-1-01',
+    // 'E-1-02',
+    // 'F-1-03',
+    // 'H-1-04',
   ];
   reservationVisible: boolean = false;
   reservationData: any;

@@ -43,5 +43,5 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
   </div>
-  <app-confirm-window></app-confirm-window>
-<!-- <app-confirm-window *ngIf="showDelete" [actualElement]="actualElement"></app-confirm-window> -->
+  <!-- <app-confirm-window></app-confirm-window> -->
+<app-confirm-window *ngIf="showDelete" [actualElement]="actualElement"></app-confirm-window>

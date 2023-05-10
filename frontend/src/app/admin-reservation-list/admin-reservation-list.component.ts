@@ -101,7 +101,7 @@ export class AdminReservationListComponent implements OnInit {
   }
 
   deleteRes(element: any): void {
-    // this.actualElement = element;
-    // this.showDelete = true;
+    this.actualElement = element;
+    this.showDelete = true;
   }
 }

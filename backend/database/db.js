@@ -4,6 +4,20 @@ var connection = require('./connection.js');
 // propozycja klasy rezerwacji:
 
 var DataBase = {
+    getReservationsForMonth: function (month, callback) {
+        const startDate = new Date(new Date().getFullYear(), month - 1, 1).toISOString().split('T')[0];
+        const endDate = new Date(new Date().getFullYear(), month, 0).toISOString().split('T')[0];
+        const sql = `SELECT DataStartu, DataKonca
+                     FROM rezerwacje
+                     WHERE DataStartu BETWEEN '${startDate}' AND '${endDate}'`;
+        connection.query(sql, function (err, result) {
+            if (err) {
+                console.log(`Error while getting reservations for month ${month}`);
+            } else {
+                callback(err, result);
+            }
+        });
+    },
     getRooms: function (callback) {
         connection.query('SELECT * FROM sale', function (err, result) {
             if (err) {
@@ -14,7 +28,9 @@ var DataBase = {
         });
     },
     getRoomInfo: function (id, callback) {
-        connection.query(`SELECT * FROM sale WHERE SalaID = ${id}`, function (err, result) {
+        connection.query(`SELECT *
+                          FROM sale
+                          WHERE SalaID = ${id}`, function (err, result) {
             if (err) {
                 console.log(`Error while getting info about room of id ${id}`);
             } else {
@@ -23,7 +39,9 @@ var DataBase = {
         });
     },
     insertRoom: function (id, seats, name, type) {
-        var sql = `INSERT INTO sale (SalaID, IloscMiejsc, NazwaSali, TypSali) VALUES (${id}, ${seats}, '${name}', '${type}') ON DUPLICATE KEY UPDATE IloscMiejsc = ${seats}, NazwaSali = '${name}', TypSali = '${type}'`;
+        var sql = `INSERT INTO sale (SalaID, IloscMiejsc, NazwaSali, TypSali)
+                   VALUES (${id}, ${seats}, '${name}', '${type}') ON DUPLICATE KEY
+                   UPDATE IloscMiejsc = ${seats}, NazwaSali = '${name}', TypSali = '${type}'`;
         connection.query(sql, function (err, result) {
             if (err) {
                 console.log("Can't insert room");
@@ -32,30 +50,35 @@ var DataBase = {
             }
         });
     },
-    getFilteredRooms: function (name='', seats = 0, type = '', callback) {
-        let sql = `SELECT * FROM sale WHERE 
-            LOWER(sale.NazwaSali) LIKE LOWER('%${name}%') AND
-            LOWER(sale.TypSali) LIKE LOWER('%${type}%') AND 
-            sale.IloscMiejsc >= '${seats}'`;
-        connection.query(sql, function(err, result) {
+    getFilteredRooms: function (name = '', seats = 0, type = '', callback) {
+        let sql = `SELECT *
+                   FROM sale
+                   WHERE LOWER(sale.NazwaSali) LIKE LOWER('%${name}%')
+                     AND LOWER(sale.TypSali) LIKE LOWER('%${type}%')
+                     AND sale.IloscMiejsc >= '${seats}'`;
+        connection.query(sql, function (err, result) {
             if (err) {
                 console.log("Can't filter data");
-            }
-            else {
+            } else {
                 console.log("Data filtered");
                 callback(err, result);
             }
         });
     },
     getRoomScheduleByDay: function (id = "", date = "", callback) {
-        let sql = `SELECT sale.SalaID, sale.NazwaSali, rezerwacje.DataStartu, rezerwacje.DataKonca, rezerwacje.NazwaPrzedmiotu FROM sale NATURAL JOIN rezerwacje WHERE
-            sale.SalaID = '${id}' AND
-            rezerwacje.DataStartu LIKE '%${date}%'`
-        connection.query(sql, function(err, result) {
+        let sql = `SELECT sale.SalaID,
+                          sale.NazwaSali,
+                          rezerwacje.DataStartu,
+                          rezerwacje.DataKonca,
+                          rezerwacje.NazwaPrzedmiotu
+                   FROM sale
+                            NATURAL JOIN rezerwacje
+                   WHERE sale.SalaID = '${id}'
+                     AND rezerwacje.DataStartu LIKE '%${date}%'`
+        connection.query(sql, function (err, result) {
             if (err) {
                 console.log("Can't send schedule");
-            }
-            else {
+            } else {
                 console.log("Schedule sent");
                 callback(err, result);
             }
@@ -71,7 +94,8 @@ var DataBase = {
         });
     },
     insertReservation: function (sala_id, mail, course, start, end, acceptation) {
-        var sql = `INSERT INTO rezerwacje (SALA_ID, Mail, NazwaPrzedmiotu, DataStartu, DataKonca, Potwierdzenie) VALUES (${sala_id}, '${mail}', '${course}', '${start}', '${end}', '${acceptation}')`;
+        var sql = `INSERT INTO rezerwacje (SALA_ID, Mail, NazwaPrzedmiotu, DataStartu, DataKonca, Potwierdzenie)
+                   VALUES (${sala_id}, '${mail}', '${course}', '${start}', '${end}', '${acceptation}')`;
         connection.query(sql, function (err, result) {
             if (err) {
                 console.log("Can't insert reservation");

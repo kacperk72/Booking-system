@@ -4,26 +4,29 @@
       <mat-label for="NazwaSali">Nazwa sali</mat-label>
       <input matInput id="NazwaSali" formControlName="NazwaSali">
     </mat-form-field>
-  
+
     <mat-form-field appearance="fill" class="form-filed">
       <mat-label for="IloscMiejsc">Ilość miejsc</mat-label>
       <mat-select id="IloscMiejsc" formControlName="IloscMiejsc">
-        <mat-option value="one">10</mat-option>
-        <mat-option value="two">20</mat-option>
-        <mat-option value="">30</mat-option>
-        <mat-option value="">40</mat-option>
-        <mat-option value="">100</mat-option>
-        <mat-option value="">120</mat-option>
-        <mat-option value="">140</mat-option>
+        <mat-option value="">Dowolna</mat-option>
+        <mat-option value="10">10</mat-option>
+        <mat-option value="20">20</mat-option>
+        <mat-option value="30">30</mat-option>
+        <mat-option value="40">40</mat-option>
+        <mat-option value="50">50</mat-option>
+        <mat-option value="100">100</mat-option>
+        <mat-option value="150">150</mat-option>
+        <mat-option value="200">200</mat-option>
+        <mat-option value="250">250</mat-option>
       </mat-select>
     </mat-form-field>
-  
+
     <mat-form-field appearance="fill" class="form-filed">
       <mat-label for="TypSali">Typ sali</mat-label>
       <mat-select id="TypSali" formControlName="TypSali">
-        <mat-option value="one">Sala wykładowa</mat-option>
-        <mat-option value="two">Sala lekcyjna z tablicą</mat-option>
-        <mat-option value="">Sala komputerowa</mat-option>
+        <mat-option value="">Dowolna</mat-option>
+        <mat-option value="didactics_room">Sala dydaktyczna</mat-option>
+        <mat-option value="staff_members_room">Pokój personelu</mat-option>
       </mat-select>
     </mat-form-field>
   </div>

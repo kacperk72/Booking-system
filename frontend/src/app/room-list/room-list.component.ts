@@ -27,7 +27,7 @@ export class RoomListComponent {
   public chosenRoom = new EventEmitter<any>();
 
   typesOfClasses: Array<Room> = [
-    {
+    /*{
       id: '1',
       NazwaSali: 'A-1-01',
       IloscMiejsc: 30,
@@ -50,7 +50,7 @@ export class RoomListComponent {
       NazwaSali: 'A-2-04',
       IloscMiejsc: 15,
       TypSali: 'Sala komputerowa',
-    },
+    },*/
   ];
   sortingForm: FormGroup;
   displayedColumns: string[] = [
@@ -102,9 +102,11 @@ export class RoomListComponent {
         )
         .subscribe((data) => {
           this.typesOfClasses = data;
+          this.dataSource = new MatTableDataSource<Room>(this.typesOfClasses);
         });
     }
   }
+
 
   filterRoomsByDate() {
     this.tableLoaded = false;

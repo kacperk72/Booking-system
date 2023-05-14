@@ -17,9 +17,9 @@ export class RoomListService {
     TypSali: string
   ) {
     let params = new HttpParams()
-      .set('NazwaSali', NazwaSali)
-      .set('IloscMiejsc', IloscMiejsc.toString())
-      .set('TypSali', TypSali);
+      .set('name', NazwaSali)
+      .set('seats', IloscMiejsc.toString())
+      .set('type', TypSali);
 
     return this.http.get<any>('http://localhost:3000/filter-rooms', { params });
   }

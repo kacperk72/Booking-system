@@ -22,7 +22,7 @@ export class LoginComponent {
   private subproceedLogin$!: Subscription;
 
   constructor(private fb: FormBuilder, private router: Router) {
-    localStorage.clear();
+    // localStorage.clear();
   }
 
   ngOnInit(): void {

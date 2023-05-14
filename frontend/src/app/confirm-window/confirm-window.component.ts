@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-confirm-window',
@@ -7,4 +7,9 @@ import { Component, Input } from '@angular/core';
 })
 export class ConfirmWindowComponent {
   @Input() actualElement: any;
+  @Output() closeConfirmWindow: any;
+
+  confirmDelete() {
+    this.closeConfirmWindow.emit(true);
+  }
 }

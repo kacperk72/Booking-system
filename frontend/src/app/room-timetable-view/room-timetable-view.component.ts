@@ -1,21 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 
+interface Lesson {
+  day: string;
+  name: string;
+  instructor: string;
+  room: string;
+  startTime: string; // dodajemy startTime
+  endTime: string; // dodajemy endTime
+}
+
 interface TimeSlot {
   hour: string;
-  lessons: {
-    day: string;
-    name: string;
-    instructor: string;
-    room: string;
-    duration: number;
-  }[];
+  lessons: Lesson[];
 }
 
 interface WeeklySchedule {
   weekNumber: number;
   slots: TimeSlot[];
 }
-
 @Component({
   selector: 'app-room-timetable-view',
   templateUrl: './room-timetable-view.component.html',
@@ -28,162 +30,74 @@ export class RoomTimetableViewComponent implements OnInit {
       weekNumber: 1,
       slots: [
         {
-          hour: '8:00',
+          hour: '08:00',
           lessons: [
             {
               day: 'Poniedziałek',
-              name: 'E-bizes',
+              name: 'Programowanie w Java',
               instructor: 'Jan Kowalski',
-              room: 'Sala A-2-2',
-              duration: 2,
+              room: 'Sala 101',
+              startTime: '08:15',
+              endTime: '09:45',
+            },
+            {
+              day: 'Wtorek',
+              name: 'Architektura Komputerów',
+              instructor: 'Anna Nowak',
+              room: 'Sala 102',
+              startTime: '08:00',
+              endTime: '09:30',
             },
           ],
-        },
-        {
-          hour: '9:00',
-          lessons: [],
         },
         {
           hour: '10:00',
           lessons: [
             {
-              day: 'Wtorek',
-              name: 'Analiza',
-              instructor: 'Jan Kowalski',
-              room: 'Sala A-2-1',
-              duration: 1,
+              day: 'Poniedziałek',
+              name: 'Analiza matematyczna',
+              instructor: 'Piotr Wiśniewski',
+              room: 'Sala 103',
+              startTime: '10:15',
+              endTime: '11:45',
             },
           ],
         },
         {
-          hour: '11:00',
+          hour: '12:00',
+          lessons: [],
+        },
+        {
+          hour: '14:00',
+          lessons: [
+            {
+              day: 'Poniedziałek',
+              name: 'Analiza matematyczna',
+              instructor: 'Piotr Wiśniewski',
+              room: 'Sala 103',
+              startTime: '14:30',
+              endTime: '16:00',
+            },
+          ],
+        },
+        {
+          hour: '16:00',
           lessons: [
             {
               day: 'Środa',
-              name: 'Programowanie',
-              instructor: 'Jan Kowalski',
-              room: 'Sala A-2-3',
-              duration: 3,
+              name: 'Analiza matematyczna',
+              instructor: 'Piotr Wiśniewski',
+              room: 'Sala 103',
+              startTime: '16:00',
+              endTime: '20:00',
             },
           ],
-        },
-        {
-          hour: '12:00',
-          lessons: [],
-        },
-        {
-          hour: '13:00',
-          lessons: [],
-        },
-        {
-          hour: '14:00',
-          lessons: [
-            {
-              day: 'Czwartek',
-              name: 'Matematyka',
-              instructor: 'Jan Kowalski',
-              room: 'Sala A-2-4',
-              duration: 2,
-            },
-          ],
-        },
-        {
-          hour: '15:00',
-          lessons: [],
-        },
-        {
-          hour: '16:00',
-          lessons: [
-            {
-              day: 'Piątek',
-              name: 'Fizyka',
-              instructor: 'Jan Kowalski',
-              room: 'Sala A-2-5',
-              duration: 1,
-            },
-          ],
-        },
-        {
-          hour: '17:00',
-          lessons: [],
-        },
-        {
-          hour: '18:00',
-          lessons: [
-            {
-              day: 'Piątek',
-              name: 'Historia',
-              instructor: 'Jan Kowalski',
-              room: 'Sala A-2-6',
-              duration: 2,
-            },
-          ],
-        },
-        {
-          hour: '19:00',
-          lessons: [],
-        },
-      ],
-    },
-    {
-      weekNumber: 2,
-      slots: [
-        {
-          hour: '8:00',
-          lessons: [
-            {
-              day: 'Poniedziałek',
-              name: 'E-bizes',
-              instructor: 'Jan Kowalski',
-              room: 'Sala A-2-2',
-              duration: 2,
-            },
-          ],
-        },
-        {
-          hour: '9:00',
-          lessons: [],
-        },
-        {
-          hour: '10:00',
-          lessons: [],
-        },
-        {
-          hour: '11:00',
-          lessons: [],
-        },
-        {
-          hour: '12:00',
-          lessons: [],
-        },
-        {
-          hour: '13:00',
-          lessons: [],
-        },
-        {
-          hour: '14:00',
-          lessons: [],
-        },
-        {
-          hour: '15:00',
-          lessons: [],
-        },
-        {
-          hour: '16:00',
-          lessons: [],
-        },
-        {
-          hour: '17:00',
-          lessons: [],
         },
         {
           hour: '18:00',
           lessons: [],
         },
-        {
-          hour: '19:00',
-          lessons: [],
-        },
+        // dodaj więcej slotów czasowych według potrzeb
       ],
     },
   ];
@@ -198,20 +112,11 @@ export class RoomTimetableViewComponent implements OnInit {
   getLesson(slot: TimeSlot, day: string) {
     const lesson = slot.lessons.find((l) => l.day === day);
     if (lesson) {
-      const startHour = parseInt(slot.hour.split(':')[0]);
-      const endHour = startHour + lesson.duration;
       return {
         ...lesson,
-        startTime: `${startHour}:00`,
-        endTime: `${endHour}:00`,
       };
     }
     return null;
-  }
-
-  isInMergedSlot(slot: TimeSlot, day: string) {
-    const lesson = this.getLesson(slot, day);
-    return lesson && lesson.duration > 1;
   }
 
   printSchedule() {

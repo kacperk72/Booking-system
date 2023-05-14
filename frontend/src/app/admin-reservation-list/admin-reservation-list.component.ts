@@ -9,57 +9,7 @@ export interface PeriodicElement {
   hour: string;
 }
 
-const mockData: PeriodicElement[] = [
-  {
-    id: '1',
-    mail: 'jan.kowalski@gmail.com',
-    room: 'A-1-2',
-    date: '22-05-2023',
-    hour: '10:00',
-  },
-  {
-    id: '2',
-    mail: 'adam.kowalski@gmail.com',
-    room: 'A-2-12',
-    date: '24-05-2023',
-    hour: '7:00',
-  },
-  {
-    id: '3',
-    mail: 'jan.kowalski@gmail.com',
-    room: 'A-3-12',
-    date: '22-05-2023',
-    hour: '10:00',
-  },
-  {
-    id: '4',
-    mail: 'adam.kowalski@gmail.com',
-    room: 'A-4-12',
-    date: '24-05-2023',
-    hour: '7:00',
-  },
-  {
-    id: '5',
-    mail: 'jan.kowalski@gmail.com',
-    room: 'A-5-12',
-    date: '22-05-2023',
-    hour: '10:00',
-  },
-  {
-    id: '6',
-    mail: 'adam.kowalski@gmail.com',
-    room: 'A-6-12',
-    date: '24-05-2023',
-    hour: '7:00',
-  },
-  {
-    id: '7',
-    mail: 'jan.kowalski@gmail.com',
-    room: 'A-7-12',
-    date: '22-05-2023',
-    hour: '10:00',
-  },
-];
+const mockData: PeriodicElement[] = [];
 
 @Component({
   selector: 'app-admin-reservation-list',
@@ -96,12 +46,15 @@ export class AdminReservationListComponent implements OnInit {
   }
 
   approveRes(element: any): void {
-    // wyślij rezerwacje do bazy
-    this.dataSource = mockData.filter((item) => item.id !== element.id);
+    console.log('approveRes', element);
   }
 
   deleteRes(element: any): void {
     this.actualElement = element;
     this.showDelete = true;
+  }
+
+  closeWindow() {
+    this.showDelete = false;
   }
 }

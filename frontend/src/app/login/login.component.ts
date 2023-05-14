@@ -24,7 +24,11 @@ export class LoginComponent {
 
   private subproceedLogin$!: Subscription;
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private service: LoginService
+  ) {
     // localStorage.clear();
   }
 

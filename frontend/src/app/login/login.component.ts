@@ -49,7 +49,6 @@ export class LoginComponent {
     this.userPassword = this.loginForm.get('password')?.value;
     this.authCode = this.loginForm.get('code')?.value;
     this.loginData = { login: this.userLogin, password: this.userPassword };
-
     const isAuthorized = await this.checkAuthorizationCode(this.authCode);
 
     if (this.userLogin === 'admin' && this.userPassword === 'admin' && isAuthorized) {
@@ -74,9 +73,8 @@ export class LoginComponent {
   }
 
 
-  async checkAuthorizationCode(pin: string): Promise<boolean> {
-    console.log("Logging.component " + pin)
-    return await this.service.CheckUsosToken(pin);
+  async checkAuthorizationCode(code: string): Promise<boolean> {
+    return await this.service.CheckUsosToken(code);
   }
 
 }

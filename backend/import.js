@@ -57,9 +57,9 @@ function getUsosTokenLink() {
     });
 }
 
-function checkAuthorization(pin) {
+function checkAuthorization(code) {
     return new Promise((resolve, reject) => {
-        oauth.getOAuthAccessToken(usosOauthToken, usosOauthTokenSecret, pin, function (err, oauthAccessToken, oauthAccessTokenSecret, results) {
+        oauth.getOAuthAccessToken(usosOauthToken, usosOauthTokenSecret, code, function (err, oauthAccessToken, oauthAccessTokenSecret, results) {
             usosOauthAccessToken = oauthAccessToken;
             usosOauthAccessTokenSecret = oauthAccessTokenSecret;
             if (err) {
@@ -216,9 +216,9 @@ app.get('/usos-token', (req, res) => {
 });
 
 app.get('/check-usos-token', (req, res) => {
-    let pin = req.query.pin;
-    console.log("ENDPOINT " + pin);
-    checkAuthorization(pin)
+    let code = req.query.code;
+    console.log("ENDPOINT " + code);
+    checkAuthorization(code)
         .then((authorized) => {
             res.send(authorized);
         })

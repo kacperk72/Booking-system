@@ -25,9 +25,9 @@ export class LoginService {
     }
   }
 
-  async CheckUsosToken(pin: string): Promise<boolean> {
+  async CheckUsosToken(code: string): Promise<boolean> {
     try {
-      const params = new HttpParams().set('pin', pin);
+      const params = new HttpParams().set('code', code);
       const response = await this.http
         .get('http://localhost:8001/check-usos-token', { params, responseType: 'text' })
         .toPromise();
@@ -41,10 +41,5 @@ export class LoginService {
       return false;
     }
   }
-
-
-
-
-
 
 }

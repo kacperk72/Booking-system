@@ -22,8 +22,9 @@ app.use(bodyParser.urlencoded({
 }));
 
 
-app.route('/get-month-data').get(function(req, res) {
-    DataBase.getReservationsForMonth(req.body.month,function(err, result) {
+app.route('/get-month-data/:month').get(function(req, res) {
+    const month = req.params.month;
+    DataBase.getReservationsForMonth(month,function(err, result) {
         res.send(result);
     });
 

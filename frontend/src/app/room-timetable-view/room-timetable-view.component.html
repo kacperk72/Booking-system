@@ -6,10 +6,10 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let slot of slots">
-      <td>{{ slot.hour }}</td>
+    <tr *ngFor="let hour of hours">
+      <td>{{ hour }}</td>
       <td *ngFor="let day of days">
-        <ng-container *ngIf="getLesson(slot, day) as lesson">
+        <ng-container *ngIf="getLessonInRange(hour, day) as lesson">
           <div>
             <strong>{{ lesson.name }}</strong>
             <br />
@@ -20,7 +20,7 @@
             Sala: {{ lesson.room }}
           </div>
         </ng-container>
-        <div *ngIf="!getLesson(slot, day)">-</div>
+        <button *ngIf="!getLessonInRange(hour, day)" (click)="openModal(day, hour)">+</button>
       </td>
     </tr>
   </tbody>
@@ -28,4 +28,8 @@
 <button (click)="previousWeek()">Poprzedni tydzień</button>
 <button (click)="nextWeek()">Następny tydzień</button>
 <p class="currentWeek">Tydzień {{ currentWeek }}</p>
+<button (click)="previousMonth()">Poprzedni miesiąc</button>
+<button (click)="nextMonth()">Następny miesiąc</button>
+<p class="currentMonth">Miesiąc {{ currentMonth }}</p>
+
 <button (click)="printSchedule()">Drukuj plan zajęć</button>

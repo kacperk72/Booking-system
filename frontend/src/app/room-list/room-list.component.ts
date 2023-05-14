@@ -8,7 +8,6 @@ import {
 import { RoomListService } from '../service/room-list.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
-import { SelectionModel } from '@angular/cdk/collections';
 
 export interface Room {
   id: string;
@@ -26,32 +25,7 @@ export class RoomListComponent {
   @Output()
   public chosenRoom = new EventEmitter<any>();
 
-  typesOfClasses: Array<Room> = [
-    /*{
-      id: '1',
-      NazwaSali: 'A-1-01',
-      IloscMiejsc: 30,
-      TypSali: 'Sala lekcyjna z tablicą',
-    },
-    {
-      id: '2',
-      NazwaSali: 'A-1-02',
-      IloscMiejsc: 120,
-      TypSali: 'Sala wykładowa',
-    },
-    {
-      id: '3',
-      NazwaSali: 'A-2-03',
-      IloscMiejsc: 45,
-      TypSali: 'Sala lekcyjna z tablicą',
-    },
-    {
-      id: '4',
-      NazwaSali: 'A-2-04',
-      IloscMiejsc: 15,
-      TypSali: 'Sala komputerowa',
-    },*/
-  ];
+  typesOfClasses: Array<Room> = [];
   sortingForm: FormGroup;
   displayedColumns: string[] = [
     'NazwaSali',
@@ -76,7 +50,6 @@ export class RoomListComponent {
 
   ngOnInit() {
     this.getRooms();
-    // this.filterRoomsByDate();
     this.tableLoaded = true;
   }
 
@@ -105,13 +78,6 @@ export class RoomListComponent {
           this.dataSource = new MatTableDataSource<Room>(this.typesOfClasses);
         });
     }
-  }
-
-
-  filterRoomsByDate() {
-    this.tableLoaded = false;
-    // filtrowanie
-    this.tableLoaded = true;
   }
 
   checkRoomDetails(rowData: any) {

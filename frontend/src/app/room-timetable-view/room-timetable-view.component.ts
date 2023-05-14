@@ -1,23 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
+import { AddReservationModalComponent } from '../add-reservation-modal/add-reservation-modal.component';
 
 interface Lesson {
   day: string;
   name: string;
   instructor: string;
   room: string;
-  startTime: string; // dodajemy startTime
-  endTime: string; // dodajemy endTime
-}
-
-interface TimeSlot {
-  hour: string;
-  lessons: Lesson[];
+  startTime: string;
+  endTime: string;
 }
 
 interface WeeklySchedule {
   weekNumber: number;
-  slots: TimeSlot[];
+  lessons: Lesson[];
 }
+
 @Component({
   selector: 'app-room-timetable-view',
   templateUrl: './room-timetable-view.component.html',
@@ -25,126 +24,120 @@ interface WeeklySchedule {
 })
 export class RoomTimetableViewComponent implements OnInit {
   days = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek'];
-  yearlySchedule: WeeklySchedule[] = [
-    {
-      weekNumber: 1,
-      slots: [
-        {
-          hour: '08:00',
-          lessons: [
-            {
-              day: 'Poniedziałek',
-              name: 'Programowanie w Java',
-              instructor: 'Jan Kowalski',
-              room: 'Sala 101',
-              startTime: '08:15',
-              endTime: '09:45',
-            },
-            {
-              day: 'Wtorek',
-              name: 'Architektura Komputerów',
-              instructor: 'Anna Nowak',
-              room: 'Sala 102',
-              startTime: '08:00',
-              endTime: '09:30',
-            },
-          ],
-        },
-        {
-          hour: '10:00',
-          lessons: [
-            {
-              day: 'Poniedziałek',
-              name: 'Analiza matematyczna',
-              instructor: 'Piotr Wiśniewski',
-              room: 'Sala 103',
-              startTime: '10:15',
-              endTime: '11:45',
-            },
-          ],
-        },
-        {
-          hour: '12:00',
-          lessons: [],
-        },
-        {
-          hour: '14:00',
-          lessons: [
-            {
-              day: 'Poniedziałek',
-              name: 'Analiza matematyczna',
-              instructor: 'Piotr Wiśniewski',
-              room: 'Sala 103',
-              startTime: '14:30',
-              endTime: '16:00',
-            },
-          ],
-        },
-        {
-          hour: '16:00',
-          lessons: [
-            {
-              day: 'Środa',
-              name: 'Analiza matematyczna',
-              instructor: 'Piotr Wiśniewski',
-              room: 'Sala 103',
-              startTime: '16:00',
-              endTime: '20:00',
-            },
-          ],
-        },
-        {
-          hour: '18:00',
-          lessons: [],
-        },
-        // dodaj więcej slotów czasowych według potrzeb
-      ],
-    },
-  ];
+  hours = Array.from(
+    { length: 12 },
+    (_, i) => `${(i + 8).toString().padStart(2, '0')}:00`
+  );
+  yearlySchedule: WeeklySchedule[] = [];
+  lessons: Lesson[] = [];
+  currentWeek = 1;
+  currentMonth = 1;
+  roomName: string = '';
+
+  constructor(public dialog: MatDialog, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.updateSlots();
+    this.route.params.subscribe((params) => {
+      this.roomName = params['roomName'];
+    });
+
+    this.yearlySchedule = [
+      {
+        weekNumber: 1,
+        lessons: [
+          {
+            day: 'Poniedziałek',
+            name: 'Programowanie w Java',
+            instructor: 'Jan Kowalski',
+            room: 'Sala 101',
+            startTime: '08:00',
+            endTime: '11:45',
+          },
+        ],
+      },
+      {
+        weekNumber: 2,
+        lessons: [
+          {
+            day: 'Poniedziałek',
+            name: 'Programowanie w Java',
+            instructor: 'Jan Kowalski',
+            room: 'Sala 101',
+            startTime: '09:00',
+            endTime: '12:45',
+          },
+        ],
+      },
+    ];
+    this.updateLessons();
   }
 
-  currentWeek = 1;
-  slots: TimeSlot[] = [];
-
-  getLesson(slot: TimeSlot, day: string) {
-    const lesson = slot.lessons.find((l) => l.day === day);
-    if (lesson) {
-      return {
-        ...lesson,
-      };
-    }
-    return null;
+  getLessonInRange(hour: string, day: string) {
+    return this.lessons.find(
+      (l) => l.day === day && this.isHourInRange(hour, l.startTime, l.endTime)
+    );
   }
 
-  printSchedule() {
-    window.print();
+  isHourInRange(hour: string, start: string, end: string) {
+    const [h, m] = hour.split(':').map(Number);
+    const [startH, startM] = start.split(':').map(Number);
+    const [endH, endM] = end.split(':').map(Number);
+
+    const minuteOfDay = h * 60 + m;
+    const startMinuteOfDay = startH * 60 + startM;
+    const endMinuteOfDay = endH * 60 + endM;
+
+    return minuteOfDay >= startMinuteOfDay && minuteOfDay < endMinuteOfDay;
   }
 
-  updateSlots() {
+  updateLessons() {
     const schedule = this.yearlySchedule.find(
       (s) => s.weekNumber === this.currentWeek
     );
     if (schedule) {
-      this.slots = schedule.slots;
+      this.lessons = schedule.lessons;
     } else {
-      this.slots = [];
+      this.lessons = [];
     }
   }
 
   previousWeek() {
     if (this.currentWeek > 1) {
       this.currentWeek -= 1;
-      this.updateSlots();
+      this.updateLessons();
     }
   }
 
   nextWeek() {
     if (this.currentWeek < this.yearlySchedule.length) {
       this.currentWeek += 1;
-      this.updateSlots();
+      this.updateLessons();
     }
+  }
+
+  previousMonth() {
+    if (this.currentMonth > 1) {
+      this.currentMonth -= 1;
+      this.updateLessons();
+    }
+  }
+
+  nextMonth() {
+    if (this.currentMonth < 12) {
+      // Zakładamy, że mamy 12 miesięcy
+      this.currentMonth += 1;
+      this.updateLessons();
+    }
+  }
+
+  printSchedule() {
+    window.print();
+  }
+
+  openModal(day: string, hour: string) {
+    const name = this.roomName;
+    const dialogRef = this.dialog.open(AddReservationModalComponent, {
+      data: { day, hour, name },
+    });
   }
 }

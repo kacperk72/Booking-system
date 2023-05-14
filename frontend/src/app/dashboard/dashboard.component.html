@@ -1,16 +1,5 @@
 <div class="content">
-    
-    <div class="list" *ngIf="list">
+    <div class="list" >
         <app-room-list (chosenRoom)="setChosenClass($event)"></app-room-list>
-    </div>
-
-    <div class="single-room" *ngIf="!list">
-        <div class="calendar">
-            <app-calendar (dateSelected)="onDateSelected($event)"></app-calendar>
-        </div>
-        <div class="list-details">
-            <app-room-list-details (reservationData)="setReservation($event)" [selectedDate]="selectedDate" [chosenClass]="chosenClass" (getback)="getBack()"></app-room-list-details>
-            <app-reservation *ngIf="isReservationVisible" (cancelReser)="cancelReservation()" [reservationData]="reservationData"></app-reservation>
-        </div>
     </div>
 </div>

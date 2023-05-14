@@ -10,7 +10,6 @@ export class DashboardComponent {
   chosenClass = {};
   reservationData: any;
   selectedDate!: Date;
-  list: boolean = true;
 
   setReservation(data: any) {
     this.isReservationVisible = !this.isReservationVisible;
@@ -24,14 +23,9 @@ export class DashboardComponent {
   setChosenClass(data: any) {
     console.log(data);
     this.chosenClass = data;
-    this.list = false;
   }
 
   onDateSelected(date: Date) {
     this.selectedDate = date;
-  }
-
-  getBack() {
-    this.list = true;
   }
 }

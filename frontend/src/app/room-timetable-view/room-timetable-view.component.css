@@ -62,6 +62,14 @@ th {
   }
   
   @media print {
+    table {
+      font-size: 10px;
+      height: 80%;
+    }
+    tr, td {
+      margin: 0 !important;
+      padding: 2px;
+    }
     button {
       display: none;
     }

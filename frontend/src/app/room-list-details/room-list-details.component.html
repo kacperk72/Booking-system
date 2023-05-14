@@ -37,13 +37,13 @@
   </div>
   <div class="mat-elevation-z8" *ngIf="filteredRooms.length === 0">
     <p class="noRooms">Brak terminów</p>
-  </div>
+  </div> 
   
-    <!-- <app-chosen-room *ngIf="classes.selectedOptions.hasValue()" [data]="classes.selectedOptions.selected[0].value"></app-chosen-room> -->
+    <!-- <app-chosen-room *ngIf="classes.selectedOptions.hasValue()" [data]="classes.selectedOptions.selected[0].value"></app-chosen-room>  -->
     <div class="book-room-button">
         <button mat-raised-button color="primary" (click)="getSelectedRooms()" [disabled]="selection.selected.length === 0">Rezerwuj</button>
     </div>
-    <div class="book-room-button" *ngIf="filteredRooms.length !== 0">
+    <div class="book-room-button">
       <button class="noRooms" mat-raised-button color="primary" (click)="openTimePickerModal()">Godziny niestandardowe</button>
     </div>
     

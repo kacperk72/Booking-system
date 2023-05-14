@@ -44,13 +44,15 @@ export class LoginComponent {
     }
   }
 
-  logging(): void {
+  async logging(): Promise<void> {
     this.userLogin = this.loginForm.get('login')?.value;
     this.userPassword = this.loginForm.get('password')?.value;
-    this.authCode = this.loginForm.get('authCode')?.value;
+    this.authCode = this.loginForm.get('code')?.value;
     this.loginData = { login: this.userLogin, password: this.userPassword };
 
-    if (this.userLogin === 'admin' && this.userPassword === 'admin' && this.checkAutorizationCode()) {
+    const isAuthorized = await this.checkAuthorizationCode(this.authCode);
+
+    if (this.userLogin === 'admin' && this.userPassword === 'admin' && isAuthorized) {
       localStorage.setItem('rola', 'admin');
       this.router.navigate(['/']);
     } else {
@@ -72,7 +74,9 @@ export class LoginComponent {
   }
 
 
-  checkAutorizationCode(): boolean {  //przekazać token?
-    return true
+  async checkAuthorizationCode(pin: string): Promise<boolean> {
+    console.log("Logging.component " + pin)
+    return await this.service.CheckUsosToken(pin);
   }
+
 }

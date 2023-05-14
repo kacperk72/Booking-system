@@ -34,7 +34,12 @@ app.use(cors({
     secondary: 'http://localhost:8001'
 }));
 
+
 let usosTokenLink = '';
+let usosOauthToken = '';
+let usosOauthTokenSecret = '';
+let usosOauthAccessToken = ''
+let usosOauthAccessTokenSecret = ''
 
 function getUsosTokenLink() {
     return new Promise((resolve, reject) => {
@@ -43,6 +48,8 @@ function getUsosTokenLink() {
                 console.log('Error getting OAuth request token:', err);
                 resolve("http://localhost:4200/logowanie");
             } else {
+                usosOauthToken = oauthToken;
+                usosOauthTokenSecret = oauthTokenSecret;
                 usosTokenLink = AUTHORIZE_URL + '?oauth_token=' + oauthToken
                 resolve(usosTokenLink);
             }
@@ -50,14 +57,62 @@ function getUsosTokenLink() {
     });
 }
 
+function checkAuthorization(pin) {
+    return new Promise((resolve, reject) => {
+        oauth.getOAuthAccessToken(usosOauthToken, usosOauthTokenSecret, pin, function (err, oauthAccessToken, oauthAccessTokenSecret, results) {
+            usosOauthAccessToken = oauthAccessToken;
+            usosOauthAccessTokenSecret = oauthAccessTokenSecret;
+            if (err) {
+                console.log('Error getting OAuth access token:', err);
+                resolve(false);
+            } else {
+                getReservations()
+                resolve(true);
+            }
+        });
+    });
+}
 
-//powinienem także dodać to sprawdzenie - usosTokenLink powinien być globalny
-//co z pobieraniem rezerwacji? - dodać w check?
-//
 
+async function getReservations() {
+    const url = 'https://apps.usos.uj.edu.pl/services/tt/room';
+    const date = new Date();
+    while (date <= new Date('2023-06-13')) {
+        numbers = await roomIDs.getRoomIDs();
+        numbers.forEach((number) => {
+            const roomId = number.toString();
+            const oa = new OAuth(null, null, CONSUMER_KEY, CONSUMER_SECRET, '1.0', null, 'HMAC-SHA1');
+            const formattedDate = date.toISOString().slice(0, 10);
+            const queryParams = {
+                room_id: roomId,
+                start: formattedDate,
+            };
+            // const urlWithParams = `${url}?${querystring.stringify({room_id: roomId})}`;
+            const urlWithParams = `${url}?${querystring.stringify(queryParams)}`
+            oa.get(urlWithParams, usosOauthAccessToken, usosOauthAccessTokenSecret, function (err, data, response) {
+                if (err) {
+                    console.error(err);
+                } else {
+                    // console.log(response.statusCode);
+                    let dataObject = JSON.parse(data);
+                    let newData = dataObject.map(function (item) {
+                        return {
+                            id: number,
+                            start_time: item.start_time,
+                            end_time: item.end_time,
+                            name_pl: item.name.pl
+                        };
+                    });
+                    allJsons.push(newData)
+                }
+            });
 
+        });
+        date.setDate(date.getDate() + 7);
+    }
+}
 
-
+/*
 (async () => {
     numbers = await roomIDs.getRoomIDs();
     // numbers.forEach(item => {
@@ -67,6 +122,8 @@ function getUsosTokenLink() {
         if (err) {
             console.log('Error getting OAuth request token:', err);
         } else {
+            let usosOauthToken = oauthToken;
+            let usosOauthTokenSecret = oauthTokenSecret;
             usosTokenLink = AUTHORIZE_URL + '?oauth_token=' + oauthToken
             console.log('Authorize the app by visiting:', usosTokenLink);
 
@@ -135,7 +192,7 @@ function getUsosTokenLink() {
         }
         return allJsons;
     });
-})();
+})(); */
 
 app.get('/data', (req, res) => {
     allJsons = JSON.stringify(allJsons)
@@ -154,6 +211,19 @@ app.get('/usos-token', (req, res) => {
         })
         .catch((error) => {
             console.error('Error in app.get(/usos-token):', error);
+            res.status(500).send('Internal server error');
+        });
+});
+
+app.get('/check-usos-token', (req, res) => {
+    let pin = req.query.pin;
+    console.log("ENDPOINT " + pin);
+    checkAuthorization(pin)
+        .then((authorized) => {
+            res.send(authorized);
+        })
+        .catch((error) => {
+            console.error('Error in checkAuthorization:', error);
             res.status(500).send('Internal server error');
         });
 });

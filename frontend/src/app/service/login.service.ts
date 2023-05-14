@@ -25,5 +25,26 @@ export class LoginService {
     }
   }
 
+  async CheckUsosToken(pin: string): Promise<boolean> {
+    try {
+      const params = new HttpParams().set('pin', pin);
+      const response = await this.http
+        .get('http://localhost:8001/check-usos-token', { params, responseType: 'text' })
+        .toPromise();
+      if (response) {
+        return response === 'true';
+      } else {
+        throw new Error('Response is empty or undefined');
+      }
+    } catch (error) {
+      console.error('Error in CheckUsosToken:', error);
+      return false;
+    }
+  }
+
+
+
+
+
 
 }

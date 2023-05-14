@@ -7,6 +7,7 @@ const express = require('express');
 const fs = require('fs');
 const roomIDs = require('./roomIDs.js');
 const app = express();
+const cors = require('cors');
 
 const CONSUMER_KEY = 'xZNSd8Bww4vnmc3NwUwu';
 const CONSUMER_SECRET = '65nWbEMCQDcpXyXYnsHR8RAQTKvYE7eRmaschvHu';
@@ -29,6 +30,34 @@ const oauth = new OAuth(
     'HMAC-SHA1'
 );
 
+app.use(cors({
+    secondary: 'http://localhost:8001'
+}));
+
+let usosTokenLink = '';
+
+function getUsosTokenLink() {
+    return new Promise((resolve, reject) => {
+        oauth.getOAuthRequestToken({oauth_callback: 'oob'}, function (err, oauthToken, oauthTokenSecret, results) {
+            if (err) {
+                console.log('Error getting OAuth request token:', err);
+                resolve("http://localhost:4200/logowanie");
+            } else {
+                usosTokenLink = AUTHORIZE_URL + '?oauth_token=' + oauthToken
+                resolve(usosTokenLink);
+            }
+        });
+    });
+}
+
+
+//powinienem także dodać to sprawdzenie - usosTokenLink powinien być globalny
+//co z pobieraniem rezerwacji? - dodać w check?
+//
+
+
+
+
 (async () => {
     numbers = await roomIDs.getRoomIDs();
     // numbers.forEach(item => {
@@ -38,7 +67,8 @@ const oauth = new OAuth(
         if (err) {
             console.log('Error getting OAuth request token:', err);
         } else {
-            console.log('Authorize the app by visiting:', AUTHORIZE_URL + '?oauth_token=' + oauthToken);
+            usosTokenLink = AUTHORIZE_URL + '?oauth_token=' + oauthToken
+            console.log('Authorize the app by visiting:', usosTokenLink);
 
             const rl = readline.createInterface({
                 input: process.stdin,
@@ -116,6 +146,19 @@ app.get('/data', (req, res) => {
     // console.log(allJsons);
     res.json(allJsons);
 });
+
+app.get('/usos-token', (req, res) => {
+    getUsosTokenLink()
+        .then((usosTokenLink) => {
+            res.send(usosTokenLink);
+        })
+        .catch((error) => {
+            console.error('Error in app.get(/usos-token):', error);
+            res.status(500).send('Internal server error');
+        });
+});
+
+
 
 app.listen(8001, () => {
 });

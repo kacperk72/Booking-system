@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: 'logowanie', component: LoginComponent },
   { path: 'admin', component: AdminComponent },
   { path: 'admin-rezerwacja', component: AdminAddReservationComponent },
-  { path: 'room/:roomName', component: RoomTimetableViewComponent },
+  { path: 'room/:roomName/:id', component: RoomTimetableViewComponent },
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
 ];
 

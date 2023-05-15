@@ -10,7 +10,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 
 export interface Room {
-  id: string;
+  SalaID: string;
   NazwaSali?: string;
   IloscMiejsc?: number;
   TypSali?: string;

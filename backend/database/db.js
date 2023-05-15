@@ -94,6 +94,7 @@ var DataBase = {
         });
     },
     insertReservation: function (sala_id, mail, course, start, end, acceptation) {
+        console.log(sala_id + ' ' + mail + ' ' + course + ' ' + start + ' ' + end + ' ' + acceptation)
         var sql = `INSERT INTO rezerwacje (SALA_ID, Mail, NazwaPrzedmiotu, DataStartu, DataKonca, Potwierdzenie)
                    VALUES (${sala_id}, '${mail}', '${course}', '${start}', '${end}', '${acceptation}')`;
         connection.query(sql, function (err, result) {

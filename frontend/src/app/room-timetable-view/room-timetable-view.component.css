@@ -2,12 +2,18 @@ table {
   width: 96%;
   border-collapse: collapse;
   margin: 2%;
+  margin-top: 0;
 }
 
 th, td {
   border: 1px solid #ccc;
   padding: 8px;
   text-align: left;
+  text-align: center;
+}
+
+.days {
+  width: 20%;
 }
 
 th {
@@ -15,8 +21,7 @@ th {
   font-weight: bold;
 }
 
-
-  button {
+button {
     cursor: pointer;
     background-color: #56baed;
     border: none;
@@ -39,8 +44,8 @@ th {
     transition: all 0.3s ease-in-out;
   }
 
-  .currentWeek {
-    background-color: #8eb2c4;
+.currentWeek, .currentMonth {
+    background-color: #39ace7;;
     border: none;
     color: white;
     padding: 10px 60px;
@@ -59,9 +64,32 @@ th {
     -ms-transition: all 0.3s ease-in-out;
     -o-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
-  }
+}
+
+.header, .footer {
+    text-align: center;
+}
+
+input[type="checkbox"] {
+  height: 20px;
+  width: 20px;
+  vertical-align: middle;
+}
+
+input[type="checkbox"]:checked {
+  background-color: #56baed;
+}
+
+.example-checkbox.mat-checkbox .mat-checkbox-frame {
+  height: 20px;
+  width: 20px;
+}
+.example-checkbox.mat-checkbox.mat-checkbox-checked .mat-checkbox-background {
+  background-color: #56baed;
+}
+
   
-  @media print {
+@media print {
     table {
       font-size: 10px;
       height: 80%;
@@ -73,7 +101,7 @@ th {
     button {
       display: none;
     }
-    .currentWeek {
+    .currentMonth {
       display: none;
     }
-  }
+}

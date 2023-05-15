@@ -1,35 +1,41 @@
-<table>
-  <thead>
-    <tr>
-      <th>Godzina</th>
-      <th *ngFor="let day of days">{{ day }}</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let hour of hours">
-      <td>{{ hour }}</td>
-      <td *ngFor="let day of days">
-        <ng-container *ngIf="getLessonInRange(hour, day) as lesson">
-          <div>
-            <strong>{{ lesson.name }}</strong>
-            <br />
-            {{ lesson.startTime }} - {{ lesson.endTime }}
-            <br />
-            Prowadzący: {{ lesson.instructor }}
-            <br />
-            Sala: {{ lesson.room }}
-          </div>
-        </ng-container>
-        <button *ngIf="!getLessonInRange(hour, day)" (click)="openModal(day, hour)">+</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<button (click)="previousWeek()">Poprzedni tydzień</button>
-<button (click)="nextWeek()">Następny tydzień</button>
-<p class="currentWeek">Tydzień {{ currentWeek }}</p>
-<button (click)="previousMonth()">Poprzedni miesiąc</button>
-<button (click)="nextMonth()">Następny miesiąc</button>
-<p class="currentMonth">Miesiąc {{ currentMonth }}</p>
-
-<button (click)="printSchedule()">Drukuj plan zajęć</button>
+<div>
+  <div class="header">
+    <p class="currentWeek">Tydzień <b>{{ getFormattedDate(currentWeek[0]) }} - {{ getFormattedDate(currentWeek[1]) }}</b></p>
+    <p class="currentMonth">Miesiąc <b>{{ getFormattedDate(currentMonth[0]) }} - {{ getFormattedDate(currentMonth[1]) }}</b></p>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Godzina</th>
+        <th *ngFor="let day of days">{{ day }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let hour of hours">
+        <td>{{ hour }}</td>
+        <td *ngFor="let day of days" class="days">
+          <ng-container *ngIf="getLessonInRange(hour, day) as lesson">
+            <div>
+              <strong>{{ lesson.name }}</strong>
+              <br />
+              {{ lesson.startTime }} - {{ lesson.endTime }}
+              <br />
+              Prowadzący: {{ lesson.instructor }}
+              <br />
+              Sala: {{ lesson.room }}
+            </div>
+          </ng-container>
+          <input class="example-checkbox" type="checkbox" *ngIf="!getLessonInRange(hour, day)" [(ngModel)]="selectedSlots[day + '-' + hour]" />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="footer">
+    <button (click)="previousWeek()">Poprzedni tydzień</button>
+    <button (click)="nextWeek()">Następny tydzień</button>
+    <button (click)="previousMonth()">Poprzedni miesiąc</button>
+    <button (click)="nextMonth()">Następny miesiąc</button>
+    <button (click)="printSchedule()">Drukuj plan zajęć</button>
+    <button (click)="openModal()">Rezerwuj</button>
+  </div>
+</div>

@@ -46,7 +46,7 @@ var DataBase = {
             if (err) {
                 console.log("Can't insert room");
             } else {
-                console.log("Inserted one row");
+                // console.log("Inserted one row");
             }
         });
     },
@@ -94,14 +94,15 @@ var DataBase = {
         });
     },
     insertReservation: function (sala_id, mail, course, start, end, acceptation) {
-        console.log(sala_id + ' ' + mail + ' ' + course + ' ' + start + ' ' + end + ' ' + acceptation)
+        // console.log(sala_id + ' ' + mail + ' ' + course + ' ' + start + ' ' + end + ' ' + acceptation)
         var sql = `INSERT INTO rezerwacje (SALA_ID, Mail, NazwaPrzedmiotu, DataStartu, DataKonca, Potwierdzenie)
                    VALUES (${sala_id}, '${mail}', '${course}', '${start}', '${end}', '${acceptation}')`;
         connection.query(sql, function (err, result) {
             if (err) {
+                console.log(err);
                 console.log("Can't insert reservation");
             } else {
-                console.log("Inserted one row");
+                // console.log("Inserted one row");
             }
         });
     },

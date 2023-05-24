@@ -93,7 +93,6 @@ async function getReservations() {
                 if (err) {
                     console.error(err);
                 } else {
-                    // console.log(response.statusCode);
                     let dataObject = JSON.parse(data);
                     let newData = dataObject.map(function (item) {
                         return {
@@ -133,6 +132,7 @@ async function getReservations() {
             });
 
             rl.question('Enter the PIN code and hit ENTER when you\'re done: ', function (pin) {
+                
                 rl.close();
                 oauth.getOAuthAccessToken(oauthToken, oauthTokenSecret, pin, function (err, oauthAccessToken, oauthAccessTokenSecret, results) {
                     if (err) {
@@ -195,6 +195,7 @@ async function getReservations() {
 })(); */
 
 app.get('/data', (req, res) => {
+    
     allJsons = JSON.stringify(allJsons)
     // const combinedJson = allJsons.reduce((acc, curr) => {
     //     const json = JSON.parse(fs.readFileSync(curr));

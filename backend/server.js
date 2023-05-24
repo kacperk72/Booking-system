@@ -98,54 +98,81 @@ app.route('/admin/reservation').put( (req,res) => {
     res.status(200).send(`state of reservation ${userId} has changed to ${acceptationState} succesfully`);
 });
 
-app.route('/addToDb').get((req, res) =>{
+// app.route('/addToDb').get((req, res) =>{
+//     var count = 0;
+//     let numbers = [];
+//     (async () => {
+//         numbers = await roomIDs.getRoomIDs();
+       
+//         const addRoomsToDb = function(numbers, callback) {
+//             numbers.forEach(async (item) => {
+//                 await fetch(`https://apps.usos.uj.edu.pl/services/geo/room?room_id=${item}&fields=number|type|capacity`)
+//                 .then(response => response.json())
+//                 .then(data => {
+//                     const parsedData = JSON.parse(JSON.stringify(data));
+//                     DataBase.insertRoom(item, parsedData.capacity, parsedData.number, parsedData.type);
+//                 })
+//                 .catch(err => {
+//                     console.error(err);
+//                 });
+//             });
+//             callback();
+//         };
+//         const addReservationsToDb = function() {
+//             fetch('http://localhost:8001/data')
+//             .then(response => response.json())
+//             .then(data => {
+                
+//                 const parsedData = JSON.parse(data);
+            
+
+//                 parsedData.forEach(firstTable => {
+//                     firstTable.forEach(item => {
+//                         console.log(item.name_pl);
+//                         DataBase.insertReservation(item.id, "Empty", item.name_pl, item.start_time, item.end_time, 'pending');
+//                     });
+//                 });
+//             })
+//             .catch(err => {
+//                 console.error(err);
+//                 res.status(500).send('Błąd pobrania danych');
+//             });
+//         };
+//         addRoomsToDb(numbers, addReservationsToDb);
+//     })();
+// });
+app.route('/addToDb').get(async (req, res) => {
     var count = 0;
     let numbers = [];
-    (async () => {
+    try {
         numbers = await roomIDs.getRoomIDs();
-        // numbers.forEach(item => {
-        //     console.log(item);
-        // });
-        const addRoomsToDb = function(numbers, callback) {
-            numbers.forEach(async (item) => {
-                await fetch(`https://apps.usos.uj.edu.pl/services/geo/room?room_id=${item}&fields=number|type|capacity`)
-                .then(response => response.json())
-                .then(data => {
-                    const parsedData = JSON.parse(JSON.stringify(data));
-                    DataBase.insertRoom(item, parsedData.capacity, parsedData.number, parsedData.type);
-                })
-                .catch(err => {
-                    console.error(err);
-                });
-            });
-            callback();
-        };
-        const addReservationsToDb = function() {
-            fetch('http://localhost:8001/data')
-            .then(response => response.json())
-            .then(data => {
-                // to wyswietla, ponizej pomiedzy komentarzami jak rozumie dodadnie do bazy
-                // console.log(JSON.stringify(data))
-                const parsedData = JSON.parse(data);
-                // console.log(parsedData);
-                // parsedData.forEach(firstTable => {
-                //     console.log(firstTable[0]);
-                //     DataBase.insertRoom(firstTable[0].id, 30, "Empty", "Empty");
-                // });
 
-                parsedData.forEach(firstTable => {
-                    firstTable.forEach(item => {
-                        console.log(item.name_pl);
-                        DataBase.insertReservation(item.id, "Empty", item.name_pl, item.start_time, item.end_time, 'pending');
-                    });
-                });
-            })
-            .catch(err => {
-                console.error(err);
-                res.status(500).send('Błąd pobrania danych');
-            });
+        const addReservationsToDb = async function() {
+            const response = await fetch('http://localhost:8001/data');
+            const data = await response.json();
+            const parsedData = JSON.parse(data);
+            for (const firstTable of parsedData) {
+                for (const item of firstTable) {
+                    await DataBase.insertReservation(item.id, "Empty", item.name_pl, item.start_time, item.end_time, 'pending');
+                }
+            }
         };
-        addRoomsToDb(numbers, addReservationsToDb);
-    })();
+
+        const addRoomsToDb = async function(numbers) {
+            for (const item of numbers) {
+                const response = await fetch(`https://apps.usos.uj.edu.pl/services/geo/room?room_id=${item}&fields=number|type|capacity`);
+                const data = await response.json();
+                const parsedData = JSON.parse(JSON.stringify(data));
+                await DataBase.insertRoom(item, parsedData.capacity, parsedData.number, parsedData.type);
+            }
+        };
+
+        await addRoomsToDb(numbers);
+        await addReservationsToDb();
+
+        res.send('Dane dodane do bazy');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Błąd pobrania danych');
+    }
 });
-

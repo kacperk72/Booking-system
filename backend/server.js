@@ -10,6 +10,7 @@ var DataBase = require('./database/db.js');
 var script = require('./import.js');
 const roomIDs = require('./roomIDs.js');
 var app = express();
+const mail = require("./send_mails.js");
 
 app.listen(3000);
 
@@ -60,6 +61,7 @@ app.route('/add-reservation').post(function(req, res) {
                                req.body.start,
                                req.body.end,
                                req.body.acceptationState);
+    mail.sendReservationPendingMail()
 });
 
 app.route('/filter-rooms').get((req, res) => {
@@ -92,11 +94,14 @@ app.route('/get-schedule').get((req, res) => {
 });
 
 app.route('/admin/reservation').put( (req,res) => {
-    const userId = req.body.userId;
-    const acceptationState = req.body.acceptationState;
-    DataBase.accept_or_reject_reservation(acceptationState, userId);
-    res.status(200).send(`state of reservation ${userId} has changed to ${acceptationState} succesfully`);
+    const { ReservationId, acceptationState } = req.body
+    DataBase.setReservationState(acceptationState, ReservationId);
+    const reservation = DataBase.getReservationById(ReservationId)
+    if (!reservation) res.status(204)
+    res.status(200).send(`state of reservation ${ReservationId} has changed to ${acceptationState} succesfully`);
+    mail.sendConfirmationMail(reservation.body.mail, acceptationState)
 });
+
 
 // app.route('/addToDb').get((req, res) =>{
 //     var count = 0;

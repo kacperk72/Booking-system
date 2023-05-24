@@ -1,4 +1,4 @@
-
+require('dotenv').config();
 const OAuth = require('oauth').OAuth;
 const readline = require('readline');
 const https = require('https');
@@ -9,8 +9,8 @@ const roomIDs = require('./roomIDs.js');
 const app = express();
 const cors = require('cors');
 
-const CONSUMER_KEY = 'xZNSd8Bww4vnmc3NwUwu';
-const CONSUMER_SECRET = '65nWbEMCQDcpXyXYnsHR8RAQTKvYE7eRmaschvHu';
+const CONSUMER_KEY = process.env.CONSUMER_KEY;
+const CONSUMER_SECRET = process.env.CONSUMER_SECRET;
 const REQUEST_TOKEN_URL = 'https://apps.usos.uj.edu.pl/services/oauth/request_token';
 const ACCESS_TOKEN_URL = 'https://apps.usos.uj.edu.pl/services/oauth/access_token';
 const AUTHORIZE_URL = 'https://apps.usos.uj.edu.pl/services/oauth/authorize';

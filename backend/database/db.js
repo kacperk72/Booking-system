@@ -7,7 +7,7 @@ var DataBase = {
     getReservationsForMonth: function (month, callback) {
         const startDate = new Date(new Date().getFullYear(), month - 1, 1).toISOString().split('T')[0];
         const endDate = new Date(new Date().getFullYear(), month, 0).toISOString().split('T')[0];
-        const sql = `SELECT DataStartu, DataKonca
+        const sql = `SELECT SALA_ID, NazwaPrzedmiotu, DataStartu, DataKonca
                      FROM rezerwacje
                      WHERE DataStartu BETWEEN '${startDate}' AND '${endDate}'`;
         connection.query(sql, function (err, result) {

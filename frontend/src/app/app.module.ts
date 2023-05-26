@@ -40,6 +40,7 @@ import { TimePickerModalComponent } from './time-picker-modal/time-picker-modal.
 import { MatDialogModule } from '@angular/material/dialog';
 import { ConfirmWindowComponent } from './confirm-window/confirm-window.component';
 import { AddReservationModalComponent } from './add-reservation-modal/add-reservation-modal.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -82,6 +83,7 @@ import { AddReservationModalComponent } from './add-reservation-modal/add-reserv
     MatIconModule,
     MatCheckboxModule,
     MatDialogModule,
+    MatProgressSpinnerModule,
   ],
   providers: [
     {

@@ -104,4 +104,7 @@ input[type="checkbox"]:checked {
     .currentMonth {
       display: none;
     }
+    input {
+      display: none;
+    }
 }

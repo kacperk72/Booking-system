@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Godziny niestandardowe</h2>
+<h2 mat-dialog-title>Rezerwacja zajęć</h2>
 <form [formGroup]="reservationForm">
   <mat-dialog-content>
     <p>Sala: {{ data.roomName }}</p>
@@ -6,7 +6,7 @@
     <p>Dzień: {{ data.date }}</p>
     <div formArrayName="reservations">
       <div *ngFor="let reservation of reservationForm.get('reservations').controls; let i = index" [formGroupName]="i">
-        <p *ngFor="let slot of getSlotsForDay(getUniqueDays()[i])">Godzina rozpoczęcia: {{ slot.day }} {{ slot.hour }}</p>
+        <p *ngFor="let slot of getSlotsForDay(getUniqueDays()[i])">Godzina: {{ slot.day }} {{ slot.hour }}</p>
         <mat-form-field class="form-filed">
           <mat-label>Godzina zakończenia</mat-label>
           <input matInput type="time" formControlName="endTime" required />

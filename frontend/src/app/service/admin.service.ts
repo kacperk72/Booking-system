@@ -17,9 +17,28 @@ export class AdminService {
   }
 
   setReservation(reservation: any): Observable<any> {
-    return this.http.post<any>(
-      'http://localhost:3000/add-reservation',
-      reservation
-    );
+    const salaID = reservation.room;
+    const mail = reservation.mail;
+    const course = '';
+
+    let dateParts = reservation.date.split('.');
+    let formattedDate = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+    let hours = reservation.hour.split(' - ');
+    let datetime1 = new Date(`${formattedDate} ${hours[0]}:00`);
+    let datetime2 = new Date(`${formattedDate} ${hours[1]}:00`);
+
+    const start = datetime1;
+    const end = datetime2;
+    const acceptationState = 'accepted';
+
+    const res = {
+      salaID,
+      mail,
+      course,
+      start,
+      end,
+      acceptationState,
+    };
+    return this.http.post<any>('http://localhost:3000/add-reservation', res);
   }
 }

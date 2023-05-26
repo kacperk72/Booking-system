@@ -21,6 +21,7 @@ export class AdminReservationListComponent implements OnInit {
   displayedColumns: string[] = ['id', 'mail', 'room', 'date', 'hour', 'icons'];
   showDelete: boolean = false;
   actualElement: any;
+  isLoading: boolean = true;
 
   constructor(private service: AdminService) {}
 
@@ -42,11 +43,15 @@ export class AdminReservationListComponent implements OnInit {
             minute: '2-digit',
           }),
       }));
+      this.isLoading = false;
     });
   }
 
   approveRes(element: any): void {
     console.log('approveRes', element);
+    this.service.setReservation(element).subscribe((res) => {
+      console.log(res);
+    });
   }
 
   deleteRes(element: any): void {

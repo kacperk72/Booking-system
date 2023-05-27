@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { AddReservationModalComponent } from '../add-reservation-modal/add-reservation-modal.component';
+import { TimetableService } from '../service/timetable.service';
 
 interface Lesson {
   SALA_ID: number;
@@ -38,8 +39,13 @@ export class RoomTimetableViewComponent implements OnInit {
   SalaId: string = '';
   displayedLessons: Lesson[] = [];
   selectedSlots: { [key: string]: boolean } = {};
+  isLoadedTimeTable: boolean = false;
 
-  constructor(public dialog: MatDialog, private route: ActivatedRoute) {}
+  constructor(
+    public dialog: MatDialog,
+    private route: ActivatedRoute,
+    private service: TimetableService
+  ) {}
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
@@ -47,25 +53,34 @@ export class RoomTimetableViewComponent implements OnInit {
       this.SalaId = params['id'];
     });
 
-    this.lessons = [
-      {
-        SALA_ID: 3161,
-        NazwaPrzedmiotu: 'Mechanika kwantowa - Wykład',
-        DataStartu: '2023-05-24T05:30:00.000Z',
-        DataKonca: '2023-05-24T08:00:00.000Z',
-        NazwaSali: 'A-1-06',
-      },
-    ];
+    // API request
+    this.service.getTimetable(5, this.SalaId).subscribe((timetable: any) => {
+      console.log(timetable);
+      this.lessons = timetable;
 
-    this.setCurrentWeek();
-    this.setCurrentMonth();
-    this.updateLessons();
+      this.setCurrentWeek();
+      this.setCurrentMonth();
+      this.updateLessons();
 
-    this.days.forEach((day, index) => {
-      const date = new Date(this.currentWeek[0].getTime());
-      date.setDate(date.getDate() + index);
-      day.date = this.getFormattedDate(date);
+      this.days.forEach((day, index) => {
+        const date = new Date(this.currentWeek[0].getTime());
+        date.setDate(date.getDate() + index);
+        day.date = this.getFormattedDate(date);
+      });
+
+      // console.log('lessons', this.lessons);
+      this.isLoadedTimeTable = true;
     });
+
+    // this.lessons = [
+    //   {
+    //     SALA_ID: 3161,
+    //     NazwaPrzedmiotu: 'Mechanika kwantowa - Wykład',
+    //     DataStartu: '2023-05-24T05:30:00.000Z',
+    //     DataKonca: '2023-05-24T08:00:00.000Z',
+    //     NazwaSali: 'A-1-06',
+    //   },
+    // ];
   }
 
   isHourInRange(hour: string, start: string, end: string) {
@@ -182,6 +197,8 @@ export class RoomTimetableViewComponent implements OnInit {
       date.setDate(date.getDate() + index);
       day.date = this.getFormattedDate(date);
     });
+
+    this.updateLessons();
   }
 
   nextMonth() {
@@ -205,6 +222,8 @@ export class RoomTimetableViewComponent implements OnInit {
       date.setDate(date.getDate() + index);
       day.date = this.getFormattedDate(date);
     });
+
+    this.updateLessons();
   }
 
   setCurrentMonth() {
@@ -252,5 +271,18 @@ export class RoomTimetableViewComponent implements OnInit {
       month: 'long',
       day: 'numeric',
     });
+  }
+
+  getFormattedTime(isoDate: string): string {
+    const date = new Date(isoDate);
+    return `${date.getFullYear()}-${(date.getMonth() + 1)
+      .toString()
+      .padStart(2, '0')}-${date
+      .getDate()
+      .toString()
+      .padStart(2, '0')} ${date.getHours()}:${date
+      .getMinutes()
+      .toString()
+      .padStart(2, '0')}`;
   }
 }

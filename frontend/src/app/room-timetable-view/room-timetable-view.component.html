@@ -1,4 +1,7 @@
-<div>
+<div *ngIf="!isLoadedTimeTable" class="spinner-container">
+  <mat-spinner></mat-spinner>
+</div>
+<div *ngIf="isLoadedTimeTable">
   <div class="header">
     <p class="currentWeek">Tydzień <b>{{ getFormattedDate(currentWeek[0]) }} - {{ getFormattedDate(currentWeek[1]) }}</b></p>
     <p class="currentMonth">Miesiąc <b>{{ getFormattedDate(currentMonth[0]) }} - {{ getFormattedDate(currentMonth[1]) }}</b></p>
@@ -18,7 +21,7 @@
             <div>
               <strong>{{ lesson.NazwaPrzedmiotu }}</strong>
               <br />
-              {{ lesson.DataStartu }} - {{ lesson.DataKonca }}
+              {{ getFormattedTime(lesson.DataStartu) }} - {{ getFormattedTime(lesson.DataKonca) }}
               <br />
               Sala: {{ lesson.NazwaSali }}
             </div>

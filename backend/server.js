@@ -147,6 +147,10 @@ app.route('/admin/reservation').put( (req,res) => {
 //         addRoomsToDb(numbers, addReservationsToDb);
 //     })();
 // });
+
+
+
+
 app.route('/addToDb').get(async (req, res) => {
     var count = 0;
     let numbers = [];

@@ -7,25 +7,23 @@
     <thead>
       <tr>
         <th>Godzina</th>
-        <th *ngFor="let day of days">{{ day }}</th>
+        <th *ngFor="let day of days">{{ day.name }} {{ day.date }}</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let hour of hours">
         <td>{{ hour }}</td>
         <td *ngFor="let day of days" class="days">
-          <ng-container *ngIf="getLessonInRange(hour, day) as lesson">
+          <ng-container *ngIf="getLessonInRange(hour, day.name) as lesson">
             <div>
-              <strong>{{ lesson.name }}</strong>
+              <strong>{{ lesson.NazwaPrzedmiotu }}</strong>
               <br />
-              {{ lesson.startTime }} - {{ lesson.endTime }}
+              {{ lesson.DataStartu }} - {{ lesson.DataKonca }}
               <br />
-              Prowadzący: {{ lesson.instructor }}
-              <br />
-              Sala: {{ lesson.room }}
+              Sala: {{ lesson.NazwaSali }}
             </div>
           </ng-container>
-          <input class="example-checkbox" type="checkbox" *ngIf="!getLessonInRange(hour, day)" [(ngModel)]="selectedSlots[day + '-' + hour]" />
+          <input class="example-checkbox" type="checkbox" *ngIf="!getLessonInRange(hour, day.name)" [(ngModel)]="selectedSlots[day.name + '-' + hour]" />
         </td>
       </tr>
     </tbody>

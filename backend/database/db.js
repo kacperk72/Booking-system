@@ -4,40 +4,37 @@ var connection = require('./connection.js');
 // propozycja klasy rezerwacji:
 
 var DataBase = {
-    getReservationsForMonth: function (month, id, callback) {
-        const startDate = new Date(new Date().getFullYear(), month - 1, 1).toISOString().split('T')[0];
-        const endDate = new Date(new Date().getFullYear(), month, 0).toISOString().split('T')[0];
-    
-        const sql = `SELECT SALA_ID, NazwaPrzedmiotu, DataStartu, DataKonca
-                     FROM rezerwacje
-                     WHERE DataStartu BETWEEN '${startDate}' AND '${endDate}' AND SALA_ID = ${id}`;
-    
-        connection.query(sql, function (err, result) {
-            if (err) {
-                console.log(`Error while getting reservations for month ${month}`);
-                callback(err, result);
-            } else {
-                const reservations = result;
-                const salaSql = `SELECT NazwaSali
-                 FROM sale
-                 WHERE SalaId = ${id}`;
-    
-                connection.query(salaSql, function (err, salaResult) {
-                    if (err) {
-                        console.log(`Error while getting sala names for reservations`);
-                        callback(err, result);
-                    } else {
-                        const salaName = salaResult[0].NazwaSali;
-                        const reservationsWithSalaName = reservations.map((reservation) => ({
-                            ...reservation,
-                            NazwaSali: salaName
-                        }));
-                        callback(null, reservationsWithSalaName);
-                    }
-                });
-            }
-        });
-    },
+getReservationsForMonth: function (month, id, callback) {
+    const sql = `SELECT SALA_ID, NazwaPrzedmiotu, DataStartu, DataKonca
+                 FROM rezerwacje
+                 WHERE MONTH(DataStartu) = ${month} AND SALA_ID = ${id}`;
+
+    connection.query(sql, function (err, result) {
+        if (err) {
+            console.log(`Error while getting reservations for month ${month}`);
+            callback(err, result);
+        } else {
+            const reservations = result;
+            const salaSql = `SELECT NazwaSali
+             FROM sale
+             WHERE SalaId = ${id}`;
+
+            connection.query(salaSql, function (err, salaResult) {
+                if (err) {
+                    console.log(`Error while getting sala names for reservations`);
+                    callback(err, result);
+                } else {
+                    const salaName = salaResult[0].NazwaSali;
+                    const reservationsWithSalaName = reservations.map((reservation) => ({
+                        ...reservation,
+                        NazwaSali: salaName
+                    }));
+                    callback(null, reservationsWithSalaName);
+                }
+            });
+        }
+    });
+},
     getRooms: function (callback) {
         connection.query('SELECT * FROM sale', function (err, result) {
             if (err) {

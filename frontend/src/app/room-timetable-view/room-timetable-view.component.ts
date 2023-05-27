@@ -64,7 +64,7 @@ export class RoomTimetableViewComponent implements OnInit {
 
       this.days.forEach((day, index) => {
         const date = new Date(this.currentWeek[0].getTime());
-        date.setDate(date.getDate() + index);
+        date.setDate(date.getDate() + index + 1);
         day.date = this.getFormattedDate(date);
       });
 
@@ -99,6 +99,7 @@ export class RoomTimetableViewComponent implements OnInit {
     this.displayedLessons = this.lessons.filter((lesson) => {
       const lessonStart = new Date(lesson.DataStartu);
       const lessonEnd = new Date(lesson.DataKonca);
+
       return (
         lessonStart >= this.currentWeek[0] && lessonEnd <= this.currentWeek[1]
       );
@@ -120,7 +121,16 @@ export class RoomTimetableViewComponent implements OnInit {
   }
 
   getDayNumber(day: string): number {
-    return this.days.findIndex((d) => d.name === day) + 1;
+    const days = [
+      'Niedziela',
+      'Poniedziałek',
+      'Wtorek',
+      'Środa',
+      'Czwartek',
+      'Piątek',
+      'Sobota',
+    ];
+    return days.indexOf(day);
   }
 
   setCurrentWeek() {
@@ -148,7 +158,7 @@ export class RoomTimetableViewComponent implements OnInit {
 
     this.days.forEach((day, index) => {
       const date = new Date(this.currentWeek[0].getTime()); // tworzymy nowy obiekt daty
-      date.setDate(date.getDate() + index);
+      date.setDate(date.getDate() + index + 1);
       day.date = this.getFormattedDate(date);
     });
 
@@ -169,7 +179,7 @@ export class RoomTimetableViewComponent implements OnInit {
 
     this.days.forEach((day, index) => {
       const date = new Date(this.currentWeek[0].getTime()); // tworzymy nowy obiekt daty
-      date.setDate(date.getDate() + index);
+      date.setDate(date.getDate() + index + 1);
       day.date = this.getFormattedDate(date);
     });
 
@@ -247,12 +257,32 @@ export class RoomTimetableViewComponent implements OnInit {
     const selected = Object.keys(this.selectedSlots)
       .filter((key) => this.selectedSlots[key])
       .map((key) => {
-        const [day, hour] = key.split('-');
-        return { day, hour };
+        const [day, date, hour] = key.split('-');
+        return { day, date, hour };
       });
+
+    const sortedHours = selected.map((slot) => slot.hour).sort();
+    for (let i = 0; i < sortedHours.length - 1; i++) {
+      const currentHour = new Date(`2000-01-01T${sortedHours[i]}:00`);
+      const nextHour = new Date(`2000-01-01T${sortedHours[i + 1]}:00`);
+      const timeDifference = Math.abs(
+        nextHour.getTime() - currentHour.getTime()
+      );
+      const hourDifference = timeDifference / (1000 * 60 * 60); // przerwa w godzinach
+      if (hourDifference > 1) {
+        alert('Za duża przerwa między rezerwacjami!');
+        return;
+      }
+    }
 
     if (selected.length === 0) {
       alert('Proszę zaznaczyć co najmniej jeden slot.');
+      return;
+    }
+
+    const uniqueDates = new Set(selected.map((slot) => slot.date));
+    if (uniqueDates.size > 1) {
+      alert('Dopuszczamy rezerwację zajęć w jednym dniu.');
       return;
     }
 
@@ -262,6 +292,7 @@ export class RoomTimetableViewComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(() => {
       this.selectedSlots = {};
+      location.reload();
     });
   }
 
@@ -275,12 +306,7 @@ export class RoomTimetableViewComponent implements OnInit {
 
   getFormattedTime(isoDate: string): string {
     const date = new Date(isoDate);
-    return `${date.getFullYear()}-${(date.getMonth() + 1)
-      .toString()
-      .padStart(2, '0')}-${date
-      .getDate()
-      .toString()
-      .padStart(2, '0')} ${date.getHours()}:${date
+    return `${date.getHours().toString().padStart(2, '0')}:${date
       .getMinutes()
       .toString()
       .padStart(2, '0')}`;

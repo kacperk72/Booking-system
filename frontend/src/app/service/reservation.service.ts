@@ -8,9 +8,8 @@ export interface IReservation {
   course: string;
   start: string;
   end: string;
-  acceptationState: boolean;
+  acceptationState: string;
 }
-
 @Injectable({
   providedIn: 'root',
 })

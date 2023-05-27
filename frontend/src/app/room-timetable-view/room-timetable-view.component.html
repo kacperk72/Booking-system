@@ -26,7 +26,7 @@
               Sala: {{ lesson.NazwaSali }}
             </div>
           </ng-container>
-          <input class="example-checkbox" type="checkbox" *ngIf="!getLessonInRange(hour, day.name)" [(ngModel)]="selectedSlots[day.name + '-' + hour]" />
+          <input class="example-checkbox" type="checkbox" *ngIf="!getLessonInRange(hour, day.name)" [(ngModel)]="selectedSlots[day.name + '-' + day.date + '-' + hour]" />
         </td>
       </tr>
     </tbody>

@@ -3,10 +3,15 @@
   <mat-dialog-content>
     <p>Sala: {{ data.roomName }}</p>
     <p>ID: {{ data.SalaId }}</p>
-    <p>Dzień: {{ data.date }}</p>
+   
     <div formArrayName="reservations">
       <div *ngFor="let reservation of reservationForm.get('reservations').controls; let i = index" [formGroupName]="i">
-        <p *ngFor="let slot of getSlotsForDay(getUniqueDays()[i])">Godzina: {{ slot.day }} {{ slot.hour }}</p>
+        <p>Dzień: {{ data.slots[i].date }}</p>
+        <!-- <p *ngFor="let slot of getSlotsForDay(getUniqueDays()[i])">Godzina: {{ slot.day }} {{ slot.hour }} -  {{ (+slot.hour + 1).toString().padStart(2, '0') }}</p> -->
+        <mat-form-field class="form-filed">
+          <mat-label>Godzina rozpoczęcia</mat-label>
+          <input matInput type="time" formControlName="startTime"  required />
+        </mat-form-field>
         <mat-form-field class="form-filed">
           <mat-label>Godzina zakończenia</mat-label>
           <input matInput type="time" formControlName="endTime" required />

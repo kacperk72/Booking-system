@@ -130,7 +130,34 @@ getReservationsForMonth: function (month, id, callback) {
                 // console.log(`state of reservation ${rezerwacjaId} has changed to ${acceptationState}`)
             }
         )
+    },
+    findByIdAndStartTime: function (sala_id, data_startu, callback) {
+        const sql = `SELECT * FROM rezerwacje WHERE SALA_ID = ${sala_id} AND DataStartu = '${data_startu}' AND Potwierdzenie = 'pending'`;
+        connection.query(sql, function (err, result) {
+          if (err) {
+            console.log(`Error while finding reservation by id and start time`);
+            callback(err, null);
+          } else {
+            if (result.length > 0) {
+              callback(null, result[0]);
+            } else {
+              callback(null, null);
+            }
+          }
+        });
+      },
+      deleteUsosReservation: function () {
+        var sql = `DELETE FROM rezerwacje WHERE Potwierdzenie = 'USOS'`;
+        connection.query(sql, function (err, result) {
+            if (err) {
+                console.log(err);
+                console.log("Can't delete reservation");
+            } else {
+                console.log("Deleted reservation");
+            }
+        });
     }
+    
 
 };
 

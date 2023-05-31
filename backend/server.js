@@ -101,6 +101,14 @@ app.route('/addToDb').get(async (req, res) => {
                 const response = await fetch(`https://apps.usos.uj.edu.pl/services/geo/room?room_id=${item}&fields=number|type|capacity`);
                 const data = await response.json();
                 const parsedData = JSON.parse(JSON.stringify(data));
+                if (parsedData.type === "didactics_room")
+                    parsedData.type = "dydaktyczna"
+                if (parsedData.capacity > 50 && parsedData.type === "dydaktyczna")
+                    parsedData.type = "wykładowa"
+                if ((parsedData.number[0] === "F" || parsedData.number[0] === "G") && parsedData.type === "dydaktyczna")
+                    parsedData.type = "komputerowa"
+                else if (parsedData.type === "staff_members_room")
+                    parsedData.type = "pokój personelu"
                 await DataBase.insertRoom(item, parsedData.capacity, parsedData.number, parsedData.type);
             }
         };
@@ -167,7 +175,6 @@ app.route('/filter-rooms').get((req, res) => {
     const name = req.query.name;
     const seats = req.query.seats;
     const type = req.query.type;
-    console.log(name + " -> " + seats + " -> " + type)  //TODO delete later
     DataBase.getFilteredRooms(name, seats, type, (err, result) => {
         if (err) {
             console.log(err);
@@ -181,7 +188,6 @@ app.route('/filter-rooms').get((req, res) => {
 app.route('/get-schedule').get((req, res) => {
     const id = req.query.id;
     const date = req.query.date;
-    console.log(id + " -> " + date) //TODO delete later
     DataBase.getRoomScheduleByDay(id, date, (err, result) => {
         if (err) {
             console.log(err);

@@ -77,7 +77,6 @@ getReservationsForMonth: function (month, id, callback) {
             if (err) {
                 console.log("Can't filter data");
             } else {
-                console.log("Data filtered");
                 callback(err, result);
             }
         });

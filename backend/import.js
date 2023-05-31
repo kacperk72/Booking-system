@@ -135,7 +135,6 @@ app.get('/usos-token', (req, res) => {
 
 app.get('/check-usos-token', (req, res) => {
     let code = req.query.code;
-    console.log("ENDPOINT " + code);
     checkAuthorization(code)
         .then((authorized) => {
             res.send(authorized);

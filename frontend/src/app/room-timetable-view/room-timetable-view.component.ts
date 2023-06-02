@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { AddReservationModalComponent } from '../add-reservation-modal/add-reservation-modal.component';
@@ -17,7 +17,7 @@ interface Lesson {
   templateUrl: './room-timetable-view.component.html',
   styleUrls: ['./room-timetable-view.component.css'],
 })
-export class RoomTimetableViewComponent implements OnInit {
+export class RoomTimetableViewComponent implements OnInit, AfterViewInit {
   days = [
     { name: 'Poniedziałek', date: '' },
     { name: 'Wtorek', date: '' },
@@ -29,8 +29,8 @@ export class RoomTimetableViewComponent implements OnInit {
   ];
 
   hours = Array.from(
-    { length: 14 },
-    (_, i) => `${(i + 8).toString().padStart(2, '0')}:00`
+    { length: 7 },
+    (_, i) => `${(i * 2 + 8).toString().padStart(2, '0')}:00`
   );
   lessons: Lesson[] = [];
   currentWeek: Date[] = [];
@@ -52,35 +52,28 @@ export class RoomTimetableViewComponent implements OnInit {
       this.roomName = params['roomName'];
       this.SalaId = params['id'];
     });
+    this.setCurrentWeek();
+    this.setCurrentMonth();
+  }
 
+  ngAfterViewInit(): void {
+    let monthNumber = Number(new Date(this.currentMonth[0].getMonth() + 1));
     // API request
-    this.service.getTimetable(5, this.SalaId).subscribe((timetable: any) => {
-      console.log(timetable);
-      this.lessons = timetable;
+    this.service
+      .getTimetable(monthNumber, this.SalaId)
+      .subscribe((timetable: any) => {
+        console.log(timetable);
+        this.lessons = timetable;
 
-      this.setCurrentWeek();
-      this.setCurrentMonth();
-      this.updateLessons();
+        this.days.forEach((day, index) => {
+          const date = new Date(this.currentWeek[0].getTime());
+          date.setDate(date.getDate() + index + 1);
+          day.date = this.getFormattedDate(date);
+        });
 
-      this.days.forEach((day, index) => {
-        const date = new Date(this.currentWeek[0].getTime());
-        date.setDate(date.getDate() + index + 1);
-        day.date = this.getFormattedDate(date);
+        this.updateLessons();
+        this.isLoadedTimeTable = true;
       });
-
-      // console.log('lessons', this.lessons);
-      this.isLoadedTimeTable = true;
-    });
-
-    // this.lessons = [
-    //   {
-    //     SALA_ID: 3161,
-    //     NazwaPrzedmiotu: 'Mechanika kwantowa - Wykład',
-    //     DataStartu: '2023-05-24T05:30:00.000Z',
-    //     DataKonca: '2023-05-24T08:00:00.000Z',
-    //     NazwaSali: 'A-1-06',
-    //   },
-    // ];
   }
 
   isHourInRange(hour: string, start: string, end: string) {
@@ -135,13 +128,17 @@ export class RoomTimetableViewComponent implements OnInit {
 
   setCurrentWeek() {
     const currentDate = new Date();
-    const firstDayOfWeek = currentDate.getDate() - currentDate.getDay();
-    const lastDayOfWeek = firstDayOfWeek + 7;
+    const firstDayOfWeek = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate() - currentDate.getDay()
+    );
+    const lastDayOfWeek = new Date(firstDayOfWeek);
+    lastDayOfWeek.setDate(firstDayOfWeek.getDate() + 7);
 
-    const startDate = new Date(currentDate.setDate(firstDayOfWeek));
-    const endDate = new Date(currentDate.setDate(lastDayOfWeek));
+    console.log(firstDayOfWeek, lastDayOfWeek);
 
-    this.currentWeek = [startDate, endDate];
+    this.currentWeek = [firstDayOfWeek, lastDayOfWeek];
   }
 
   previousWeek() {
@@ -191,11 +188,21 @@ export class RoomTimetableViewComponent implements OnInit {
     this.currentMonth[1].setMonth(this.currentMonth[1].getMonth() - 1);
     this.updateLessons();
 
-    this.currentWeek[0] = new Date(
+    let firstDayOfMonth = new Date(
       this.currentMonth[0].getFullYear(),
       this.currentMonth[0].getMonth(),
       1
     );
+
+    let dayOfWeek = firstDayOfMonth.getDay();
+    dayOfWeek = dayOfWeek === 0 ? 7 : dayOfWeek;
+
+    let diff = dayOfWeek - 1;
+
+    this.currentWeek[0] = new Date(
+      firstDayOfMonth.setDate(firstDayOfMonth.getDate() - diff)
+    );
+
     this.currentWeek[1] = new Date(
       this.currentWeek[0].getFullYear(),
       this.currentWeek[0].getMonth(),
@@ -203,12 +210,22 @@ export class RoomTimetableViewComponent implements OnInit {
     );
 
     this.days.forEach((day, index) => {
-      const date = new Date(this.currentWeek[0].getTime()); // tworzymy nowy obiekt daty
+      const date = new Date(this.currentWeek[0].getTime());
       date.setDate(date.getDate() + index);
       day.date = this.getFormattedDate(date);
     });
 
     this.updateLessons();
+
+    // Get data for new month
+    let monthNumber = Number(new Date(this.currentMonth[0].getMonth() + 1));
+    this.service
+      .getTimetable(monthNumber, this.SalaId)
+      .subscribe((timetable: any) => {
+        this.lessons = timetable;
+        this.updateLessons();
+        this.isLoadedTimeTable = true;
+      });
   }
 
   nextMonth() {
@@ -216,10 +233,19 @@ export class RoomTimetableViewComponent implements OnInit {
     this.currentMonth[1].setMonth(this.currentMonth[1].getMonth() + 1);
     this.updateLessons();
 
-    this.currentWeek[0] = new Date(
+    let firstDayOfMonth = new Date(
       this.currentMonth[0].getFullYear(),
       this.currentMonth[0].getMonth(),
       1
+    );
+
+    let dayOfWeek = firstDayOfMonth.getDay();
+    dayOfWeek = dayOfWeek === 0 ? 7 : dayOfWeek;
+
+    let diff = dayOfWeek - 1;
+
+    this.currentWeek[0] = new Date(
+      firstDayOfMonth.setDate(firstDayOfMonth.getDate() - diff)
     );
     this.currentWeek[1] = new Date(
       this.currentWeek[0].getFullYear(),
@@ -234,6 +260,14 @@ export class RoomTimetableViewComponent implements OnInit {
     });
 
     this.updateLessons();
+    // Get data for new month
+    let monthNumber = Number(new Date(this.currentMonth[0].getMonth() + 1));
+    this.service
+      .getTimetable(monthNumber, this.SalaId)
+      .subscribe((timetable: any) => {
+        this.lessons = timetable;
+        this.updateLessons();
+      });
   }
 
   setCurrentMonth() {
@@ -269,6 +303,7 @@ export class RoomTimetableViewComponent implements OnInit {
         nextHour.getTime() - currentHour.getTime()
       );
       const hourDifference = timeDifference / (1000 * 60 * 60); // przerwa w godzinach
+      console.log(hourDifference);
       if (hourDifference > 1) {
         alert('Za duża przerwa między rezerwacjami!');
         return;

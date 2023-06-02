@@ -121,8 +121,6 @@ export class AddReservationModalComponent implements OnInit {
         )}:00.000Z`;
 
         const dateTime2 = isoDate.substring(0, 10) + isoTime2;
-        console.log(dateTime);
-        console.log(dateTime2);
 
         const reservationRequest = {
           salaId: salaId,
@@ -130,10 +128,9 @@ export class AddReservationModalComponent implements OnInit {
           end: dateTime2,
           mail: mail,
           course: subjectName,
-          acceptationState: 'test',
+          acceptationState: 'waiting',
         };
 
-        console.log('dane do rezerwacji', reservationRequest);
         this.service
           .addReservation(reservationRequest)
           .subscribe((response) => {
@@ -159,7 +156,7 @@ export class AddReservationModalComponent implements OnInit {
     let parts = timeString.split(':');
     let date = new Date();
     date.setHours(parseInt(parts[0]), parseInt(parts[1]));
-    date.setHours(date.getHours() + 1);
+    date.setHours(date.getHours() + 2);
 
     let newHours = date.getHours().toString().padStart(2, '0');
     let newMinutes = date.getMinutes().toString().padStart(2, '0');

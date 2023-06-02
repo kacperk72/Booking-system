@@ -29,7 +29,7 @@ export class AdminService {
 
     const start = datetime1;
     const end = datetime2;
-    const acceptationState = 'accepted';
+    const acceptationState = 'waiting';
 
     const res = {
       salaID,
@@ -40,5 +40,18 @@ export class AdminService {
       acceptationState,
     };
     return this.http.post<any>('http://localhost:3000/add-reservation', res);
+  }
+
+  deleteReservation(reservationID: string): Observable<any> {
+    return this.http.delete(
+      `http://localhost:3000/admin/deleteReservation/${reservationID}`
+    );
+  }
+
+  approveReservation(reservationID: string): Observable<any> {
+    return this.http.get(
+      `http://localhost:3000/admin/aproveRes/${reservationID}`,
+      { observe: 'response' }
+    );
   }
 }

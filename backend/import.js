@@ -8,6 +8,7 @@ const fs = require('fs');
 const roomIDs = require('./roomIDs.js');
 const app = express();
 const cors = require('cors');
+const { deleteUsosReservationAdmin } = require('./database/db.js');
 const CONSUMER_KEY = process.env.CONSUMER_KEY;
 const CONSUMER_SECRET = process.env.CONSUMER_SECRET;
 const REQUEST_TOKEN_URL = 'https://apps.usos.uj.edu.pl/services/oauth/request_token';
@@ -72,9 +73,7 @@ function checkAuthorization(code) {
 
 async function getReservations() {
     const url = 'https://apps.usos.uj.edu.pl/services/tt/room';
-    // const date = new Date();
-    const date = new Date('2023-04-01')
-    
+    const date = new Date('2023-02-01')
     while (date <= new Date('2023-06-13')) {
         numbers = await roomIDs.getRoomIDs();
         numbers.forEach((number) => {
@@ -144,6 +143,7 @@ app.get('/check-usos-token', (req, res) => {
             res.status(500).send('Internal server error');
         });
 });
+
 
 
 

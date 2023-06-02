@@ -13,8 +13,9 @@ export class TimetableService {
   getFilteredRooms(): void {}
 
   getTimetable(month: number, id: any): Observable<any> {
-    return this.http.get<any>(
-      `http://localhost:3000/get-month-data/${month}/${id}`
-    );
+    // return this.http.get<any>(
+    //   `http://localhost:3000/get-month-data/${month}/${id}`
+    // );
+    return this.http.get<any>(`http://localhost:3000/get-room-data/${id}`);
   }
 }

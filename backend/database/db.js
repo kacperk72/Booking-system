@@ -35,6 +35,38 @@ getReservationsForMonth: function (month, id, callback) {
         }
     });
 },
+getReservationsForRoom: function (id, callback) {
+    const sql = `SELECT SALA_ID, NazwaPrzedmiotu, DataStartu, DataKonca
+                 FROM rezerwacje
+                 WHERE SALA_ID = ${id} AND (Potwierdzenie = 'USOS' OR Potwierdzenie = 'accepted')`;
+
+    connection.query(sql, function (err, result) {
+        if (err) {
+            console.log(`Error`);
+            callback(err, result);
+        } else {
+            const reservations = result;
+            const salaSql = `SELECT NazwaSali
+             FROM sale
+             WHERE SalaId = ${id}`;
+
+            connection.query(salaSql, function (err, salaResult) {
+                if (err) {
+                    console.log(`Error while getting sala names for reservations`);
+                    callback(err, result);
+                } else {
+                    const salaName = salaResult[0].NazwaSali;
+                    const reservationsWithSalaName = reservations.map((reservation) => ({
+                        ...reservation,
+                        NazwaSali: salaName
+                    }));
+                    callback(null, reservationsWithSalaName);
+                }
+            });
+        }
+    });
+},
+
     getRooms: function (callback) {
         connection.query('SELECT * FROM sale', function (err, result) {
             if (err) {
@@ -115,7 +147,6 @@ getReservationsForMonth: function (month, id, callback) {
                    VALUES (${sala_id}, '${mail}', '${course}', '${start}', '${end}', '${acceptation}')`;
         connection.query(sql, function (err, result) {
             if (err) {
-                console.log(err);
                 console.log("Can't insert reservation");
             } else {
                 // console.log("Inserted one row");
@@ -149,13 +180,36 @@ getReservationsForMonth: function (month, id, callback) {
         var sql = `DELETE FROM rezerwacje WHERE Potwierdzenie = 'USOS'`;
         connection.query(sql, function (err, result) {
             if (err) {
-                console.log(err);
                 console.log("Can't delete reservation");
             } else {
                 console.log("Deleted reservation");
             }
+        })
+    },
+    deleteReservationAdmin(id) {
+        var sql = `DELETE FROM rezerwacje WHERE RezerwacjaID = '${id}'`;
+        return new Promise((resolve, reject) => {
+            connection.query(sql, (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
         });
-    }
+    },
+    acceptReservationAdmin(acceptationState, rezerwacjaId) {
+        const sql_query = `UPDATE rezerwacje SET Potwierdzenie = '${acceptationState}' WHERE RezerwacjaID = ${rezerwacjaId}`;
+        return new Promise((resolve, reject) => {
+            connection.query(sql_query, (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+    },
     
 
 };

@@ -19,14 +19,13 @@ const mockData: PeriodicElement[] = [];
 export class AdminReservationListComponent implements OnInit {
   dataSource = mockData;
   displayedColumns: string[] = ['id', 'mail', 'room', 'date', 'hour', 'icons'];
-  showDelete: boolean = false;
-  actualElement: any;
   isLoading: boolean = true;
 
   constructor(private service: AdminService) {}
 
   ngOnInit(): void {
     this.service.getReservations().subscribe((data: any[]) => {
+      data = data.filter((el) => el.Potwierdzenie === 'waiting');
       this.dataSource = data.map((reservation) => ({
         id: reservation.RezerwacjaID,
         mail: reservation.Mail,
@@ -48,18 +47,12 @@ export class AdminReservationListComponent implements OnInit {
   }
 
   approveRes(element: any): void {
-    console.log('approveRes', element);
-    this.service.setReservation(element).subscribe((res) => {
-      console.log(res);
-    });
+    this.service.approveReservation(element.id).subscribe(() => {});
+    location.reload();
   }
 
-  deleteRes(element: any): void {
-    this.actualElement = element;
-    this.showDelete = true;
-  }
-
-  closeWindow() {
-    this.showDelete = false;
+  deleteRes(element: any) {
+    this.service.deleteReservation(element.id).subscribe(() => {});
+    location.reload();
   }
 }

@@ -13,29 +13,22 @@ export class AdminRoomListComponent implements OnInit {
   @Output()
   public chosenClass = new EventEmitter<string>();
 
+  typesOfClasses: any = [];
+  reservationVisible: boolean = false;
+  reservationData: any;
+
   constructor(private router: Router, private service: AdminService) {}
 
   ngOnInit(): void {
     this.service.getRooms().subscribe((rooms) => {
       rooms.forEach((room: any) => {
-        this.typesOfClasses.push(room.NazwaSali);
+        const name = room.NazwaSali;
+        const id = room.SalaID;
+        const obj = { id, name };
+        this.typesOfClasses.push(obj);
       });
     });
   }
-
-  typesOfClasses: string[] = [
-    // 'D-1-01',
-    // 'E-1-02',
-    // 'F-1-03',
-    // 'H-1-04',
-    // 'A-1-05',
-    // 'D-1-01',
-    // 'E-1-02',
-    // 'F-1-03',
-    // 'H-1-04',
-  ];
-  reservationVisible: boolean = false;
-  reservationData: any;
 
   public setReservation(event: MouseEvent) {
     this.reservationButton.emit(event);
@@ -53,7 +46,7 @@ export class AdminRoomListComponent implements OnInit {
     this.reservationVisible = !this.reservationVisible;
   }
 
-  checkTimetable(room: string): void {
-    this.router.navigate(['/room']);
+  checkTimetable(room: any): void {
+    this.router.navigate(['/room', room.name, room.id]);
   }
 }

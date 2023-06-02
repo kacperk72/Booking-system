@@ -18,7 +18,7 @@
         <td>{{ hour }}</td>
         <td *ngFor="let day of days" class="days">
           <ng-container *ngIf="getLessonInRange(hour, day.name) as lesson">
-            <div>
+            <div class="lesson">
               <strong>{{ lesson.NazwaPrzedmiotu }}</strong>
               <br />
               {{ getFormattedTime(lesson.DataStartu) }} - {{ getFormattedTime(lesson.DataKonca) }}

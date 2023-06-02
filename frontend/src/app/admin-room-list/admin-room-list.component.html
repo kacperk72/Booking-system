@@ -3,13 +3,13 @@
     <div class="list-container">
         <mat-selection-list #classes [multiple]="false" (click)="setChosenClass(classes.selectedOptions.selected[0].value)">
         <mat-list-option *ngFor="let class of typesOfClasses" [value]="class">
-            {{class}}
+            {{class.name}}
         </mat-list-option>
         </mat-selection-list>
     </div>
-    <div id="addDoctor">
+    <div id="checkPlan">
       <!-- <input type="button" [disabled]="!classes.selectedOptions.hasValue()" value="Dodaj rezerwację dla {{classes.selectedOptions.hasValue() ? classes.selectedOptions.selected[0].value : ''}}" (click)="addReservation()"> -->
-      <input type="button" [disabled]="!classes.selectedOptions.hasValue()" value="Zobacz plan dla {{classes.selectedOptions.hasValue() ? classes.selectedOptions.selected[0].value : ''}}" (click)="checkTimetable(classes.selectedOptions.selected[0].value)">
+      <input type="button" [disabled]="!classes.selectedOptions.hasValue()" value="Zobacz plan dla {{classes.selectedOptions.hasValue() ? classes.selectedOptions.selected[0].value.name : ''}}" (click)="checkTimetable(classes.selectedOptions.selected[0].value)">
     </div>
 </div>
 <!-- <div *ngIf="reservationVisible">

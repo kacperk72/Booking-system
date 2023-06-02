@@ -132,6 +132,12 @@ app.route('/get-month-data/:month/:id').get(function(req, res) {
     });
 
 });
+app.route('/get-room-data/:id').get(function(req, res) {
+    const id = req.params.id;
+    DataBase.getReservationsForRoom(id, function(err, result) {
+        res.send(result);
+    });
+});
 
 
 app.route('/room-list').get(function(req, res) {
@@ -165,11 +171,6 @@ app.route('/add-reservation').post(function(req, res) {
                                req.body.acceptationState);
     mail.sendReservationPendingMail()
 });
-
-
-
-
-
 
 app.route('/filter-rooms').get((req, res) => {
     const name = req.query.name;
@@ -206,6 +207,32 @@ app.route('/admin/reservation').put( (req,res) => {
     res.status(200).send(`state of reservation ${ReservationId} has changed to ${acceptationState} succesfully`);
     mail.sendConfirmationMail(reservation.body.mail, acceptationState)
 });
+
+app.route('/admin/aproveRes/:id').get((req, res) => {
+    const id = req.params.id; 
+    DataBase.acceptReservationAdmin('accepted', id).then(result => {
+        console.log("Updated reservation");
+        res.status(200).send('Reservation updated successfully');
+    }).catch(err => {
+        console.log(err);
+        console.log("Can't update reservation");
+        res.status(500).send('An error occurred while trying to update the reservation');
+    });
+});
+
+app.route('/admin/deleteReservation/:id').delete(async (req, res) => {
+    const id = req.params.id; 
+    console.log(id);
+    DataBase.deleteReservationAdmin(id).then(result => {
+        console.log("Deleted reservation");
+        res.status(200).send('Reservation deleted successfully');
+    }).catch(err => {
+        console.log(err);
+        console.log("Can't delete reservation");
+        res.status(500).send('An error occurred while trying to delete the reservation');
+    });
+});
+
 
 
 // app.route('/addToDb').get((req, res) =>{

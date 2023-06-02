@@ -1,10 +1,10 @@
 <div class="container">
     <div class="header">
         <h1>Admin</h1>
-        <h2>Dodaj rezerwacje!</h2>
-        <hr>
+        <!-- <h2>Dodaj rezerwacje!</h2> -->
+        <input type="button" value="Zaimportuj dane">
     </div>
-    <form [formGroup]="formGroup" class="mat-form-field">
+    <!-- <form [formGroup]="formGroup" class="mat-form-field">
         <div class="inputs">
             <mat-form-field appearance="fill" class="form-filed">
                 <mat-label>E-mail</mat-label>
@@ -36,5 +36,5 @@
             <input type="submit" value="Sprawdź dostępność" style="margin: 10px;" [disabled]="formGroup.invalid" (click)="checkAvailability()">
             <input type="submit" value="Zarezerwuj" style="margin: 10px;" [disabled]="formGroup.invalid" (click)="bookTerm()" *ngIf="available">
         </div>
-      </form>
+      </form> -->
 </div>

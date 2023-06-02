@@ -1,8 +1,8 @@
-<nav class="menu">
-    <ul>
-      <li ><a routerLink="/dashboard" routerLinkActive="active" ariaCurrentWhenActive="page" appHighlight>Strona główna</a></li>
-      <li *ngIf='!role'><a routerLink="/logowanie" routerLinkActive="active" ariaCurrentWhenActive="page" appHighlight>Logowanie</a></li>
-      <li *ngIf='role === "admin"' ><a routerLink="/admin" appHighlight>Admin</a></li>
-      <li *ngIf='role === "admin"' ><a routerLink="/admin-rezerwacja" appHighlight>Zarezerwuj</a></li>
-    </ul>
+<nav>
+	<a routerLink="/dashboard" routerLinkActive="active" ariaCurrentWhenActive="page" appHighlight>Strona główna</a>
+  <a *ngIf='!role' routerLink="/logowanie" routerLinkActive="active" ariaCurrentWhenActive="page" appHighlight>Logowanie</a>
+  <a *ngIf='role === "admin"'  routerLink="/admin" appHighlight>Admin - Rezerwacje</a>
+  <a *ngIf='role === "admin"'  routerLink="/admin-rezerwacja" appHighlight>Admin - Import</a>
+  <div class="animation start-home"></div>
 </nav>
+

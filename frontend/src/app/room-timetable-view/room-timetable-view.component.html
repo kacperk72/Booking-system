@@ -3,6 +3,9 @@
 </div>
 <div *ngIf="isLoadedTimeTable">
   <div class="header">
+    <h1>
+      Sala: {{roomName}}
+    </h1> 
     <p class="currentWeek">Tydzień <b>{{ getFormattedDate(currentWeek[0]) }} - {{ getFormattedDate(currentWeek[1]) }}</b></p>
     <p class="currentMonth">Miesiąc <b>{{ getFormattedDate(currentMonth[0]) }} - {{ getFormattedDate(currentMonth[1]) }}</b></p>
   </div>

@@ -1,0 +1,16 @@
+FROM node:18
+
+# Kopiowanie plików package.json
+# COPY package*.json /client/
+COPY . /client
+WORKDIR /client
+# RUN npm install @angular/cli
+
+# Instalacja zależności
+RUN npm install
+
+# Budowanie aplikacji Angular
+RUN node_modules/.bin/ng build
+
+EXPOSE 4200
+CMD ["node_modules/.bin/ng", "serve", "--host", "0.0.0.0"]

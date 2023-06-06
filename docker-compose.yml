@@ -1,0 +1,42 @@
+version: "3.8"
+services:
+  mysql:
+    image: "mysql:8.0"
+    volumes:
+      - ./backend/:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_ROOT_PASSWORD=pass
+    ports:
+      - "3306:3306"
+  phpmyadmin:
+    image: "phpmyadmin/phpmyadmin:latest"
+    links: 
+      - "mysql:db"
+    ports: 
+      - "8081:80"
+  node:
+    image: "node:18"
+    user: "node"
+    working_dir: /home/node/app/backend
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+      # TODO: check if needed
+      - DB_HOST=mysql
+      - DB_USER=root
+      - DB_PASSWORD=pass
+      - DB_DATABASE=booking_system
+    volumes:
+      - ./:/home/node/app
+    ports:
+      - "3000:3000"
+      - "8001:8001"
+    links:
+      - "mysql:db"
+    command: >
+      bash -c "sleep 10 && npm install && npm start"
+  client: 
+    build: 
+      context: ./frontend
+    ports:
+      - "4200:4200"

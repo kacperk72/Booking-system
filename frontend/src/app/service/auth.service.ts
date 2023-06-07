@@ -1,13 +1,18 @@
-import {HttpClient, HttpParams} from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private cookieService: CookieService
+  ) {}
 
   proceedLogin(usercred: any): Observable<{ token: string }> {
     return this.http.post<{ token: string }>(
@@ -17,16 +22,16 @@ export class AuthService {
   }
 
   IsLoggedIn(): boolean {
-    return localStorage.getItem('token') != null;
+    return this.cookieService.check('token');
   }
 
   GetToken(): string {
-    return localStorage.getItem('token') || '';
+    return this.cookieService.get('token') || '';
   }
 
   Logout(): void {
     window.alert('Wylogowano');
-    localStorage.clear();
+    this.cookieService.delete('token');
     this.router.navigate(['/zaloguj']);
   }
 

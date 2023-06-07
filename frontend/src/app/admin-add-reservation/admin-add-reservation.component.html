@@ -2,39 +2,54 @@
     <div class="header">
         <h1>Admin</h1>
         <!-- <h2>Dodaj rezerwacje!</h2> -->
-        <input type="button" value="Zaimportuj dane">
+        <input type="button" value="Zaimportuj dane" (click)="reimport()">
     </div>
-    <!-- <form [formGroup]="formGroup" class="mat-form-field">
-        <div class="inputs">
-            <mat-form-field appearance="fill" class="form-filed">
-                <mat-label>E-mail</mat-label>
-                <input matInput formControlName="email" required>
-              </mat-form-field>
-      
-              <mat-form-field appearance="fill" class="form-filed">
-                <mat-label>Nazwa przedmiotu</mat-label>
-                <input matInput formControlName="subjectName" required>
-              </mat-form-field>
-            
-              <mat-form-field appearance="fill" class="form-filed">
-                <mat-label>Godzina rozpoczęcia</mat-label>
-                <input matInput type="time" formControlName="startTime" required>
-              </mat-form-field>
-            
-              <mat-form-field appearance="fill" class="form-filed">
-                <mat-label>Godzina zakończenia</mat-label>
-                <input matInput type="time" formControlName="endTime" required>
-              </mat-form-field>
-            
-              <mat-form-field appearance="fill" class="form-filed">
-                <mat-label>Data</mat-label>
-                <input matInput type="date" formControlName="date" required>
-              </mat-form-field>
-        </div>
-        <div class="buttons">
-            <input type="button" value="Anuluj" style="margin: 10px;" (click)="closeBooking()">
-            <input type="submit" value="Sprawdź dostępność" style="margin: 10px;" [disabled]="formGroup.invalid" (click)="checkAvailability()">
-            <input type="submit" value="Zarezerwuj" style="margin: 10px;" [disabled]="formGroup.invalid" (click)="bookTerm()" *ngIf="available">
-        </div>
-      </form> -->
+    <div *ngIf="isLoading" class="spinner-container">
+      <mat-spinner></mat-spinner>
+    </div>
+    <div class="container" *ngIf="isLoadedTable">
+      <h2>Konflikty</h2>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Data Konca</th>
+            <th>Data Startu</th>
+            <th>Mail</th>
+            <th>Nazwa Przedmiotu</th>
+            <th>Potwierdzenie</th>
+            <th>Rezerwacja ID</th>
+            <th>SALA ID</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let item of conflicts">
+            <tr>
+              <td>
+                <button (click)="selectItemExisting(item.existingData, item)">Wybierz istniejący</button>
+              </td>
+              <td>{{item.existingData.DataKonca}}</td>
+              <td>{{item.existingData.DataStartu}}</td>
+              <td>{{item.existingData.Mail}}</td>
+              <td>{{item.existingData.NazwaPrzedmiotu}}</td>
+              <td>{{item.existingData.Potwierdzenie}}</td>
+              <td>{{item.existingData.RezerwacjaID}}</td>
+              <td>{{item.existingData.SALA_ID}}</td>
+            </tr>
+            <tr>
+              <td>
+                <button (click)="selectItemNew(item.newItem, item)">Wybierz nowy</button>
+              </td>
+              <td>{{item.newItem.DataKonca}}</td>
+              <td>{{item.newItem.DataStartu}}</td>
+              <td>{{item.newItem.Mail}}</td>
+              <td>{{item.newItem.NazwaPrzedmiotu}}</td>
+              <td>{{item.newItem.Potwierdzenie}}</td>
+              <td>nie wprowadzono - konflikt</td>
+              <td>{{item.newItem.SALA_ID}}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
 </div>

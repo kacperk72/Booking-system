@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -12,11 +13,11 @@ export class MenuComponent {
 
   private subEvent$!: Subscription;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private cookieService: CookieService) {}
 
   ngOnInit(): void {
     this.subEvent$ = this.router.events.subscribe((val) => {
-      this.role = localStorage.getItem('rola') || '';
+      this.role = this.cookieService.get('rola') || '';
     });
   }
 

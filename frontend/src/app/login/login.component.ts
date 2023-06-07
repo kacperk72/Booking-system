@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { LoginService } from '../service/login.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-login',
@@ -27,10 +28,9 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private service: LoginService
-  ) {
-    // localStorage.clear();
-  }
+    private service: LoginService,
+    private cookieService: CookieService
+  ) {}
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -58,10 +58,20 @@ export class LoginComponent {
       this.userPassword === 'admin' &&
       isAuthorized
     ) {
-      localStorage.setItem('rola', 'admin');
+      this.cookieService.set('rola', 'admin', 0.007); // Ustawia ciasteczko z wygaśnięciem po 10 minutach
       this.router.navigate(['/']);
     } else {
       window.alert('nieudana próba logowania');
+    }
+  }
+
+  checkInactivity() {
+    if (this.cookieService.get('rola')) {
+      // Jeżeli ciasteczko istnieje
+      setTimeout(() => {
+        // Ustawia timeout
+        this.cookieService.delete('rola'); // Kasuje ciasteczko po 10 minutach
+      }, 600000); // 600000 ms = 10 minuty
     }
   }
 

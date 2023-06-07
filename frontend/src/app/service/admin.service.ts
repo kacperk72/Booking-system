@@ -54,4 +54,31 @@ export class AdminService {
       { observe: 'response' }
     );
   }
+
+  reimport(): Observable<any> {
+    return this.http.get(`http://localhost:3000/reimport`);
+  }
+
+  getConflicts(): Observable<any> {
+    return this.http.get(`http://localhost:3000/getconflicts`);
+  }
+
+  setReservationConflicts(reservation: any) {
+    const salaID = reservation.SALA_ID;
+    const mail = reservation.Mail;
+    const course = reservation.NazwaPrzedmiotu;
+    const start = reservation.DataStartu;
+    const end = reservation.DataKonca;
+    const acceptationState = 'accepted';
+
+    const res = {
+      salaID,
+      mail,
+      course,
+      start,
+      end,
+      acceptationState,
+    };
+    return this.http.post<any>('http://localhost:3000/add-reservation', res);
+  }
 }

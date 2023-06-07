@@ -11,6 +11,8 @@ var script = require('./import.js');
 const roomIDs = require('./roomIDs.js');
 var app = express();
 const mail = require("./send_mails.js");
+var conflictDataStable = [];
+
 
 app.listen(3000);
 
@@ -22,9 +24,14 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
+app.route('/getconflicts').get(function(req, res) {
+    res.send(conflictDataStable)
+    conflictDataStable.splice(0, conflictDataStable.length);
+});
 
 app.route('/reimport').get(async (req, res) => {
     try {
+        DataBase.deleteUsosReservation()
         const conflictData = await reimportDb();
         res.send(conflictData);
     } catch (err) {
@@ -56,6 +63,7 @@ app.route('/reimport').get(async (req, res) => {
                                 }
                             };
                             conflictData.push(conflict);
+                            conflictDataStable.push(conflict);
                     } 
                     else {
                         await DataBase.insertReservation(item.id, "Empty", item.name_pl, item.start_time, item.end_time, 'USOS');

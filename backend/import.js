@@ -16,6 +16,7 @@ const ACCESS_TOKEN_URL = 'https://apps.usos.uj.edu.pl/services/oauth/access_toke
 const AUTHORIZE_URL = 'https://apps.usos.uj.edu.pl/services/oauth/authorize';
 let numbers = [];
 var allJsons = [];
+var allJsonStable = [];
 
 const oauth = new OAuth(
     REQUEST_TOKEN_URL,
@@ -107,6 +108,7 @@ async function getReservations() {
         date.setDate(date.getDate() + 7);
     }
 }
+
 var Jsonss = []
 
 app.get('/data', (req, res) => {
@@ -120,6 +122,8 @@ app.get('/data', (req, res) => {
     // console.log(allJsons);
     res.json(Jsonss);
 });
+
+
 
 app.get('/usos-token', (req, res) => {
     getUsosTokenLink()

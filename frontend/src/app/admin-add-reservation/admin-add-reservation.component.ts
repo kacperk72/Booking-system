@@ -40,12 +40,17 @@ export class AdminAddReservationComponent {
   conflicts: Item[] = [];
   selectedItems: Item[] = [];
   isLoadedTable: boolean = false;
+  firstImport: boolean;
 
   constructor(
     private router: Router,
     private fb: FormBuilder,
     private service: AdminService
-  ) {}
+  ) {
+    this.firstImport = JSON.parse(
+      localStorage.getItem('firstImport') || 'true'
+    );
+  }
 
   ngOnInit(): void {
     console.log('init');
@@ -108,5 +113,16 @@ export class AdminAddReservationComponent {
     if (index > -1) {
       this.conflicts.splice(index, 1);
     }
+  }
+
+  firstImportF() {
+    this.isLoading = true;
+    this.service.firstImportF().subscribe((res) => {});
+    setTimeout(() => {
+      this.isLoading = false;
+      this.firstImport = false;
+      localStorage.setItem('firstImport', JSON.stringify(this.firstImport));
+      window.alert('Dane dodane do bazy');
+    }, 5000);
   }
 }

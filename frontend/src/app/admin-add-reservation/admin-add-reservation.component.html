@@ -1,8 +1,9 @@
 <div class="container">
     <div class="header">
         <h1>Admin</h1>
+        <input *ngIf="firstImport" type="button" value="Pierwszy import rezerwacji" (click)="firstImportF()">
         <!-- <h2>Dodaj rezerwacje!</h2> -->
-        <input type="button" value="Zaimportuj dane" (click)="reimport()">
+        <input *ngIf="!firstImport" type="button" value="Zaimportuj nowe dane" (click)="reimport()">
     </div>
     <div *ngIf="isLoading" class="spinner-container">
       <mat-spinner></mat-spinner>

@@ -14,6 +14,7 @@ h1 {
 
 
 input[type=button], input[type=submit], input[type=reset] {
+    margin-right: 20px;
     background-color: #56baed;
     border: none;
     color: white;

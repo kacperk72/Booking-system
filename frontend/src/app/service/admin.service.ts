@@ -81,4 +81,8 @@ export class AdminService {
     };
     return this.http.post<any>('http://localhost:3000/add-reservation', res);
   }
+
+  firstImportF(): Observable<any> {
+    return this.http.get(`http://localhost:3000/addToDb`);
+  }
 }

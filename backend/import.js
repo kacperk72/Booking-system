@@ -1,22 +1,20 @@
 require('dotenv').config();
 const OAuth = require('oauth').OAuth;
-const readline = require('readline');
-const https = require('https');
 const querystring = require('querystring');
 const express = require('express');
-const fs = require('fs');
 const roomIDs = require('./roomIDs.js');
 const app = express();
 const cors = require('cors');
-const { deleteUsosReservationAdmin } = require('./database/db.js');
+
 const CONSUMER_KEY = process.env.CONSUMER_KEY;
 const CONSUMER_SECRET = process.env.CONSUMER_SECRET;
 const REQUEST_TOKEN_URL = 'https://apps.usos.uj.edu.pl/services/oauth/request_token';
 const ACCESS_TOKEN_URL = 'https://apps.usos.uj.edu.pl/services/oauth/access_token';
 const AUTHORIZE_URL = 'https://apps.usos.uj.edu.pl/services/oauth/authorize';
-let numbers = [];
-var allJsons = [];
-var allJsonStable = [];
+
+app.use(cors({
+    secondary: 'http://localhost:8001'
+}));
 
 const oauth = new OAuth(
     REQUEST_TOKEN_URL,
@@ -28,16 +26,15 @@ const oauth = new OAuth(
     'HMAC-SHA1'
 );
 
-app.use(cors({
-    secondary: 'http://localhost:8001'
-}));
-
-
 let usosTokenLink = '';
 let usosOauthToken = '';
 let usosOauthTokenSecret = '';
 let usosOauthAccessToken = ''
 let usosOauthAccessTokenSecret = ''
+
+let numbers = [];
+let allJsons = [];
+
 
 function getUsosTokenLink() {
     return new Promise((resolve, reject) => {
@@ -64,18 +61,17 @@ function checkAuthorization(code) {
                 console.log('Error getting OAuth access token:', err);
                 resolve(false);
             } else {
-                getReservations()
                 resolve(true);
             }
         });
     });
 }
 
-
 async function getReservations() {
+    allJsons = []
     const url = 'https://apps.usos.uj.edu.pl/services/tt/room';
-    const date = new Date('2023-02-01')
-    while (date <= new Date('2023-06-13')) {
+    const date = new Date('2023-02-01') //TODO
+    while (date <= new Date('2023-06-13')) {    //TODO
         numbers = await roomIDs.getRoomIDs();
         numbers.forEach((number) => {
             const roomId = number.toString();
@@ -101,6 +97,7 @@ async function getReservations() {
                         };
                     });
                     allJsons.push(newData)
+                    console.log(allJsons.length)
                 }
             });
 
@@ -108,21 +105,6 @@ async function getReservations() {
         date.setDate(date.getDate() + 7);
     }
 }
-
-var Jsonss = []
-
-app.get('/data', (req, res) => {
-    Jsonss = JSON.stringify(allJsons)
-    // allJsons = JSON.stringify(allJsons)
-    
-    // const combinedJson = allJsons.reduce((acc, curr) => {
-    //     const json = JSON.parse(fs.readFileSync(curr));
-    //     return { ...acc, ...json };
-    // }, {});
-    // console.log(allJsons);
-    res.json(Jsonss);
-});
-
 
 
 app.get('/usos-token', (req, res) => {
@@ -148,10 +130,13 @@ app.get('/check-usos-token', (req, res) => {
         });
 });
 
-
+app.get('/data', (req, res) => {
+    let Jsonss = JSON.stringify(allJsons)
+    res.json(Jsonss);
+});
 
 
 app.listen(8001, () => {
 });
 
-
+module.exports.getReservations = getReservations;

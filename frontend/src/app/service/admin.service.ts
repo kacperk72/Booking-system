@@ -83,6 +83,6 @@ export class AdminService {
   }
 
   firstImportF(): Observable<any> {
-    return this.http.get(`http://localhost:3000/addToDb`);
+    return this.http.get(`http://localhost:3000/reimport`);
   }
 }

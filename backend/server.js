@@ -27,7 +27,7 @@ app.route('/getconflicts').get(function(req, res) {
 
 app.route('/reimport').get(async (req, res) => {
     try {
-        DataBase.deleteUsosReservation()    //TODO
+        DataBase.deleteUsosReservation()
         const conflictData = await reimportDb();
         res.send(conflictData);
     } catch (err) {
@@ -39,7 +39,7 @@ app.route('/reimport').get(async (req, res) => {
 async function reimportDb() {
     const conflictData = [];
     try {
-        await Import.getReservations()  //TODO
+        await Import.getReservations()
         const response = await fetch('http://localhost:8001/data');
         const data = await response.json();
         const parsedData = JSON.parse(data);

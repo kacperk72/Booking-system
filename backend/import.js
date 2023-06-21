@@ -67,13 +67,25 @@ function checkAuthorization(code) {
     });
 }
 
+function getWithOAuth(url, accessToken, accessTokenSecret) {
+    return new Promise((resolve, reject) => {
+        oauth.get(url, accessToken, accessTokenSecret, function(err, data) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(data);
+            }
+        });
+    });
+}
+
 async function getReservations() {
     allJsons = []
     const url = 'https://apps.usos.uj.edu.pl/services/tt/room';
     const date = new Date('2023-02-01') //TODO
     while (date <= new Date('2023-06-13')) {    //TODO
         numbers = await roomIDs.getRoomIDs();
-        numbers.forEach((number) => {
+        for (const number of numbers) {
             const roomId = number.toString();
             const oa = new OAuth(null, null, CONSUMER_KEY, CONSUMER_SECRET, '1.0', null, 'HMAC-SHA1');
             const formattedDate = date.toISOString().slice(0, 10);
@@ -81,27 +93,23 @@ async function getReservations() {
                 room_id: roomId,
                 start: formattedDate,
             };
-            // const urlWithParams = `${url}?${querystring.stringify({room_id: roomId})}`;
             const urlWithParams = `${url}?${querystring.stringify(queryParams)}`
-            oa.get(urlWithParams, usosOauthAccessToken, usosOauthAccessTokenSecret, function (err, data, response) {
-                if (err) {
-                    console.error(err);
-                } else {
-                    let dataObject = JSON.parse(data);
-                    let newData = dataObject.map(function (item) {
-                        return {
-                            id: number,
-                            start_time: item.start_time,
-                            end_time: item.end_time,
-                            name_pl: item.name.pl
-                        };
-                    });
-                    allJsons.push(newData)
-                    console.log(allJsons.length)
-                }
-            });
-
-        });
+            try {
+                const data = await getWithOAuth(urlWithParams, usosOauthAccessToken, usosOauthAccessTokenSecret);
+                let dataObject = JSON.parse(data);
+                let newData = dataObject.map(function (item) {
+                    return {
+                        id: number,
+                        start_time: item.start_time,
+                        end_time: item.end_time,
+                        name_pl: item.name.pl
+                    };
+                });
+                allJsons.push(newData)
+            } catch (err) {
+                console.error(err);
+            }
+        }
         date.setDate(date.getDate() + 7);
     }
 }

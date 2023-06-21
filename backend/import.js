@@ -82,13 +82,17 @@ function getWithOAuth(url, accessToken, accessTokenSecret) {
 async function getReservations() {
     allJsons = []
     const url = 'https://apps.usos.uj.edu.pl/services/tt/room';
-    const date = new Date('2023-02-01') //TODO
-    while (date <= new Date('2023-06-13')) {    //TODO
+
+    const currentYear = new Date().getFullYear();
+    const startDate = new Date(`${currentYear}-01-01`);
+    const endDate = new Date(`${currentYear}-12-31`);
+
+    while (startDate <= endDate) {
         numbers = await roomIDs.getRoomIDs();
         for (const number of numbers) {
             const roomId = number.toString();
             const oa = new OAuth(null, null, CONSUMER_KEY, CONSUMER_SECRET, '1.0', null, 'HMAC-SHA1');
-            const formattedDate = date.toISOString().slice(0, 10);
+            const formattedDate = startDate.toISOString().slice(0, 10);
             const queryParams = {
                 room_id: roomId,
                 start: formattedDate,
@@ -110,9 +114,10 @@ async function getReservations() {
                 console.error(err);
             }
         }
-        date.setDate(date.getDate() + 7);
+        startDate.setDate(startDate.getDate() + 7);
     }
 }
+
 
 
 app.get('/usos-token', (req, res) => {

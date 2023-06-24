@@ -29,7 +29,7 @@ export class AdminService {
 
     const start = datetime1;
     const end = datetime2;
-    const acceptationState = 'waiting';
+    const acceptationState = 'pending';
 
     const res = {
       salaID,

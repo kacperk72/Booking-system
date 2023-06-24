@@ -70,8 +70,8 @@ export class LoginComponent {
       // Jeżeli ciasteczko istnieje
       setTimeout(() => {
         // Ustawia timeout
-        this.cookieService.delete('rola'); // Kasuje ciasteczko po 10 minutach
-      }, 600000); // 600000 ms = 10 minuty
+        this.cookieService.delete('rola');
+      }, 600000 * 12); // 600000 ms = 10 minuty
     }
   }
 

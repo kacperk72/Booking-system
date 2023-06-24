@@ -29,6 +29,7 @@ export class MenuComponent {
 
   logout() {
     this.cookieService.delete('rola');
-    location.reload();
+    // location.reload();
+    this.router.navigate(['/dashboard']);
   }
 }

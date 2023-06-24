@@ -1,7 +1,7 @@
 import { Component, ElementRef, Injectable, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { LoginService } from '../service/login.service';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -52,17 +52,39 @@ export class LoginComponent {
     this.authCode = this.loginForm.get('code')?.value;
     this.loginData = { login: this.userLogin, password: this.userPassword };
     const isAuthorized = await this.checkAuthorizationCode(this.authCode);
+    const isLoginValid = this.service
+      .login(this.userLogin, this.userPassword)
+      .subscribe(
+        () => {},
+        (error) => {
+          if (error.status === 200 && isAuthorized) {
+            const czasWygasniecia = new Date();
+            czasWygasniecia.setTime(
+              czasWygasniecia.getTime() + 2 * 60 * 60 * 1000
+            ); // 2h
+            this.cookieService.set('rola', 'admin', czasWygasniecia);
+            this.router.navigate(['/dashboard']);
+          }
+          if (error.status === 401) {
+            window.alert(
+              'nieudana próba logowania, pobierz nowy kod i spróbuj ponownie!'
+            );
+          }
+        }
+      );
 
-    if (
-      this.userLogin === 'admin' &&
-      this.userPassword === 'admin' &&
-      isAuthorized
-    ) {
-      this.cookieService.set('rola', 'admin', 0.007); // Ustawia ciasteczko z wygaśnięciem po 10 minutach
-      this.router.navigate(['/']);
-    } else {
-      window.alert('nieudana próba logowania');
-    }
+    // if (
+    //   this.userLogin === 'admin' &&
+    //   this.userPassword === 'admin' &&
+    //   isAuthorized
+    // ) {
+    //   const czasWygasniecia = new Date();
+    //   czasWygasniecia.setTime(czasWygasniecia.getTime() + 2 * 60 * 60 * 1000); // 2h
+    //   this.cookieService.set('rola', 'admin', czasWygasniecia);
+    //   this.router.navigate(['/dashboard']);
+    // } else {
+    //   window.alert('nieudana próba logowania');
+    // }
   }
 
   checkInactivity() {
@@ -71,6 +93,7 @@ export class LoginComponent {
       setTimeout(() => {
         // Ustawia timeout
         this.cookieService.delete('rola');
+        this.router.navigate(['/dashboard']);
       }, 600000 * 12); // 600000 ms = 10 minuty
     }
   }

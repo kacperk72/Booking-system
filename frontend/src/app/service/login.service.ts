@@ -1,11 +1,11 @@
-import {HttpClient, HttpParams} from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-
 export class LoginService {
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -29,7 +29,10 @@ export class LoginService {
     try {
       const params = new HttpParams().set('code', code);
       const response = await this.http
-        .get('http://localhost:8001/check-usos-token', { params, responseType: 'text' })
+        .get('http://localhost:8001/check-usos-token', {
+          params,
+          responseType: 'text',
+        })
         .toPromise();
       if (response) {
         return response === 'true';
@@ -42,4 +45,10 @@ export class LoginService {
     }
   }
 
+  login(login: string, password: string): Observable<any> {
+    return this.http.post<any>('http://localhost:3000/admin/login', {
+      login,
+      password,
+    });
+  }
 }

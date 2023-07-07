@@ -26,4 +26,10 @@ export class MenuComponent {
       this.subEvent$.unsubscribe();
     }
   }
+
+  logout() {
+    this.cookieService.delete('rola');
+    // location.reload();
+    this.router.navigate(['/dashboard']);
+  }
 }

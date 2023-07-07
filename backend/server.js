@@ -11,6 +11,7 @@ var script = require('./import.js');
 const roomIDs = require('./roomIDs.js');
 var app = express();
 const mail = require("./send_mails.js");
+require('dotenv').config();
 var conflictDataStable = [];
 
 
@@ -205,6 +206,14 @@ app.route('/get-schedule').get((req, res) => {
             res.send(result);
         }
     });
+});
+
+app.route('/admin/login').post(function(req, res) {
+    if (req.body.login == process.env.LOGIN && req.body.password == process.env.PASSWORD) {
+        res.status(200).send('Logged in');
+    } else {
+        res.status(401).send('Authorization failed');
+    }
 });
 
 app.route('/admin/reservation').put( (req,res) => {

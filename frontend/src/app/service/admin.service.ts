@@ -29,7 +29,7 @@ export class AdminService {
 
     const start = datetime1;
     const end = datetime2;
-    const acceptationState = 'waiting';
+    const acceptationState = 'pending';
 
     const res = {
       salaID,
@@ -80,5 +80,9 @@ export class AdminService {
       acceptationState,
     };
     return this.http.post<any>('http://localhost:3000/add-reservation', res);
+  }
+
+  firstImportF(): Observable<any> {
+    return this.http.get(`http://localhost:3000/addToDb`);
   }
 }

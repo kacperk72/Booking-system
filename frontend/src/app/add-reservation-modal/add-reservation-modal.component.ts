@@ -128,7 +128,7 @@ export class AddReservationModalComponent implements OnInit {
           end: dateTime2,
           mail: mail,
           course: subjectName,
-          acceptationState: 'waiting',
+          acceptationState: 'pending',
         };
 
         this.service

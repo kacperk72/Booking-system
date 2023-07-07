@@ -3,6 +3,7 @@
   <a *ngIf='!role' routerLink="/logowanie" routerLinkActive="active" ariaCurrentWhenActive="page" appHighlight>Logowanie</a>
   <a *ngIf='role === "admin"'  routerLink="/admin" appHighlight>Admin - Rezerwacje</a>
   <a *ngIf='role === "admin"'  routerLink="/admin-rezerwacja" appHighlight>Admin - Import</a>
+  <a *ngIf='role === "admin"'  (click)="logout()" appHighlight>Wyloguj</a>
   <div class="animation start-home"></div>
 </nav>
 

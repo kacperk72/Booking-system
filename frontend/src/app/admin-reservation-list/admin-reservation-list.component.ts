@@ -25,7 +25,7 @@ export class AdminReservationListComponent implements OnInit {
 
   ngOnInit(): void {
     this.service.getReservations().subscribe((data: any[]) => {
-      data = data.filter((el) => el.Potwierdzenie === 'waiting');
+      data = data.filter((el) => el.Potwierdzenie === 'pending');
       this.dataSource = data.map((reservation) => ({
         id: reservation.RezerwacjaID,
         mail: reservation.Mail,

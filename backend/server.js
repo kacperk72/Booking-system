@@ -1,14 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const moment = require('moment');
-const node_fetch = require('node-fetch');
-
 const fetch = require('node-fetch');
-const fs = require('fs');
 var DataBase = require('./database/db.js');
-var script = require('./import.js');
-const roomIDs = require('./roomIDs.js');
+var Import = require('./import.js');
 var app = express();
 const mail = require("./send_mails.js");
 require('dotenv').config();
@@ -20,6 +15,7 @@ app.listen(3000);
 app.use(cors({
     origin: 'http://localhost:4200',
 }));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: false
@@ -41,36 +37,36 @@ app.route('/reimport').get(async (req, res) => {
     }
 });
 
-    async function reimportDb() {
-        const conflictData = []; 
-        try {
-            const response = await fetch('http://localhost:8001/data');
-            const data = await response.json();
-            const parsedData = JSON.parse(data);
-        
-            for (const firstTable of parsedData) {
-                for (const item of firstTable) {
-                    const existingData = await findByIdAndStartTime(item.id, item.start_time); 
-                        if (existingData) {
-                            const conflict = {
-                                existingData: existingData,
-                                newItem: {
-                                    SALA_ID: item.id,
-                                    Mail: 'empty',
-                                    NazwaPrzedmiotu: item.name_pl,
-                                    DataStartu: new Date(item.start_time).toISOString(),
-                                    DataKonca: new Date(item.end_time).toISOString(),
-                                    Potwierdzenie: 'pending'
-                                }
-                            };
-                            conflictData.push(conflict);
-                            conflictDataStable.push(conflict);
-                    } 
-                    else {
-                        await DataBase.insertReservation(item.id, "Empty", item.name_pl, item.start_time, item.end_time, 'USOS');
-                    }
+async function reimportDb() {
+    const conflictData = [];
+    try {
+        await Import.getReservations()
+        const response = await fetch('http://localhost:8001/data');
+        const data = await response.json();
+        const parsedData = JSON.parse(data);
+
+        for (const firstTable of parsedData) {
+            for (const item of firstTable) {
+                const existingData = await findByIdAndStartTime(item.id, item.start_time);
+                if (existingData) {
+                    const conflict = {
+                        existingData: existingData,
+                        newItem: {
+                            SALA_ID: item.id,
+                            Mail: 'empty',
+                            NazwaPrzedmiotu: item.name_pl,
+                            DataStartu: new Date(item.start_time).toISOString(),
+                            DataKonca: new Date(item.end_time).toISOString(),
+                            Potwierdzenie: 'pending'
+                        }
+                    };
+                    conflictData.push(conflict);
+                    conflictDataStable.push(conflict);
+                } else {
+                    await DataBase.insertReservation(item.id, "Empty", item.name_pl, item.start_time, item.end_time, 'USOS');
                 }
             }
+        }
         return conflictData;
     } catch (err) {
         throw err;
@@ -88,50 +84,6 @@ async function findByIdAndStartTime(id, startTime) {
         });
     });
 }
-app.route('/addToDb').get(async (req, res) => {
-    var count = 0;
-    let numbers = [];
-    try {
-        numbers = await roomIDs.getRoomIDs();
-
-        const addReservationsToDb = async function() {
-            const response = await fetch('http://localhost:8001/data');
-            const data = await response.json();
-            const parsedData = JSON.parse(data);
-            for (const firstTable of parsedData) {
-                for (const item of firstTable) {
-                    await DataBase.insertReservation(item.id, "Empty", item.name_pl, item.start_time, item.end_time, 'USOS');
-                }
-            }
-        };
-
-        const addRoomsToDb = async function(numbers) {
-            for (const item of numbers) {
-                const response = await fetch(`https://apps.usos.uj.edu.pl/services/geo/room?room_id=${item}&fields=number|type|capacity`);
-                const data = await response.json();
-                const parsedData = JSON.parse(JSON.stringify(data));
-                if (parsedData.type === "didactics_room")
-                    parsedData.type = "dydaktyczna"
-                if (parsedData.capacity > 50 && parsedData.type === "dydaktyczna")
-                    parsedData.type = "wykładowa"
-                if ((parsedData.number[0] === "F" || parsedData.number[0] === "G") && parsedData.type === "dydaktyczna")
-                    parsedData.type = "komputerowa"
-                else if (parsedData.type === "staff_members_room")
-                    parsedData.type = "pokój personelu"
-                await DataBase.insertRoom(item, parsedData.capacity, parsedData.number, parsedData.type);
-            }
-        };
-
-        await addRoomsToDb(numbers);
-        await addReservationsToDb();
-
-        res.send('Dane dodane do bazy');
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Błąd pobrania danych');
-    }
-});
-
 
 app.route('/get-month-data/:month/:id').get(function(req, res) {
     const month = req.params.month;
@@ -249,53 +201,3 @@ app.route('/admin/deleteReservation/:id').delete(async (req, res) => {
         res.status(500).send('An error occurred while trying to delete the reservation');
     });
 });
-
-
-
-// app.route('/addToDb').get((req, res) =>{
-//     var count = 0;
-//     let numbers = [];
-//     (async () => {
-//         numbers = await roomIDs.getRoomIDs();
-       
-//         const addRoomsToDb = function(numbers, callback) {
-//             numbers.forEach(async (item) => {
-//                 await fetch(`https://apps.usos.uj.edu.pl/services/geo/room?room_id=${item}&fields=number|type|capacity`)
-//                 .then(response => response.json())
-//                 .then(data => {
-//                     const parsedData = JSON.parse(JSON.stringify(data));
-//                     DataBase.insertRoom(item, parsedData.capacity, parsedData.number, parsedData.type);
-//                 })
-//                 .catch(err => {
-//                     console.error(err);
-//                 });
-//             });
-//             callback();
-//         };
-//         const addReservationsToDb = function() {
-//             fetch('http://localhost:8001/data')
-//             .then(response => response.json())
-//             .then(data => {
-                
-//                 const parsedData = JSON.parse(data);
-            
-
-//                 parsedData.forEach(firstTable => {
-//                     firstTable.forEach(item => {
-//                         console.log(item.name_pl);
-//                         DataBase.insertReservation(item.id, "Empty", item.name_pl, item.start_time, item.end_time, 'pending');
-//                     });
-//                 });
-//             })
-//             .catch(err => {
-//                 console.error(err);
-//                 res.status(500).send('Błąd pobrania danych');
-//             });
-//         };
-//         addRoomsToDb(numbers, addReservationsToDb);
-//     })();
-// });
-
-
-
-

@@ -176,15 +176,27 @@ getReservationsForRoom: function (id, callback) {
           }
         });
       },
-      deleteUsosReservation: function () {
-        var sql = `DELETE FROM rezerwacje WHERE Potwierdzenie = 'USOS'`;
+    //   deleteUsosReservation: function () {
+    //     var sql = `DELETE FROM rezerwacje WHERE Potwierdzenie = 'USOS'`;
+    //     connection.query(sql, function (err, result) {
+    //         if (err) {
+    //             console.log("Can't delete reservation");
+    //         } else {
+    //             console.log("Deleted reservation");
+    //         }
+    //     })
+    // },
+    deleteUsosReservation: function () {
+        var today = new Date().toISOString().split('T')[0];
+
+        var sql = `DELETE FROM rezerwacje WHERE Potwierdzenie = 'USOS' AND DataStartu > '${today}'`;
         connection.query(sql, function (err, result) {
             if (err) {
                 console.log("Can't delete reservation");
             } else {
                 console.log("Deleted reservation");
             }
-        })
+        });
     },
     deleteReservationAdmin(id) {
         var sql = `DELETE FROM rezerwacje WHERE RezerwacjaID = '${id}'`;

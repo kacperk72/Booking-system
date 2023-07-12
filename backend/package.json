@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node importRooms.js & nodemon server.js",
+    "start": " if node importRooms.js; then nodemon server.js; fi",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

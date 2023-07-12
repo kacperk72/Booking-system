@@ -87,6 +87,7 @@ export class AdminAddReservationComponent {
 
   reimport() {
     this.isLoading = true;
+    this.firstImport = false;
     this.isLoadedTable = false;
     this.service.reimport().subscribe((res) => {
       console.log(res);

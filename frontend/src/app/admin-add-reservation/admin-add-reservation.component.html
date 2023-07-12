@@ -1,7 +1,7 @@
 <div class="container">
     <div class="header">
         <h1>Admin</h1>
-        <input *ngIf="firstImport" type="button" value="Pierwszy import rezerwacji" (click)="firstImportF()">
+        <input *ngIf="firstImport" type="button" value="Pierwszy import rezerwacji" (click)="reimport()">
         <!-- <h2>Dodaj rezerwacje!</h2> -->
         <input *ngIf="!firstImport" type="button" value="Zaimportuj nowe dane" (click)="reimport()">
     </div>

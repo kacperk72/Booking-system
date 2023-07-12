@@ -8,7 +8,8 @@ var app = express();
 const mail = require("./send_mails.js");
 require('dotenv').config();
 var conflictDataStable = [];
-
+var connection = require('./database/connection.js');
+var variable = false;
 
 app.listen(3000);
 
@@ -45,6 +46,8 @@ async function reimportDb() {
         const data = await response.json();
         const parsedData = JSON.parse(data);
 
+
+
         for (const firstTable of parsedData) {
             for (const item of firstTable) {
                 const existingData = await findByIdAndStartTime(item.id, item.start_time);
@@ -63,10 +66,22 @@ async function reimportDb() {
                     conflictData.push(conflict);
                     conflictDataStable.push(conflict);
                 } else {
-                    await DataBase.insertReservation(item.id, "Empty", item.name_pl, item.start_time, item.end_time, 'USOS');
+                    // await DataBase.insertReservation(item.id, "Empty", item.name_pl, item.start_time, item.end_time, 'USOS');
+                    if (variable) {
+                        var today = new Date().toISOString().split('T')[0]
+                        console.log(today)
+                        if (item.start_time > today){
+                            await DataBase.insertReservation(item.id, "Empty", item.name_pl, item.start_time, item.end_time, 'USOS');
+                        }
+                    }
+                    else{
+                        await DataBase.insertReservation(item.id, "Empty", item.name_pl, item.start_time, item.end_time, 'USOS');
+                    }
                 }
             }
+
         }
+        if(variable === false) { variable = true}
         return conflictData;
     } catch (err) {
         throw err;

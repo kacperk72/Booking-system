@@ -304,7 +304,7 @@ export class RoomTimetableViewComponent implements OnInit, AfterViewInit {
       );
       const hourDifference = timeDifference / (1000 * 60 * 60); // przerwa w godzinach
       console.log(hourDifference);
-      if (hourDifference > 1) {
+      if (hourDifference > 2) {
         alert('Za duża przerwa między rezerwacjami!');
         return;
       }

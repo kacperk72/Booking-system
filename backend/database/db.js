@@ -141,18 +141,20 @@ getReservationsForRoom: function (id, callback) {
             }
         });
     },
-    insertReservation: function (sala_id, mail, course, start, end, acceptation) {
-        // console.log(sala_id + ' ' + mail + ' ' + course + ' ' + start + ' ' + end + ' ' + acceptation)
-        var sql = `INSERT INTO rezerwacje (SALA_ID, Mail, NazwaPrzedmiotu, DataStartu, DataKonca, Potwierdzenie)
-                   VALUES (${sala_id}, '${mail}', '${course}', '${start}', '${end}', '${acceptation}')`;
-        connection.query(sql, function (err, result) {
-            if (err) {
-                console.log("Can't insert reservation");
-            } else {
-                // console.log("Inserted one row");
-            }
-        });
-    },
+insertReservation(sala_id, mail, course, start, end, acceptation) {
+    var formattedStart = new Date(start).toISOString().slice(0, 19).replace('T', ' ');
+    var formattedEnd = new Date(end).toISOString().slice(0, 19).replace('T', ' ');
+
+    var sql = `INSERT INTO rezerwacje (SALA_ID, Mail, NazwaPrzedmiotu, DataStartu, DataKonca, Potwierdzenie) VALUES (${sala_id}, '${mail}', '${course}', STR_TO_DATE('${formattedStart}', '%Y-%m-%d %H:%i:%s'), STR_TO_DATE('${formattedEnd}', '%Y-%m-%d %H:%i:%s'), '${acceptation}')`;
+    connection.query(sql, function (err, result) {
+        if (err) {
+            console.log(err);
+            console.log("Can't insert reservation");
+        } else {
+            // console.log("Inserted one row");
+        }
+    });
+},
     accept_or_reject_reservation: function (acceptationState = 'rejected', rezerwacjaId) {
         const sql_query = 'UPDATE rezerwacje SET Potwierdzenie = ? WHERE RezerwacjaID = ?'
         connection.query(sql_query, [acceptationState, rezerwacjaId], (err, result) => {
@@ -176,16 +178,6 @@ getReservationsForRoom: function (id, callback) {
           }
         });
       },
-    //   deleteUsosReservation: function () {
-    //     var sql = `DELETE FROM rezerwacje WHERE Potwierdzenie = 'USOS'`;
-    //     connection.query(sql, function (err, result) {
-    //         if (err) {
-    //             console.log("Can't delete reservation");
-    //         } else {
-    //             console.log("Deleted reservation");
-    //         }
-    //     })
-    // },
     deleteUsosReservation: function () {
         var today = new Date().toISOString().split('T')[0];
 

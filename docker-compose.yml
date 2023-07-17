@@ -34,6 +34,10 @@ services:
       - "8002:8002"
     links:
       - "mysql:db"
+    deploy:
+      resources:
+        limits:
+          memory: 5g
     command: >
       bash -c "sleep 10 && npm install && npm start"
   client: 

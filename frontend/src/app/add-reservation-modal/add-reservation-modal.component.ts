@@ -133,15 +133,14 @@ export class AddReservationModalComponent implements OnInit {
 
         this.service
           .addReservation(reservationRequest)
-          .subscribe((response) => {
-            console.log(response);
-          });
+          .subscribe((response) => {});
       });
     } else {
       window.alert('Niepoprawne dane');
+      return;
     }
-
     this.dialogRef.close();
+    window.alert('Rezerwacja została przekazana do akceptacji przez admina');
   }
 
   getUniqueDays(): string[] {

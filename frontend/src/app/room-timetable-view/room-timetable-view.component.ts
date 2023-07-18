@@ -62,7 +62,6 @@ export class RoomTimetableViewComponent implements OnInit, AfterViewInit {
     this.service
       .getTimetable(monthNumber, this.SalaId)
       .subscribe((timetable: any) => {
-        console.log(timetable);
         this.lessons = timetable;
 
         this.days.forEach((day, index) => {
@@ -135,8 +134,6 @@ export class RoomTimetableViewComponent implements OnInit, AfterViewInit {
     );
     const lastDayOfWeek = new Date(firstDayOfWeek);
     lastDayOfWeek.setDate(firstDayOfWeek.getDate() + 7);
-
-    console.log(firstDayOfWeek, lastDayOfWeek);
 
     this.currentWeek = [firstDayOfWeek, lastDayOfWeek];
   }
@@ -295,6 +292,13 @@ export class RoomTimetableViewComponent implements OnInit, AfterViewInit {
         return { day, date, hour };
       });
 
+    selected.sort((a, b) => {
+      const hourA = parseInt(a.hour.split(':')[0]);
+      const hourB = parseInt(b.hour.split(':')[0]);
+
+      return hourA - hourB;
+    });
+
     const sortedHours = selected.map((slot) => slot.hour).sort();
     for (let i = 0; i < sortedHours.length - 1; i++) {
       const currentHour = new Date(`2000-01-01T${sortedHours[i]}:00`);
@@ -303,7 +307,6 @@ export class RoomTimetableViewComponent implements OnInit, AfterViewInit {
         nextHour.getTime() - currentHour.getTime()
       );
       const hourDifference = timeDifference / (1000 * 60 * 60); // przerwa w godzinach
-      console.log(hourDifference);
       if (hourDifference > 2) {
         alert('Za duża przerwa między rezerwacjami!');
         return;

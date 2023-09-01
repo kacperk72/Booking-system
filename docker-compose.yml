@@ -1,7 +1,9 @@
 version: "3.8"
 services:
   mysql:
-    image: "mysql:8.0"
+    build:
+      context: 
+        ./database
     volumes:
       - ./backend/:/docker-entrypoint-initdb.d
     environment:

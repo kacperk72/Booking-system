@@ -12,7 +12,7 @@ services:
       - "3306:3306"
   phpmyadmin:
     image: "phpmyadmin/phpmyadmin:latest"
-    links: 
+    links:
       - "mysql:db"
     ports: 
       - "8081:80"
@@ -36,12 +36,13 @@ services:
       - "8002:8002"
     links:
       - "mysql:db"
+    restart: unless-stopped
     deploy:
       resources:
         limits:
           memory: 5g
     command: >
-      bash -c "sleep 10 && npm install && npm start"
+      bash -c "npm install && npm start"
   client: 
     build: 
       context: ./frontend
